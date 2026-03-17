@@ -186,13 +186,13 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <ol className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+          <ol className="hidden gap-4 md:grid md:auto-rows-fr md:grid-cols-2 lg:grid-cols-3">
             {processSteps.map((step, index) => (
               <Reveal key={step.title}>
-                <li className="card-soft text-center md:text-left">
+                <li className="card-soft h-full flex flex-col text-center md:text-left">
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">Step {index + 1}</p>
                   <p className="mt-2 text-lg text-foreground">{step.title}</p>
-                  <p className="mt-3 text-sm leading-7 text-foreground/80">{step.body}</p>
+                  <p className="mt-3 flex-1 text-sm leading-7 text-foreground/80">{step.body}</p>
                 </li>
               </Reveal>
             ))}

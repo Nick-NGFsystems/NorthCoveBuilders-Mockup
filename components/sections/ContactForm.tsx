@@ -2,15 +2,23 @@
 
 import { useState } from "react";
 
-const projectTypes = ["Custom Home", "Remodel", "Addition", "Available Home", "Homesite Inquiry", "Other"];
-const budgetRanges = ["Under $300k", "$300k - $500k", "$500k - $750k", "$750k - $1M", "$1M+"];
+const hasLotOptions = ["", "Yes", "No", "In Progress"];
+const timelineOptions = ["", "As soon as possible", "3–6 months", "6–12 months", "1–2 years", "2+ years", "Just exploring"];
+const homeTypeOptions = ["", "Ranch", "Two Story", "Not Sure Yet"];
+const bedroomOptions = ["", "2", "3", "4", "5", "5+"];
+const bathroomOptions = ["", "1", "1.5", "2", "2.5", "3", "3.5", "4+"];
+const idealBudgetOptions = ["", "Under $300k", "$300k – $500k", "$500k – $750k", "$750k – $1M", "$1M+", "Not Sure Yet"];
 
 type FormState = {
   name: string;
   email: string;
   phone: string;
-  projectType: string;
-  budget: string;
+  hasLot: string;
+  timeline: string;
+  homeType: string;
+  bedrooms: string;
+  bathrooms: string;
+  idealBudget: string;
   message: string;
 };
 
@@ -18,8 +26,12 @@ const initialState: FormState = {
   name: "",
   email: "",
   phone: "",
-  projectType: projectTypes[0],
-  budget: budgetRanges[0],
+  hasLot: "",
+  timeline: "",
+  homeType: "",
+  bedrooms: "",
+  bathrooms: "",
+  idealBudget: "",
   message: "",
 };
 
@@ -100,16 +112,84 @@ export function ContactForm() {
         </label>
 
         <label className="grid gap-2 text-sm font-medium">
-          Project Type
+          Do you have a lot?
           <select
-            value={form.projectType}
-            onChange={(event) => setForm((previous) => ({ ...previous, projectType: event.target.value }))}
+            value={form.hasLot}
+            onChange={(event) => setForm((previous) => ({ ...previous, hasLot: event.target.value }))}
             className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
-            name="projectType"
+            name="hasLot"
           >
-            {projectTypes.map((projectType) => (
-              <option key={projectType} value={projectType}>
-                {projectType}
+            {hasLotOptions.map((hasLotOption) => (
+              <option key={hasLotOption} value={hasLotOption}>
+                {hasLotOption}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm font-medium">
+          Timeline
+          <select
+            value={form.timeline}
+            onChange={(event) => setForm((previous) => ({ ...previous, timeline: event.target.value }))}
+            className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
+            name="timeline"
+          >
+            {timelineOptions.map((timelineOption) => (
+              <option key={timelineOption} value={timelineOption}>
+                {timelineOption}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="grid gap-2 text-sm font-medium">
+          Home Type
+          <select
+            value={form.homeType}
+            onChange={(event) => setForm((previous) => ({ ...previous, homeType: event.target.value }))}
+            className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
+            name="homeType"
+          >
+            {homeTypeOptions.map((homeTypeOption) => (
+              <option key={homeTypeOption} value={homeTypeOption}>
+                {homeTypeOption}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm font-medium">
+          Bedrooms
+          <select
+            value={form.bedrooms}
+            onChange={(event) => setForm((previous) => ({ ...previous, bedrooms: event.target.value }))}
+            className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
+            name="bedrooms"
+          >
+            {bedroomOptions.map((bedroomOption) => (
+              <option key={bedroomOption} value={bedroomOption}>
+                {bedroomOption}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="grid gap-2 text-sm font-medium">
+          Bathrooms
+          <select
+            value={form.bathrooms}
+            onChange={(event) => setForm((previous) => ({ ...previous, bathrooms: event.target.value }))}
+            className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
+            name="bathrooms"
+          >
+            {bathroomOptions.map((bathroomOption) => (
+              <option key={bathroomOption} value={bathroomOption}>
+                {bathroomOption}
               </option>
             ))}
           </select>
@@ -117,16 +197,16 @@ export function ContactForm() {
       </div>
 
       <label className="grid gap-2 text-sm font-medium">
-        Budget
+        Ideal Budget
         <select
-          value={form.budget}
-          onChange={(event) => setForm((previous) => ({ ...previous, budget: event.target.value }))}
+          value={form.idealBudget}
+          onChange={(event) => setForm((previous) => ({ ...previous, idealBudget: event.target.value }))}
           className="rounded-xl border border-black/10 bg-white px-4 py-3 outline-none ring-brand transition focus:ring-2"
-          name="budget"
+          name="idealBudget"
         >
-          {budgetRanges.map((budgetRange) => (
-            <option key={budgetRange} value={budgetRange}>
-              {budgetRange}
+          {idealBudgetOptions.map((idealBudgetOption) => (
+            <option key={idealBudgetOption} value={idealBudgetOption}>
+              {idealBudgetOption}
             </option>
           ))}
         </select>

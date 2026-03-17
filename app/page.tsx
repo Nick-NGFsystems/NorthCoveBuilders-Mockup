@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
-import { featuredProjects, reviews } from "@/lib/site-data";
+import { ReviewsCarousel } from "@/components/sections/ReviewsCarousel";
+import { featuredProjects } from "@/lib/site-data";
 
 export default function Home() {
   return (
@@ -91,17 +92,11 @@ export default function Home() {
         <Reveal>
           <h2 className="mb-8 text-center text-2xl text-brand sm:text-3xl">What Homeowners Are Saying</h2>
         </Reveal>
-        <div className="grid gap-5 md:grid-cols-3">
-          {reviews.map((review) => (
-            <Reveal key={review.name}>
-              <article className="card-soft rounded-2xl">
-                <p className="text-brand">★★★★★</p>
-                <p className="mt-3 text-sm leading-7 text-foreground/80">“{review.quote}”</p>
-                <p className="mt-5 text-sm font-semibold text-foreground">{review.name}</p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal>
+          <div className="px-5">
+            <ReviewsCarousel />
+          </div>
+        </Reveal>
       </section>
     </>
   );

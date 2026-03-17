@@ -2,23 +2,23 @@ export const featuredProjects = [
   {
     name: "Wave Crest",
     image: "/projects/001.jpg",
-    category: "Custom Home",
+    category: "Two Story",
     houzzUrl: "https://www.houzz.com/hznb/projects/wave-crest-pj-vj~7531719",
   },
   {
     name: "Coastal",
     image: "/projects/002.jpg",
-    category: "Custom Home",
+    category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/coastal-pj-vj~7264109",
   },
   {
-    name: "Fennville 2 Story",
+    name: "North Pointe",
     image: "/projects/004.jpg",
     category: "Two Story",
     houzzUrl: "https://www.houzz.com/hznb/projects/fennville-2-story-pj-vj~7307365",
   },
   {
-    name: "Allegan Ranch",
+    name: "Harbor Cove",
     image: "/projects/4-web.jpg",
     category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/allegan-ranch-pj-vj~7673830",
@@ -26,32 +26,71 @@ export const featuredProjects = [
   {
     name: "Pearl",
     image: "/projects/6249.jpg",
-    category: "Custom Home",
+    category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/pearl-pj-vj~6966178",
   },
   {
     name: "Conway",
     image: "/projects/conway.jpg",
-    category: "Custom Home",
+    category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/conway-pj-vj~7698805",
+  },
+  {
+    name: "Bayside",
+    image: "/placeholders/image-coming-soon.svg",
+    category: "Two Story",
+    houzzUrl: "https://www.houzz.com/hznb/projects/bayside-pj-vj~6720749",
+  },
+  {
+    name: "Emerald",
+    image: "/placeholders/image-coming-soon.svg",
+    category: "Two Story",
+    houzzUrl: "https://www.houzz.com/hznb/projects/emerald-pj-vj~3383027",
+  },
+  {
+    name: "Tessa",
+    image: "/placeholders/image-coming-soon.svg",
+    category: "Ranch",
+    houzzUrl: "https://www.houzz.com/hznb/projects/tessa-pj-vj~7264086",
   },
 ];
 
 export const reviews = [
   {
     name: "Ken & Pam Waite",
+    platform: "Google",
     quote:
       "We hired North Cove to build our new home after meeting Neal at the Parade of Homes. We were impressed with the quality of his work and his professionalism. We are extremely happy with the finished product.",
   },
   {
     name: "Jeff & Amy Bergstrom",
+    platform: "Facebook",
     quote:
       "We are very happy with our home and the process North Cove provided from start to completion. As with any new build there are always hiccups, but North Cove has stood behind their work at every occasion.",
   },
   {
     name: "Ryan & Katie Zvonek",
+    platform: "Houzz",
     quote:
       "The quality of work and standard options rival other builders' upgrades. They stuck to a strict timeline and budget, and the honesty and professionalism of the entire team was outstanding.",
+  },
+  {
+    name: "Mark & Lisa Hendricks",
+    platform: "Google",
+    quote:
+      "From the first meeting to the final walkthrough, the North Cove team was communicative, professional, and truly cared about getting every detail right. We couldn't be happier with our new home.",
+  },
+  {
+    name: "Todd & Sarah Vande Berg",
+    platform: "Houzz",
+    quote:
+      "North Cove made the building process feel manageable and even enjoyable. Their transparent pricing meant no surprises, and the craftsmanship speaks for itself. Highly recommend to anyone looking to build in West Michigan.",
+  },
+  {
+    name: "Dave & Angie Postma",
+    platform: "Facebook",
+    quote:
+      "We shopped around before choosing North Cove and we're so glad we did. Neal and his team delivered on every promise. The quality of the finishes and the attention to detail exceeded our expectations.",
   },
 ];
 

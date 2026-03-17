@@ -8,8 +8,12 @@ const contactSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(7),
-  projectType: z.string().min(2),
-  budget: z.string().min(2),
+  hasLot: z.string().optional(),
+  timeline: z.string().optional(),
+  homeType: z.string().optional(),
+  bedrooms: z.string().optional(),
+  bathrooms: z.string().optional(),
+  idealBudget: z.string().optional(),
   message: z.string().min(10),
 });
 
@@ -28,8 +32,12 @@ export async function POST(request: Request) {
       name: parsed.data.name,
       email: parsed.data.email,
       phone: parsed.data.phone,
-      projectType: parsed.data.projectType,
-      budget: parsed.data.budget,
+      hasLot: parsed.data.hasLot ?? "",
+      timeline: parsed.data.timeline ?? "",
+      homeType: parsed.data.homeType ?? "",
+      bedrooms: parsed.data.bedrooms ?? "",
+      bathrooms: parsed.data.bathrooms ?? "",
+      idealBudget: parsed.data.idealBudget ?? "",
       message: parsed.data.message,
     });
 

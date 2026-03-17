@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { featuredProjects } from "@/lib/site-data";
 
-const categories = ["All", ...Array.from(new Set(featuredProjects.map((project) => project.category)))];
+const allowedCategories = ["All", "Ranch", "Two Story"] as const;
 
 export function PortfolioFilterGrid() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -22,7 +22,7 @@ export function PortfolioFilterGrid() {
   return (
     <>
       <div className="mb-8 flex flex-wrap justify-center gap-3 md:justify-start">
-        {categories.map((category) => {
+        {allowedCategories.map((category) => {
           const active = category === activeCategory;
           return (
             <button
