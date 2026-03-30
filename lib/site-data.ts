@@ -37,19 +37,19 @@ export const featuredProjects = [
   },
   {
     name: "Bayside",
-    image: "/placeholders/image-coming-soon.svg",
+    image: "/projects/bayside.jpg",
     category: "Two Story",
     houzzUrl: "https://www.houzz.com/hznb/projects/bayside-pj-vj~6720749",
   },
   {
     name: "Emerald",
-    image: "/placeholders/image-coming-soon.svg",
+    image: "/projects/emerald.jpg",
     category: "Two Story",
     houzzUrl: "https://www.houzz.com/hznb/projects/emerald-pj-vj~3383027",
   },
   {
     name: "Tessa",
-    image: "/placeholders/image-coming-soon.svg",
+    image: "/projects/tessa.png",
     category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/tessa-pj-vj~7264086",
   },
