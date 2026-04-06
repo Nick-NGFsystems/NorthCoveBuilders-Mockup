@@ -1,9 +1,14 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
-import { useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
+import { TeamMemberBio } from "@/components/sections/TeamMemberBio";
 import { teamMembers } from "@/lib/site-data";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Meet the North Cove Builders team — Neal, Elisha, Cindy, and Bryan. Learn about our values, our process, and our commitment to a personal building experience.",
+};
 
 const processSteps = [
   {
@@ -33,8 +38,6 @@ const processSteps = [
 ];
 
 export default function AboutPage() {
-  const [expandedBios, setExpandedBios] = useState<Record<string, boolean>>({});
-
   return (
     <>
       <section className="bg-surface">
@@ -68,26 +71,7 @@ export default function AboutPage() {
                     <div className="min-w-0 text-left lg:text-center">
                       <h3 className="text-lg text-brand sm:text-xl">{member.name}</h3>
                       <p className="mt-1 text-sm text-foreground/70">{member.role}</p>
-                      <p className="mt-3 text-sm leading-7 text-foreground/80 md:hidden">
-                        {expandedBios[member.name]
-                          ? member.bio
-                          : `${member.bio.slice(0, 180).trimEnd()}${member.bio.length > 180 ? "..." : ""}`}
-                      </p>
-                      <p className="mt-3 hidden text-sm leading-7 text-foreground/80 md:block">{member.bio}</p>
-                      {member.bio.length > 180 ? (
-                        <button
-                          type="button"
-                          className="mt-2 text-sm font-semibold text-brand hover:underline md:hidden"
-                          onClick={() =>
-                            setExpandedBios((previous) => ({
-                              ...previous,
-                              [member.name]: !previous[member.name],
-                            }))
-                          }
-                        >
-                          {expandedBios[member.name] ? "Show less" : "Read more"}
-                        </button>
-                      ) : null}
+                      <TeamMemberBio bio={member.bio} />
                     </div>
                   </div>
                 </article>

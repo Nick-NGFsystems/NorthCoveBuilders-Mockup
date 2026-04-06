@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { PortfolioFilterGrid } from "@/components/sections/PortfolioFilterGrid";
+
+export const metadata: Metadata = {
+  title: "Our Work",
+  description:
+    "Browse completed North Cove Builders homes. Each home begins with a vision and comes to life through thoughtful design, careful planning, and expert craftsmanship.",
+};
 
 export default function OurWorkPage() {
   return (

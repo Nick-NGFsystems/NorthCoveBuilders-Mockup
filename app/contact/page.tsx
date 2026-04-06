@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Reveal } from "@/components/motion/Reveal";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Schedule a free consultation with North Cove Builders. Call (616) 682-7422 or send us a message. Serving Hudsonville, Jenison, Zeeland, Byron Center, Grand Rapids, and West Michigan.",
+};
 
 export default function ContactPage() {
   return (

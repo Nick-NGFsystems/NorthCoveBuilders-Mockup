@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { floorPlans } from "@/lib/site-data";
+
+export const metadata: Metadata = {
+  title: "Floor Plans",
+  description:
+    "Explore North Cove Builders floor plans — ranch and multi-story homes ranging from 2,000 to 3,400 sq ft. Start with a plan and make it yours.",
+};
 
 const homeTypeOrder = ["Multi-Story", "Single-Story"] as const;
 
