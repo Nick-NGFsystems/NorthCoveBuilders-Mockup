@@ -16,6 +16,7 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://northcovebuilders.com"),
   title: {
     default: "North Cove Builders | Custom Homes in West Michigan",
     template: "%s | North Cove Builders",
