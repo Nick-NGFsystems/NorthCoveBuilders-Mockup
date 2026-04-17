@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { reviews } from "@/lib/site-data";
 
@@ -98,6 +99,17 @@ export function ReviewsCarousel() {
           <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
+
+      <div className="mt-8 text-center">
+        <Link
+          href="https://www.google.com/maps/place/North+Cove+Builders/@42.8807944,-85.8270019,17z/data=!3m1!4b1!4m6!3m5!1s0x8819bb3629b90ae9:0xaf214a670658882a"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
+        >
+          Read more reviews
+        </Link>
+      </div>
     </div>
   );
 }

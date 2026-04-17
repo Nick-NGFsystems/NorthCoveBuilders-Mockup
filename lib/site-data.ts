@@ -57,40 +57,58 @@ export const featuredProjects = [
 
 export const reviews = [
   {
-    name: "Ken & Pam Waite",
+    name: "Fransheska Bowers",
     platform: "Google",
     quote:
-      "We hired North Cove to build our new home after meeting Neal at the Parade of Homes. We were impressed with the quality of his work and his professionalism. We are extremely happy with the finished product.",
+      "Our experience with North Cove Builders was exceptional from start to finish. Neal, Bryan, Cindy, Elisha, and the entire team consistently went above and beyond with clear communication, thoughtful attention to our questions, and genuine care throughout the entire process.",
   },
   {
-    name: "Jeff & Amy Bergstrom",
-    platform: "Facebook",
-    quote:
-      "We are very happy with our home and the process North Cove provided from start to completion. As with any new build there are always hiccups, but North Cove has stood behind their work at every occasion.",
-  },
-  {
-    name: "Ryan & Katie Zvonek",
-    platform: "Houzz",
-    quote:
-      "The quality of work and standard options rival other builders' upgrades. They stuck to a strict timeline and budget, and the honesty and professionalism of the entire team was outstanding.",
-  },
-  {
-    name: "Mark & Lisa Hendricks",
+    name: "Jennifer Couture",
     platform: "Google",
     quote:
-      "From the first meeting to the final walkthrough, the North Cove team was communicative, professional, and truly cared about getting every detail right. We couldn't be happier with our new home.",
+      "Building with North Cove Builders was one of the best decisions we made. From our first conversation to our final walkthrough, the team was professional, responsive, and truly invested in making our dream home a reality. We couldn't be happier with the result.",
   },
   {
-    name: "Todd & Sarah Vande Berg",
+    name: "Brenda Rankin",
+    platform: "Google",
+    quote:
+      "North Cove Builders exceeded every expectation. The team was transparent about pricing and timelines, and the quality of craftsmanship in our home is outstanding. I would recommend them without hesitation to anyone looking to build in West Michigan.",
+  },
+  {
+    name: "brian polzin",
+    platform: "Google",
+    quote:
+      "North Cove Builders made our custom home process smooth and well organized from day one. The team communicated clearly at every step, stayed on schedule, and delivered craftsmanship that exceeded our expectations.",
+  },
+  {
+    name: "Jason S",
     platform: "Houzz",
     quote:
-      "North Cove made the building process feel manageable and even enjoyable. Their transparent pricing meant no surprises, and the craftsmanship speaks for itself. Highly recommend to anyone looking to build in West Michigan.",
+      "We had a fantastic experience building with North Cove. Neal and his team are honest, hard-working, and truly care about the homeowner. The process was smooth, communication was great, and the finished home is everything we hoped for.",
   },
   {
-    name: "Dave & Angie Postma",
+    name: "Pat & Keith Kuyper",
+    platform: "Houzz",
+    quote:
+      "Working with North Cove Builders was a wonderful experience. The team was attentive and thoughtful every step of the way. Our home turned out beautifully and we felt supported throughout the entire building process.",
+  },
+  {
+    name: "Laura Kruisenga",
+    platform: "Houzz",
+    quote:
+      "From design to move-in day, North Cove made building our custom home an enjoyable and stress-free experience. Their attention to detail, responsiveness, and commitment to quality set them apart. We love our home!",
+  },
+  {
+    name: "Matt Bloom",
     platform: "Facebook",
     quote:
-      "We shopped around before choosing North Cove and we're so glad we did. Neal and his team delivered on every promise. The quality of the finishes and the attention to detail exceeded our expectations.",
+      "The North Cove experience is top tier. This was our first time building a home and the team was absolutely amazing at guiding us the whole way. Everyone's heard bad stories about building a home and challenges that came along. Not once did we experience anything like that.",
+  },
+  {
+    name: "Angie Meyer",
+    platform: "Facebook",
+    quote:
+      "Choosing North Cove Builders was the best decision we made. They guided us through every step with patience and professionalism. The quality of our home and the care the team showed made the whole process truly enjoyable.",
   },
 ];
 

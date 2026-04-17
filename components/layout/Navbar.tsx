@@ -8,12 +8,11 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/our-work", label: "Our Work" },
-  { href: "/contact", label: "Contact" },
+  { href: "/floor-plans", label: "Floor Plans" },
 ];
 
 const secondaryLinks = [
   { href: "https://www.houzz.com/pro/neal39/north-cove-builders", label: "Houzz Gallery" },
-  { href: "/floor-plans", label: "Floor Plans" },
   { href: "/available", label: "Available" },
 ];
 
@@ -162,8 +161,8 @@ export function Navbar() {
 
         <div className="flex items-center gap-1.5 md:gap-2">
           <Link href="/contact" className="rounded-full bg-white px-3 py-2.5 text-sm font-semibold text-brand transition hover:bg-white/90 sm:px-4">
-            <span className="sm:hidden">Quote</span>
-            <span className="hidden sm:inline">Get a Free Quote</span>
+            <span className="sm:hidden">Connect</span>
+            <span className="hidden sm:inline">Let&apos;s connect!</span>
           </Link>
 
           <button

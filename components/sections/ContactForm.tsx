@@ -7,7 +7,7 @@ const timelineOptions = ["", "As soon as possible", "3–6 months", "6–12 mont
 const homeTypeOptions = ["", "Ranch", "Two Story", "Not Sure Yet"];
 const bedroomOptions = ["", "2", "3", "4", "5", "5+"];
 const bathroomOptions = ["", "1", "1.5", "2", "2.5", "3", "3.5", "4+"];
-const idealBudgetOptions = ["", "Under $300k", "$300k – $500k", "$500k – $750k", "$750k – $1M", "$1M+", "Not Sure Yet"];
+const idealBudgetOptions = ["", "$400k - $500k", "$500k - $600k", "$600k - $700k", "$700k - $800k", "$800k - $900k", "$900k+"];
 
 type FormState = {
   name: string;
@@ -225,7 +225,7 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button type="submit" className="btn-brand mx-auto disabled:cursor-not-allowed disabled:opacity-70 sm:mx-0" disabled={status === "submitting"}>
-          {status === "submitting" ? "Sending..." : "Get a Free Quote"}
+          {status === "submitting" ? "Sending..." : "Submit Inquiry"}
         </button>
         <p className={`text-sm ${status === "error" ? "text-red-600" : "text-foreground/70"}`}>{message}</p>
       </div>

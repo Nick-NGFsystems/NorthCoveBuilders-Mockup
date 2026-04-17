@@ -107,21 +107,9 @@ export default function AboutPage() {
               </ul>
             </details>
           </Reveal>
-
-          <Reveal>
-            <details className="rounded-2xl border border-black/5 bg-white p-4">
-              <summary className="accordion-summary flex cursor-pointer list-none items-center justify-between gap-3 text-left">
-                <span className="text-lg font-semibold text-brand">Design Support</span>
-                <span className="accordion-chevron text-brand">▾</span>
-              </summary>
-              <p className="mt-3 text-sm leading-7 text-foreground/80">
-                Bring your dream home to life with one-on-one design help and hand-picked products tailored to your style, space, and budget.
-              </p>
-            </details>
-          </Reveal>
         </div>
 
-        <div className="mt-8 hidden gap-5 md:grid md:grid-cols-2">
+        <div className="mt-8 hidden gap-5 md:grid md:grid-cols-1">
           <Reveal>
             <article className="card-soft">
               <h3 className="text-center text-xl text-brand md:text-left">Core Values</h3>
@@ -131,14 +119,6 @@ export default function AboutPage() {
                 <li>We build trust by acting with compassion and others&apos; best interest in mind.</li>
                 <li>Our team is built on positivity, hard work, and reliability.</li>
               </ul>
-            </article>
-          </Reveal>
-          <Reveal>
-            <article className="card-soft">
-              <h3 className="text-center text-xl text-brand md:text-left">Design Support</h3>
-              <p className="mt-3 text-sm leading-7 text-foreground/80">
-                Bring your dream home to life with one-on-one design help and hand-picked products tailored to your style, space, and budget.
-              </p>
             </article>
           </Reveal>
         </div>

@@ -23,6 +23,11 @@ export default function FloorPlansPage() {
       <Reveal>
         <p className="text-center text-sm font-semibold uppercase tracking-[0.15em] text-brand md:text-left">Floor Plans</p>
         <h1 className="mt-3 text-center text-3xl text-brand sm:text-4xl md:text-left md:text-5xl">Start with a plan, then make it yours.</h1>
+        <p className="mt-4 text-center text-foreground/80 md:text-left">
+          Designing your home should be one of the most exciting parts of the journey and we are here to make sure it is. Start
+          with one of our existing floor plans and tailor it to fit your lifestyle, or collaborate with us to design something
+          entirely your own. However you begin, the process is built around your ideas, your style, and the way you want to live!
+        </p>
       </Reveal>
 
       <div className="mt-10 space-y-12">
@@ -77,7 +82,7 @@ export default function FloorPlansPage() {
       <Reveal>
         <div className="mt-10 text-center md:text-left">
           <Link href="/contact" className="btn-brand">
-            Customize a Floor Plan
+            Let&apos;s discuss your ideas!
           </Link>
         </div>
       </Reveal>

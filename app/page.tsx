@@ -21,7 +21,7 @@ export default function Home() {
           <Reveal>
             <div className="mx-auto w-full max-w-2xl space-y-6 text-center md:mx-0 md:text-left">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/85">
-                North Cove Builders · Hudsonville, Michigan
+                North Cove Builders - West Michigan
               </p>
               <h1 className="text-3xl leading-tight sm:text-4xl md:text-6xl">
                 Build the home you&apos;ve always dreamed of.
@@ -30,7 +30,7 @@ export default function Home() {
                 Custom Designs. Straightforward Pricing. A Clear &amp; Precise Process.
               </p>
               <Link href="/contact" className="btn-brand">
-                Schedule a Free Consultation
+                Let&apos;s connect!
               </Link>
             </div>
           </Reveal>
