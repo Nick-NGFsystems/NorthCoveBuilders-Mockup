@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
+
+export const metadata: Metadata = {
+  title: "Gallery",
+  description:
+    "Explore room-by-room photo inspiration from North Cove Builders custom homes on Houzz, including kitchens, living spaces, exteriors, and more.",
+};
 
 export default function GalleryPage() {
   return (

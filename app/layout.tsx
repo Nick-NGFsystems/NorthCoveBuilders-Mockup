@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { LocalBusinessSchema } from "@/app/local-business-schema";
 import { PageChrome } from "@/components/layout/PageChrome";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -69,6 +71,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.variable} ${dmSerif.variable} antialiased`}>
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

@@ -10,10 +10,13 @@ const platformStyles: Record<string, { initial: string; color: string }> = {
   Houzz: { initial: "H", color: "#73BA37" },
 };
 
+const REVIEW_PREVIEW_LENGTH = 420;
+
 export function ReviewsCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
 
   const updateScrollState = () => {
     const container = containerRef.current;
@@ -43,6 +46,13 @@ export function ReviewsCarousel() {
     });
   };
 
+  const toggleExpanded = (reviewName: string) => {
+    setExpandedReviews((previous) => ({
+      ...previous,
+      [reviewName]: !previous[reviewName],
+    }));
+  };
+
   return (
     <div className="relative">
       <button
@@ -64,6 +74,9 @@ export function ReviewsCarousel() {
       >
         {reviews.map((review) => {
           const platform = platformStyles[review.platform] ?? { initial: "?", color: "#9CA3AF" };
+          const isExpanded = expandedReviews[review.name] ?? false;
+          const isLongReview = review.quote.length > REVIEW_PREVIEW_LENGTH;
+          const quoteToDisplay = isExpanded || !isLongReview ? review.quote : `${review.quote.slice(0, REVIEW_PREVIEW_LENGTH).trim()}...`;
 
           return (
             <article
@@ -72,7 +85,16 @@ export function ReviewsCarousel() {
               className="card-soft flex-none snap-start rounded-2xl md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
             >
               <p className="text-brand">★★★★★</p>
-              <p className="mt-3 text-sm leading-7 text-foreground/80">“{review.quote}”</p>
+              <p className="mt-3 whitespace-pre-line text-sm leading-7 text-foreground/80">“{quoteToDisplay}”</p>
+              {isLongReview ? (
+                <button
+                  type="button"
+                  onClick={() => toggleExpanded(review.name)}
+                  className="mt-2 text-sm font-semibold text-brand hover:underline"
+                >
+                  {isExpanded ? "Show less" : "Show more"}
+                </button>
+              ) : null}
               <p className="mt-5 text-sm font-semibold text-foreground">{review.name}</p>
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1 text-xs font-medium text-foreground/80">
                 <span
@@ -86,6 +108,20 @@ export function ReviewsCarousel() {
             </article>
           );
         })}
+
+        <article
+          data-review-card
+          className="card-soft flex min-h-full flex-none snap-start items-center justify-center rounded-2xl text-center md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+        >
+          <Link
+            href="https://www.google.com/maps/place/North+Cove+Builders/@42.8807944,-85.8270019,17z/data=!3m1!4b1!4m6!3m5!1s0x8819bb3629b90ae9:0xaf214a670658882a"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
+          >
+            Read more reviews
+          </Link>
+        </article>
       </div>
 
       <button
@@ -99,17 +135,6 @@ export function ReviewsCarousel() {
           <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
-
-      <div className="mt-8 text-center">
-        <Link
-          href="https://www.google.com/maps/place/North+Cove+Builders/@42.8807944,-85.8270019,17z/data=!3m1!4b1!4m6!3m5!1s0x8819bb3629b90ae9:0xaf214a670658882a"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
-        >
-          Read more reviews
-        </Link>
-      </div>
     </div>
   );
 }

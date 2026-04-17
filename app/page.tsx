@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { ReviewsCarousel } from "@/components/sections/ReviewsCarousel";
 import { featuredProjects } from "@/lib/site-data";
+
+export const metadata: Metadata = {
+  title: "Custom Home Builder in West Michigan",
+  description:
+    "North Cove Builders designs and builds custom homes across West Michigan with transparent pricing, personal service, and a clear process from concept to completion.",
+};
 
 export default function Home() {
   return (

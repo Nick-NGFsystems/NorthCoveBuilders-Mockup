@@ -4,7 +4,7 @@ export function LocalBusinessSchema() {
     "@type": "HomeAndConstructionBusiness",
     name: "North Cove Builders",
     description:
-      "Personal, boutique custom home builder serving Hudsonville, Jenison, Zeeland, Byron Center, Grand Rapids, and surrounding West Michigan communities.",
+      "Personal, boutique custom home builder serving Greater Grand Rapids, the Lakeshore, and surrounding West Michigan communities including Hudsonville, Byron Center, Caledonia, Grand Rapids, Fennville, Saugatuck, Holland, and Grand Haven.",
     url: "https://northcovebuilders.com",
     telephone: "+16166827422",
     email: "northcovebuilders@gmail.com",
@@ -23,13 +23,18 @@ export function LocalBusinessSchema() {
     },
     areaServed: [
       "Hudsonville, MI",
-      "Jenison, MI",
-      "Zeeland, MI",
       "Byron Center, MI",
+      "Caledonia, MI",
       "Grand Rapids, MI",
+      "Fennville, MI",
+      "Saugatuck, MI",
+      "Holland, MI",
+      "Grand Haven, MI",
+      "Lakeshore, MI",
     ],
     sameAs: [
       "https://www.houzz.com/pro/neal39/north-cove-builders",
+      "https://www.facebook.com/NorthCovehomesllc",
     ],
     priceRange: "$$$",
   };
