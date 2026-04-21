@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
-import { floorPlans } from "@/lib/site-data";
+import { floorPlans, toSlug } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Floor Plans",
@@ -40,48 +40,43 @@ export default function FloorPlansPage() {
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {plans.map((plan) => (
                 <Reveal key={plan.name}>
-                  <article className="overflow-hidden rounded-2xl border border-black/5 bg-white">
-                    <div className="relative h-56">
-                      <Image
-                        src={plan.image}
-                        alt={plan.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-xl text-brand">{plan.name}</h3>
-                      <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-foreground/80">
-                        <p>
-                          <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Sq. Feet</span>
-                          {plan.squareFeet}
-                        </p>
-                        <p>
-                          <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Bedrooms</span>
-                          {plan.bedrooms}
-                        </p>
-                        <p>
-                          <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Baths</span>
-                          {plan.baths}
-                        </p>
-                        <p>
-                          <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Garage Stalls</span>
-                          {plan.garageStalls}
-                        </p>
+                  <Link href={`/floor-plans/${toSlug(plan.name)}`} className="block group">
+                    <article className="overflow-hidden rounded-2xl border border-black/5 bg-white transition hover:shadow-md">
+                      <div className="relative h-56">
+                        <Image
+                          src={plan.image}
+                          alt={plan.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition group-hover:scale-[1.02]"
+                        />
                       </div>
-                      {plan.planUrl && (
-                        <Link
-                          href={plan.planUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-brand/20 bg-surface px-4 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
-                        >
-                          View Floor Plan
-                        </Link>
-                      )}
-                    </div>
-                  </article>
+                      <div className="p-5">
+                        <h3 className="text-xl text-brand">{plan.name}</h3>
+                        <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-foreground/80">
+                          <p>
+                            <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Sq. Feet</span>
+                            {plan.squareFeet.toLocaleString()}
+                          </p>
+                          <p>
+                            <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Bedrooms</span>
+                            {plan.bedrooms}
+                          </p>
+                          <p>
+                            <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Baths</span>
+                            {plan.baths}
+                          </p>
+                          <p>
+                            <span className="block text-xs uppercase tracking-[0.12em] text-brand/70">Garage Stalls</span>
+                            {plan.garageStalls}
+                          </p>
+                        </div>
+                        <span className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-brand/20 bg-surface px-4 py-2.5 text-sm font-semibold text-brand transition group-hover:bg-brand group-hover:text-white">
+                          View Plan Details
+                        </span>
+                      </div>
+                    </article>
+                  </Link>
                 </Reveal>
               ))}
             </div>

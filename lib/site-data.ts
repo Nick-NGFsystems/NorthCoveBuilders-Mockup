@@ -143,6 +143,10 @@ export const teamMembers = [
   },
 ];
 
+export function toSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
+
 export const floorPlans = [
   {
     name: "The Bloom Pointe",
@@ -329,21 +333,4 @@ export const floorPlans = [
 export const availableHomes = [
   {
     name: "Prairie View Residence",
-    image: "/placeholders/image-coming-soon.svg",
-  },
-  {
-    name: "Harbor Light Home",
-    image: "/placeholders/image-coming-soon.svg",
-  },
-];
-
-export const availableSites = [
-  {
-    name: "Hudsonville Meadow Lot",
-    image: "/placeholders/image-coming-soon.svg",
-  },
-  {
-    name: "Jenison Ridge Homesite",
-    image: "/placeholders/image-coming-soon.svg",
-  },
-];
+    image: "/placeholders/image-coming-soon
