@@ -333,4 +333,21 @@ export const floorPlans = [
 export const availableHomes = [
   {
     name: "Prairie View Residence",
-    image: "/placeholders/image-coming-soon
+    image: "/placeholders/image-coming-soon.svg",
+  },
+  {
+    name: "Harbor Light Home",
+    image: "/placeholders/image-coming-soon.svg",
+  },
+];
+
+export const availableSites = [
+  {
+    name: "Hudsonville Meadow Lot",
+    image: "/placeholders/image-coming-soon.svg",
+  },
+  {
+    name: "Jenison Ridge Homesite",
+    image: "/placeholders/image-coming-soon.svg",
+  },
+];
