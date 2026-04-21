@@ -75,70 +75,71 @@ export default async function FloorPlanDetailPage({ params }: Props) {
         </div>
       </Reveal>
 
-      {/* Stats + CTA */}
-      <div className="mt-10 grid gap-10 md:grid-cols-3">
-
-        {/* Stats */}
-        <Reveal>
-          <div className="md:col-span-2">
-            <h2 className="text-xl font-semibold text-brand">Plan Details</h2>
-            <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {stats.map(({ label, value }) => (
-                <div key={label} className="card-soft rounded-xl p-4">
-                  <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-brand/70">{label}</dt>
-                  <dd className="mt-1 text-lg font-semibold text-foreground">{value}</dd>
-                </div>
-              ))}
-            </dl>
-
-            {/* Floor plan PDF / link placeholder */}
-            {plan.planUrl ? (
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
-                <div className="mt-4 overflow-hidden rounded-2xl border border-black/5 bg-surface">
-                  <iframe
-                    src={plan.planUrl}
-                    className="w-full"
-                    style={{ height: "600px" }}
-                    title={`${plan.name} floor plan`}
-                  />
-                </div>
+      {/* Stats — full width */}
+      <Reveal>
+        <div className="mt-10">
+          <h2 className="text-xl font-semibold text-brand">Plan Details</h2>
+          <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {stats.map(({ label, value }) => (
+              <div key={label} className="card-soft rounded-xl p-4 min-w-0">
+                <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-brand/70 truncate">{label}</dt>
+                <dd className="mt-1 text-lg font-semibold text-foreground break-words">{value}</dd>
               </div>
-            ) : (
-              <div className="mt-8">
-                <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
-                <div className="mt-4 flex items-center justify-center rounded-2xl border-2 border-dashed border-brand/20 bg-surface py-16 text-center">
-                  <div>
-                    <p className="text-sm font-medium text-foreground/60">Floor plan coming soon</p>
-                    <p className="mt-1 text-xs text-foreground/40">Contact us to request a copy</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            ))}
+          </dl>
+        </div>
+      </Reveal>
+
+      {/* Floor plan — full width */}
+      <Reveal>
+        {plan.planUrl ? (
+          <div className="mt-10">
+            <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-black/5 bg-surface">
+              <iframe
+                src={plan.planUrl}
+                className="w-full"
+                style={{ height: "600px" }}
+                title={`${plan.name} floor plan`}
+              />
+            </div>
           </div>
-        </Reveal>
+        ) : (
+          <div className="mt-10">
+            <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
+            <div className="mt-4 flex items-center justify-center rounded-2xl border-2 border-dashed border-brand/20 bg-surface py-16 text-center">
+              <div>
+                <p className="text-sm font-medium text-foreground/60">Floor plan coming soon</p>
+                <p className="mt-1 text-xs text-foreground/40">Contact us to request a copy</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Reveal>
 
-        {/* CTA card */}
-        <Reveal>
-          <div className="card-soft rounded-2xl p-6 flex flex-col gap-4 h-fit">
+      {/* CTA — full-width banner */}
+      <Reveal>
+        <div className="mt-10 card-soft rounded-2xl p-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
             <h3 className="text-lg font-semibold text-brand">Interested in this plan?</h3>
-            <p className="text-sm text-foreground/70 leading-relaxed">
+            <p className="mt-1 text-sm text-foreground/70 leading-relaxed max-w-xl">
               Every home we build is customized to fit your lifestyle. Start with this plan and we&apos;ll tailor
               it to your needs, lot, and style.
             </p>
-            <Link href="/contact" className="btn-brand text-center">
+          </div>
+          <div className="flex flex-col gap-3 sm:items-end shrink-0">
+            <Link href="/contact" className="btn-brand text-center whitespace-nowrap">
               Let&apos;s talk
             </Link>
             <Link
               href="/floor-plans"
-              className="text-center text-sm font-medium text-brand/70 hover:text-brand transition-colors"
+              className="text-center text-sm font-medium text-brand/70 hover:text-brand transition-colors whitespace-nowrap"
             >
               Browse all plans
             </Link>
           </div>
-        </Reveal>
-
-      </div>
+        </div>
+      </Reveal>
     </section>
   );
 }
