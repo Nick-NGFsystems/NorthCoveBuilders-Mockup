@@ -152,6 +152,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheBloomPointe.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Wave Crest",
@@ -161,6 +162,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheWaveCrest.png",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Seascape",
@@ -170,6 +172,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheSeascape.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Brighton",
@@ -179,6 +182,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheBrighton.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Marina",
@@ -188,6 +192,7 @@ export const floorPlans = [
     baths: 4.5,
     garageStalls: 3,
     image: "/floor-plans/TheMarina.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Bayside",
@@ -197,6 +202,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 2,
     image: "/floor-plans/TheBayside.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Arbor",
@@ -206,6 +212,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheArbor.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Sandstone",
@@ -215,6 +222,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheSandstone.jpg",
+    planUrl: "", // TODO: add floor plan URL
   },
   {
     name: "The Conway",
@@ -224,6 +232,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Maria",
@@ -233,6 +242,7 @@ export const floorPlans = [
     baths: 3,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Sterling",
@@ -242,6 +252,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 2,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Coastal",
@@ -251,6 +262,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Tessa",
@@ -260,6 +272,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Sea Haven",
@@ -269,6 +282,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Woodridge",
@@ -278,6 +292,7 @@ export const floorPlans = [
     baths: 3,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The North Cove",
@@ -287,6 +302,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "The Pearl",
@@ -296,6 +312,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
   {
     name: "Pebble Beach",
@@ -305,6 +322,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/placeholders/image-coming-soon.svg",
+    planUrl: "", // TODO: add floor plan URL + rendering image
   },
 ];
 

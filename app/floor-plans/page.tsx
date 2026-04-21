@@ -70,6 +70,16 @@ export default function FloorPlansPage() {
                           {plan.garageStalls}
                         </p>
                       </div>
+                      {plan.planUrl && (
+                        <Link
+                          href={plan.planUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-brand/20 bg-surface px-4 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
+                        >
+                          View Floor Plan
+                        </Link>
+                      )}
                     </div>
                   </article>
                 </Reveal>

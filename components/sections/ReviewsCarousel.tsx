@@ -114,7 +114,7 @@ export function ReviewsCarousel() {
           className="card-soft flex min-h-full flex-none snap-start items-center justify-center rounded-2xl text-center md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
         >
           <Link
-            href="https://www.google.com/maps/place/North+Cove+Builders/@42.8807944,-85.8270019,17z/data=!3m1!4b1!4m6!3m5!1s0x8819bb3629b90ae9:0xaf214a670658882a"
+            href="https://www.google.com/maps?output=search&q=north+cove+builders+google+reviews&source=lnms&entry=mc"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
