@@ -32,6 +32,10 @@ export default async function Home() {
 
   // ── Projects ───────────────────────────────────────────────────────────────
   const projectsTitle = content['projects.title'] ?? 'Featured Projects'
+  const projectsViewAll = content['projects.viewAll'] ?? 'View All Work'
+
+  // ── Reviews ───────────────────────────────────────────────────────────────
+  const reviewsTitle = content['reviews.title'] ?? 'What Homeowners Are Saying'
 
   return (
     <>
@@ -143,8 +147,12 @@ export default async function Home() {
               <Link
                 href="/our-work"
                 className="inline-flex items-center rounded-full border border-brand/20 bg-white px-4 py-2 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
+                data-ngf-field="projects.viewAll"
+                data-ngf-label="View All Button"
+                data-ngf-type="text"
+                data-ngf-section="Projects"
               >
-                View All Work
+                {projectsViewAll}
               </Link>
             </div>
           </Reveal>
@@ -175,7 +183,15 @@ export default async function Home() {
       {/* ── Reviews ── */}
       <section className="section-shell">
         <Reveal>
-          <h2 className="mb-8 text-center text-2xl text-brand sm:text-3xl">What Homeowners Are Saying</h2>
+          <h2
+            data-ngf-field="reviews.title"
+            data-ngf-label="Section Title"
+            data-ngf-type="text"
+            data-ngf-section="Reviews"
+            className="mb-8 text-center text-2xl text-brand sm:text-3xl"
+          >
+            {reviewsTitle}
+          </h2>
         </Reveal>
         <Reveal>
           <div className="px-5">

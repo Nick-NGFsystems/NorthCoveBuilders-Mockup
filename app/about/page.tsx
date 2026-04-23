@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { TeamMemberBio } from "@/components/sections/TeamMemberBio";
 import { teamMembers } from "@/lib/site-data";
+import { getNgfContent } from "@/lib/ngf";
 
 export const metadata: Metadata = {
   title: "About",
@@ -37,20 +38,55 @@ const processSteps = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getNgfContent()
+
+  const heroEyebrow = content['about.heroEyebrow'] ?? 'About North Cove Builders'
+  const heroHeading = content['about.heroHeading'] ?? 'A personal builder experience from first conversation to final walkthrough.'
+  const teamHeading = content['about.teamHeading'] ?? 'Meet the Team'
+  const valuesHeading = content['about.valuesHeading'] ?? 'Mission & Values'
+  const valuesMission = content['about.valuesMission'] ?? 'We love what we do! Everything we do is to ensure your building experience is enjoyable and that your new home is everything you\'ve dreamt it would be.'
+  const valuesStatement = content['about.valuesStatement'] ?? 'We keep God and our values at the forefront of everything we do.'
+  const coreValuesHeading = content['about.coreValuesHeading'] ?? 'Core Values'
+  const processHeading = content['about.processHeading'] ?? 'Our Process'
+
   return (
     <>
       <section className="bg-surface">
         <div className="section-shell !pt-40 pb-4 md:!pt-[8.5rem]">
-          <p className="text-center text-sm font-semibold uppercase tracking-[0.15em] text-brand md:text-left">About North Cove Builders</p>
-          <h1 className="mt-3 text-center text-3xl text-brand sm:text-4xl md:text-left md:text-5xl">A personal builder experience from first conversation to final walkthrough.</h1>
+          <p
+            data-ngf-field="about.heroEyebrow"
+            data-ngf-label="Eyebrow"
+            data-ngf-type="text"
+            data-ngf-section="About"
+            className="text-center text-sm font-semibold uppercase tracking-[0.15em] text-brand md:text-left"
+          >
+            {heroEyebrow}
+          </p>
+          <h1
+            data-ngf-field="about.heroHeading"
+            data-ngf-label="Heading"
+            data-ngf-type="text"
+            data-ngf-section="About"
+            className="mt-3 text-center text-3xl text-brand sm:text-4xl md:text-left md:text-5xl"
+          >
+            {heroHeading}
+          </h1>
         </div>
       </section>
 
       <section id="team" className="bg-surface scroll-mt-28">
         <div className="section-shell !pt-6 md:!pt-8">
           <Reveal>
-            <h2 className="mb-8 text-center text-2xl text-brand sm:text-3xl md:text-left">Meet the Team</h2>
+            <h2
+              data-ngf-field="about.teamHeading"
+              data-ngf-label="Team Section Heading"
+              data-ngf-type="text"
+              data-ngf-section="About"
+              className="mb-8 text-center text-2xl text-brand sm:text-3xl md:text-left"
+            >
+              {teamHeading}
+            </h2>
           </Reveal>
           <div className="grid gap-6 lg:grid-cols-2">
             {teamMembers.map((member, index) => (
@@ -83,12 +119,32 @@ export default function AboutPage() {
 
       <section id="values" className="section-shell scroll-mt-28">
         <Reveal>
-          <h2 className="text-center text-2xl text-brand sm:text-3xl md:text-left">Mission & Values</h2>
-          <p className="mt-4 text-center leading-8 text-foreground/80 md:text-left">
-            We love what we do! Everything we do is to ensure your building experience is enjoyable and that your new home is everything you&apos;ve dreamt it would be.
+          <h2
+            data-ngf-field="about.valuesHeading"
+            data-ngf-label="Values Section Heading"
+            data-ngf-type="text"
+            data-ngf-section="About"
+            className="text-center text-2xl text-brand sm:text-3xl md:text-left"
+          >
+            {valuesHeading}
+          </h2>
+          <p
+            data-ngf-field="about.valuesMission"
+            data-ngf-label="Mission Statement"
+            data-ngf-type="textarea"
+            data-ngf-section="About"
+            className="mt-4 text-center leading-8 text-foreground/80 md:text-left"
+          >
+            {valuesMission}
           </p>
-          <p className="mt-3 text-center leading-8 text-foreground/80 md:text-left">
-            We keep God and our values at the forefront of everything we do.
+          <p
+            data-ngf-field="about.valuesStatement"
+            data-ngf-label="Values Statement"
+            data-ngf-type="textarea"
+            data-ngf-section="About"
+            className="mt-3 text-center leading-8 text-foreground/80 md:text-left"
+          >
+            {valuesStatement}
           </p>
         </Reveal>
 
@@ -96,7 +152,15 @@ export default function AboutPage() {
           <Reveal>
             <details className="rounded-2xl border border-black/5 bg-white p-4">
               <summary className="accordion-summary flex cursor-pointer list-none items-center justify-between gap-3 text-left">
-                <span className="text-lg font-semibold text-brand">Core Values</span>
+                <span
+                  data-ngf-field="about.coreValuesHeading"
+                  data-ngf-label="Core Values Heading"
+                  data-ngf-type="text"
+                  data-ngf-section="About"
+                  className="text-lg font-semibold text-brand"
+                >
+                  {coreValuesHeading}
+                </span>
                 <span className="accordion-chevron text-brand">▾</span>
               </summary>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80">
@@ -112,7 +176,15 @@ export default function AboutPage() {
         <div className="mt-8 hidden gap-5 md:grid md:grid-cols-1">
           <Reveal>
             <article className="card-soft">
-              <h3 className="text-center text-xl text-brand md:text-left">Core Values</h3>
+              <h3
+                data-ngf-field="about.coreValuesHeading"
+                data-ngf-label="Core Values Heading"
+                data-ngf-type="text"
+                data-ngf-section="About"
+                className="text-center text-xl text-brand md:text-left"
+              >
+                {coreValuesHeading}
+              </h3>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80">
                 <li>Family is first. Ours. Yours. Always!</li>
                 <li>We treat everyone fairly, with honesty and respect.</li>
@@ -127,7 +199,15 @@ export default function AboutPage() {
       <section id="process" className="bg-surface scroll-mt-28">
         <div className="section-shell">
           <Reveal>
-            <h2 className="mb-8 text-center text-2xl text-brand sm:text-3xl md:text-left">Our Process</h2>
+            <h2
+              data-ngf-field="about.processHeading"
+              data-ngf-label="Process Section Heading"
+              data-ngf-type="text"
+              data-ngf-section="About"
+              className="mb-8 text-center text-2xl text-brand sm:text-3xl md:text-left"
+            >
+              {processHeading}
+            </h2>
           </Reveal>
 
           <div className="grid gap-3 md:hidden">

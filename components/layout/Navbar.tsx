@@ -3,20 +3,37 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import type { NgfSiteContent } from "@/lib/ngf";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/our-work", label: "Our Work" },
-  { href: "/floor-plans", label: "Floor Plans" },
+const navLinkKeys = [
+  { href: "/", key: "home", defaultLabel: "Home" },
+  { href: "/about", key: "about", defaultLabel: "About" },
+  { href: "/our-work", key: "ourWork", defaultLabel: "Our Work" },
+  { href: "/floor-plans", key: "floorPlans", defaultLabel: "Floor Plans" },
 ];
 
-const secondaryLinks = [
-  { href: "https://www.houzz.com/pro/neal39/north-cove-builders", label: "Houzz Gallery" },
-  { href: "/available", label: "Available" },
+const secondaryLinkKeys = [
+  { href: "https://www.houzz.com/pro/neal39/north-cove-builders", key: "houzz", defaultLabel: "Houzz Gallery" },
+  { href: "/available", key: "available", defaultLabel: "Available" },
 ];
 
-export function Navbar() {
+type NavbarProps = {
+  content: NgfSiteContent;
+};
+
+export function Navbar({ content }: NavbarProps) {
+  const navLinks = navLinkKeys.map(link => ({
+    ...link,
+    label: content[`nav.${link.key}`] ?? link.defaultLabel,
+  }));
+
+  const secondaryLinks = secondaryLinkKeys.map(link => ({
+    ...link,
+    label: content[`nav.${link.key}`] ?? link.defaultLabel,
+  }));
+
+  const ctaLabel = content['nav.cta'] ?? "Let's connect!";
+  const moreLabel = content['nav.more'] ?? 'More';
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -110,7 +127,14 @@ export function Navbar() {
         <ul className="hidden items-center gap-6 text-sm font-medium lg:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link href={link.href} className="transition hover:text-white/80">
+              <Link
+                href={link.href}
+                className="transition hover:text-white/80"
+                data-ngf-field={`nav.${link.key}`}
+                data-ngf-label={`${link.key.charAt(0).toUpperCase() + link.key.slice(1)} Link`}
+                data-ngf-type="text"
+                data-ngf-section="Nav"
+              >
                 {link.label}
               </Link>
             </li>
@@ -122,8 +146,12 @@ export function Navbar() {
               onClick={() => setMoreOpen((previous) => !previous)}
               aria-expanded={moreOpen}
               aria-controls="desktop-more-menu"
+              data-ngf-field="nav.more"
+              data-ngf-label="More Menu Button"
+              data-ngf-type="text"
+              data-ngf-section="Nav"
             >
-              More
+              {moreLabel}
               <svg
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -151,6 +179,10 @@ export function Navbar() {
                   href={link.href}
                   className="block rounded-xl px-3 py-2 text-sm font-semibold transition hover:bg-surface"
                   onClick={() => setMoreOpen(false)}
+                  data-ngf-field={`nav.${link.key}`}
+                  data-ngf-label={`${link.key.charAt(0).toUpperCase() + link.key.slice(1)} Link`}
+                  data-ngf-type="text"
+                  data-ngf-section="Nav"
                 >
                   {link.label}
                 </Link>
@@ -160,9 +192,16 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-1.5 md:gap-2">
-          <Link href="/contact" className="rounded-full bg-white px-3 py-2.5 text-sm font-semibold text-brand transition hover:bg-white/90 sm:px-4">
+          <Link
+            href="/contact"
+            className="rounded-full bg-white px-3 py-2.5 text-sm font-semibold text-brand transition hover:bg-white/90 sm:px-4"
+            data-ngf-field="nav.cta"
+            data-ngf-label="CTA Button"
+            data-ngf-type="text"
+            data-ngf-section="Nav"
+          >
             <span className="sm:hidden">Connect</span>
-            <span className="hidden sm:inline">Let&apos;s connect!</span>
+            <span className="hidden sm:inline">{ctaLabel}</span>
           </Link>
 
           <button
@@ -196,6 +235,10 @@ export function Navbar() {
                   menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
                 }`}
                 style={{ transitionDelay: `${index * 45}ms` }}
+                data-ngf-field={`nav.${link.key}`}
+                data-ngf-label={`${link.key.charAt(0).toUpperCase() + link.key.slice(1)} Link`}
+                data-ngf-type="text"
+                data-ngf-section="Nav"
               >
                 {link.label}
               </Link>
