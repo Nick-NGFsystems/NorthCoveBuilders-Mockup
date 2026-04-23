@@ -262,6 +262,76 @@ export default function NgfEditBridge() {
           setTimeout(() => el.classList.remove('ngf-field-focus'), 1700)
         }
       }
+
+      // Editor asks us to append a new card to a repeatable group. We clone
+      // the existing last child (the template), re-index every data-ngf-field
+      // descendant to the new index, clear textContent so placeholders show,
+      // and append. After the user fills and publishes, SSR re-renders the
+      // card naturally on next reload.
+      if (e.data?.type === 'addGroupItem' && typeof e.data.group === 'string' && typeof e.data.newIndex === 'number') {
+        const group = document.querySelector<HTMLElement>(`[data-ngf-group="${e.data.group}"]`)
+        if (!group) return
+        const children = Array.from(group.children) as HTMLElement[]
+        const template = children[children.length - 1]
+        if (!template) return
+
+        const clone = template.cloneNode(true) as HTMLElement
+        const prefix = `${e.data.group}.`
+        // Re-index every [data-ngf-field] inside the clone to newIndex
+        clone.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(child => {
+          const path = child.getAttribute('data-ngf-field') || ''
+          if (path.startsWith(prefix)) {
+            const rest = path.slice(prefix.length)       // e.g. "3.name"
+            const dot  = rest.indexOf('.')
+            if (dot > -1) {
+              const subField = rest.slice(dot + 1)       // "name"
+              const newPath  = `${prefix}${e.data.newIndex}.${subField}`
+              child.setAttribute('data-ngf-field', newPath)
+              // Also refresh the default cache since this clone gets blank text
+              child.dataset.ngfDefault = ''
+              child.textContent = ''                     // placeholder shows via :empty::before
+            }
+          }
+        })
+        group.appendChild(clone)
+        clone.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+
+      // Editor asks us to remove a card and re-index subsequent siblings.
+      if (e.data?.type === 'removeGroupItem' && typeof e.data.group === 'string' && typeof e.data.index === 'number') {
+        const group = document.querySelector<HTMLElement>(`[data-ngf-group="${e.data.group}"]`)
+        if (!group) return
+        const prefix = `${e.data.group}.`
+        const removeIdx = e.data.index
+        const children = Array.from(group.children) as HTMLElement[]
+
+        // Find and remove the child whose descendants are indexed at removeIdx
+        const target = children.find(child =>
+          child.querySelector(`[data-ngf-field^="${prefix}${removeIdx}."]`)
+        )
+        if (target) target.remove()
+
+        // Shift indices for all remaining children whose index > removeIdx
+        const remaining = Array.from(group.children) as HTMLElement[]
+        remaining.forEach(card => {
+          card.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(child => {
+            const path = child.getAttribute('data-ngf-field') || ''
+            if (path.startsWith(prefix)) {
+              const rest = path.slice(prefix.length)
+              const dot  = rest.indexOf('.')
+              if (dot > -1) {
+                const idxStr = rest.slice(0, dot)
+                const idx    = parseInt(idxStr, 10)
+                if (!isNaN(idx) && idx > removeIdx) {
+                  const subField = rest.slice(dot + 1)
+                  const newPath  = `${prefix}${idx - 1}.${subField}`
+                  child.setAttribute('data-ngf-field', newPath)
+                }
+              }
+            }
+          })
+        })
+      }
     }
 
     // ── Click handler ─────────────────────────────────────────────────────────
