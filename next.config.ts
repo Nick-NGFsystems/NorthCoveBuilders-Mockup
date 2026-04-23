@@ -13,6 +13,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -5,6 +5,7 @@ import "./globals.css";
 import { LocalBusinessSchema } from "@/app/local-business-schema";
 import { PageChrome } from "@/components/layout/PageChrome";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
+import NgfEditBridge from "@/components/NgfEditBridge";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,6 +20,9 @@ const dmSerif = DM_Serif_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://northcovebuilders.com"),
+  other: {
+    'ngf-public-api': 'https://app.ngfsystems.com/api/public/content',
+  },
   title: {
     default: "North Cove Builders | Custom Homes in West Michigan",
     template: "%s | North Cove Builders",
@@ -83,6 +87,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
+        <NgfEditBridge />
         <LocalBusinessSchema />
         <PageChrome>{children}</PageChrome>
       </body>
