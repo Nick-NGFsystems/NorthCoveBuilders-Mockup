@@ -116,25 +116,26 @@ export default async function AboutPage() {
             data-ngf-item-label="Team Member"
             data-ngf-min-items="1"
             data-ngf-max-items="12"
-            data-ngf-item-fields='[{"key":"name","label":"Name","type":"text"},{"key":"role","label":"Role","type":"text"},{"key":"bio","label":"Bio","type":"textarea"}]'
+            data-ngf-item-fields='[{"key":"image","label":"Photo","type":"image"},{"key":"name","label":"Name","type":"text"},{"key":"role","label":"Role","type":"text"},{"key":"bio","label":"Bio","type":"textarea"}]'
           >
             {teamMembers.map((member, index) => {
               const name = content[`team.members.${index}.name`] || member.name
               const role = content[`team.members.${index}.role`] || member.role
               const bio  = content[`team.members.${index}.bio`]  || member.bio
+              const image = content[`team.members.${index}.image`] || member.image
               return (
               <Reveal key={member.name}>
                 <article className="rounded-2xl bg-white p-4 sm:p-5 lg:h-full lg:p-6">
                   <div className="flex items-start gap-4 lg:flex-col lg:items-center lg:gap-5 lg:text-center">
                     <div className="relative h-44 w-32 shrink-0 overflow-hidden rounded-xl sm:h-48 sm:w-36 lg:h-56 lg:w-44">
-                    <Image
-                      src={member.image}
+                    <img
+                      src={image}
                       alt={name}
-                      fill
-                      priority={index === 0}
-                      unoptimized
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover object-top"
+                      data-ngf-field={`team.members.${index}.image`}
+                      data-ngf-label="Photo"
+                      data-ngf-type="image"
+                      data-ngf-section="Team"
+                      className="absolute inset-0 h-full w-full object-cover object-top"
                     />
                     </div>
                     <div className="min-w-0 text-left lg:text-center">

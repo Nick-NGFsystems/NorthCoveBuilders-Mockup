@@ -41,13 +41,14 @@ export default async function Home() {
     <>
       {/* ── Hero ── */}
       <section className="relative min-h-[78vh] overflow-hidden pt-28 text-white md:pt-24">
-        <Image
-          src="/projects/001.jpg"
+        <img
+          src={content['hero.image'] || '/projects/001.jpg'}
           alt="Featured North Cove Builders custom home"
-          fill
-          priority
-          sizes="100vw"
-          className="origin-top object-cover object-[73%_top] md:object-top"
+          data-ngf-field="hero.image"
+          data-ngf-label="Hero Background Image"
+          data-ngf-type="image"
+          data-ngf-section="Hero"
+          className="absolute inset-0 h-full w-full origin-top object-cover object-[73%_top] md:object-top"
         />
         <div className="absolute inset-0 bg-black/35" />
         <div className="section-shell relative z-10 flex min-h-[78vh] items-end pb-12 md:items-end">
@@ -162,17 +163,29 @@ export default async function Home() {
             data-ngf-item-label="Featured Project"
             data-ngf-min-items="0"
             data-ngf-max-items="6"
-            data-ngf-item-fields='[{"key":"name","label":"Project Name","type":"text"},{"key":"ctaLabel","label":"Link Label","type":"text"}]'
+            data-ngf-item-fields='[{"key":"image","label":"Project Image","type":"image"},{"key":"name","label":"Project Name","type":"text"},{"key":"ctaLabel","label":"Link Label","type":"text"}]'
           >
             {featuredProjects.slice(0, 3).map((project, idx) => {
               const name = content[`projects.featured.${idx}.name`] || project.name
               const ctaLabel = content[`projects.featured.${idx}.ctaLabel`] || 'View on Houzz'
+              const image = content[`projects.featured.${idx}.image`] || project.image
               return (
               <Reveal key={project.name}>
                 <article className="overflow-hidden rounded-2xl bg-white">
                   <Link href={project.houzzUrl} target="_blank" rel="noreferrer" className="block">
                     <div className="relative h-60">
-                      <Image src={project.image} alt={name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                      {/* next/image with `fill` doesn't expose a direct <img>,
+                          so we use a plain <img> here so the bridge can read
+                          and write the src directly. */}
+                      <img
+                        src={image}
+                        alt={name}
+                        data-ngf-field={`projects.featured.${idx}.image`}
+                        data-ngf-label="Project Image"
+                        data-ngf-type="image"
+                        data-ngf-section="Projects"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
                     </div>
                     <div className="p-5 text-center">
                       <h3

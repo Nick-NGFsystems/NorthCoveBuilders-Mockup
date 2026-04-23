@@ -199,15 +199,20 @@ export default function NgfEditBridge() {
       popup.style.visibility = ''
     }
 
-    // ── Default-text cache ────────────────────────────────────────────────────
-    // Capture the server-rendered textContent of every annotated field on first
-    // sight. Stored on the element itself (dataset.ngfDefault) so it survives
-    // later DOM mutations. The editor sends empty strings (or omits keys) to
-    // mean "restore to default" — that only works if we remember the default.
+    // ── Default-value cache ───────────────────────────────────────────────────
+    // Capture each annotated field's original server-rendered value on first
+    // sight. For <img> or data-ngf-type="image" we cache the src; everything
+    // else caches textContent. Stored on the element itself so it survives
+    // later DOM mutations and so the editor can send '' to mean "restore".
+    function isImageField(el: HTMLElement) {
+      return el.tagName?.toLowerCase() === 'img' || el.getAttribute('data-ngf-type') === 'image'
+    }
     function captureDefaults() {
       document.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(el => {
         if (el.dataset.ngfDefault === undefined) {
-          el.dataset.ngfDefault = el.textContent ?? ''
+          el.dataset.ngfDefault = isImageField(el)
+            ? (el as HTMLImageElement).getAttribute('src') ?? ''
+            : el.textContent ?? ''
         }
       })
     }
@@ -230,10 +235,15 @@ export default function NgfEditBridge() {
           if (typeof obj === 'string') {
             const el = document.querySelector<HTMLElement>(`[data-ngf-field="${path}"]`)
             if (el) {
-              // Empty string = restore the original SSR text (the hardcoded
-              // fallback the page renders for an unpopulated field). A real
-              // user-entered value overwrites.
-              el.textContent = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
+              // Empty string = restore the original SSR value (the hardcoded
+              // fallback for an unpopulated field). For <img>/image fields we
+              // swap `src`; for everything else we swap textContent.
+              const next = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
+              if (isImageField(el)) {
+                el.setAttribute('src', next)
+              } else {
+                el.textContent = next
+              }
             }
             return
           }
@@ -277,7 +287,17 @@ export default function NgfEditBridge() {
 
         const clone = template.cloneNode(true) as HTMLElement
         const prefix = `${e.data.group}.`
-        // Re-index every [data-ngf-field] inside the clone to newIndex
+        // Re-index every [data-ngf-field] inside the clone to newIndex.
+        // For text fields: blank textContent so :empty::before placeholder shows.
+        // For image fields: keep a neutral grey placeholder data-URI so the user
+        // sees "something to click" until they edit the image field.
+        const imgPlaceholder =
+          'data:image/svg+xml;utf8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">' +
+            '<rect width="400" height="300" fill="#e2e8f0"/>' +
+            '<text x="200" y="155" text-anchor="middle" font-family="sans-serif" ' +
+            'font-size="16" fill="#94a3b8">Click to set image</text></svg>'
+          )
         clone.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(child => {
           const path = child.getAttribute('data-ngf-field') || ''
           if (path.startsWith(prefix)) {
@@ -287,9 +307,14 @@ export default function NgfEditBridge() {
               const subField = rest.slice(dot + 1)       // "name"
               const newPath  = `${prefix}${e.data.newIndex}.${subField}`
               child.setAttribute('data-ngf-field', newPath)
-              // Also refresh the default cache since this clone gets blank text
-              child.dataset.ngfDefault = ''
-              child.textContent = ''                     // placeholder shows via :empty::before
+              // Reset default cache and current value for the new slot.
+              if (isImageField(child)) {
+                child.dataset.ngfDefault = imgPlaceholder
+                child.setAttribute('src', imgPlaceholder)
+              } else {
+                child.dataset.ngfDefault = ''
+                child.textContent = ''
+              }
             }
           }
         })
@@ -376,10 +401,13 @@ export default function NgfEditBridge() {
         const attr = fieldEl.getAttribute('data-ngf-field') ?? ''
         const dot = attr.indexOf('.')
         if (dot > -1) {
+          const isImg = isImageField(fieldEl)
           editTarget = {
             section: attr.substring(0, dot),
             field:   attr.substring(dot + 1),
-            value:   fieldEl.textContent?.trim() ?? '',
+            value:   isImg
+              ? (fieldEl.getAttribute('src') ?? '')
+              : (fieldEl.textContent?.trim() ?? ''),
             rect:    fieldEl.getBoundingClientRect(),
           }
         }
