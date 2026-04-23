@@ -322,6 +322,46 @@ export default function NgfEditBridge() {
         clone.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
 
+      // Editor asks us to reorder two cards within a group. Swap the DOM
+      // positions of the items and rewrite every descendant data-ngf-field
+      // index on both cards (and everything between them) so they stay in
+      // sync with the editor's content array order.
+      if (e.data?.type === 'moveGroupItem' && typeof e.data.group === 'string' && typeof e.data.from === 'number' && typeof e.data.to === 'number') {
+        const group = document.querySelector<HTMLElement>(`[data-ngf-group="${e.data.group}"]`)
+        if (!group) return
+        const prefix = `${e.data.group}.`
+        const children = Array.from(group.children) as HTMLElement[]
+        const from = e.data.from
+        const to   = e.data.to
+        if (from < 0 || from >= children.length || to < 0 || to >= children.length) return
+
+        // Reorder the DOM
+        const moved = children[from]
+        if (to > from) {
+          // insert after children[to]
+          group.insertBefore(moved, children[to].nextSibling)
+        } else {
+          // insert before children[to]
+          group.insertBefore(moved, children[to])
+        }
+
+        // Re-index every card's data-ngf-field to match its new position.
+        const reordered = Array.from(group.children) as HTMLElement[]
+        reordered.forEach((card, newIdx) => {
+          card.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(child => {
+            const path = child.getAttribute('data-ngf-field') || ''
+            if (path.startsWith(prefix)) {
+              const rest = path.slice(prefix.length)
+              const dot  = rest.indexOf('.')
+              if (dot > -1) {
+                const subField = rest.slice(dot + 1)
+                child.setAttribute('data-ngf-field', `${prefix}${newIdx}.${subField}`)
+              }
+            }
+          })
+        })
+      }
+
       // Editor asks us to remove a card and re-index subsequent siblings.
       if (e.data?.type === 'removeGroupItem' && typeof e.data.group === 'string' && typeof e.data.index === 'number') {
         const group = document.querySelector<HTMLElement>(`[data-ngf-group="${e.data.group}"]`)
