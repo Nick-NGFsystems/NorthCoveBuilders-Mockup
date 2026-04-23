@@ -303,11 +303,12 @@ export default config
 
 ## CLIENT WEBSITE ARCHITECTURE
 
-Client websites (e.g. WrenchTime Cycles, North Cove Builders) are **separate Next.js projects** deployed independently on Vercel. They are not part of the NGF app. Each has its own repo in the Nick-NGFsystems GitHub org.
+Client websites are **separate Next.js projects** deployed independently on Vercel. They are not part of the NGF app. Each has its own repo in the Nick-NGFsystems GitHub org.
 
 ### Two types of client sites
 
-**1. NGF Content-Connected Sites** (e.g. WrenchTime Cycles)
+**1. NGF Content-Connected Sites**
+- The client's marketing website is managed through the NGF portal website editor
 - Fetch published content from the NGF portal API: `GET /api/public/content?domain=<domain>`
 - Use `lib/ngf.ts` with `getNgfContent()` and `getItems()` helpers
 - Have `NgfEditBridge` in the layout — enables click-to-edit from the NGF portal website editor
@@ -323,11 +324,12 @@ Client websites (e.g. WrenchTime Cycles, North Cove Builders) are **separate Nex
        data-ngf-min-items="1" data-ngf-max-items="16"
        data-ngf-item-fields='[{"key":"name","label":"Name","type":"text"}]'>
   ```
-- New client sites scaffold from the `ngf-client-starter` repo
+- New content-connected sites scaffold from the `ngf-client-starter` repo
 
-**2. Standalone Static Sites** (e.g. NorthCoveBuilders-Mockup)
+**2. Standalone Static Sites**
 - No connection to the NGF portal — no NgfEditBridge, no content API
 - All content lives in `lib/site-data.ts` — edit that file and push to update the site
+- Typically used for simpler marketing sites where the client does not need self-serve editing
 - May use Drizzle instead of Prisma (leaner, no migration tooling overhead)
 - May run on newer Next.js/React/Tailwind versions than the NGF main app
 
