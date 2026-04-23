@@ -6,31 +6,40 @@ Say: "I'm starting a new NGFsystems project. Follow these standards for everythi
 
 ---
 
-## HOW WE WORK — TWO AI SYSTEM
+## HOW WE WORK — COWORK + GITHUB PUSH
 
-NGFsystems projects are built using a two-AI workflow:
+NGFsystems projects are built using Claude in **Cowork mode** (the Claude desktop app). Claude has direct file system access to the mounted GitHub folder and a sandboxed Linux shell, so it reads, writes, and pushes code directly — no copy-pasting between AI systems.
 
-**You (Claude on claude.ai)** — the strategic AI. You plan features, make architecture decisions, debug issues, write messages to send to the other AI, and maintain the big picture. You do not directly edit code files.
+### The workflow:
+1. Nick describes what needs to be done
+2. Claude reads the relevant files, makes the changes, and verifies them
+3. Claude pushes to GitHub using `github-push.py` (see below)
+4. Vercel auto-deploys on every push — no manual deploy step needed
 
-**The Codespace AI (GitHub Copilot or another Claude instance inside the GitHub Codespace)** — the execution AI. It has full access to the codebase, can read and write files, run terminal commands, execute builds, run migrations, and make direct changes to the project.
+### Pushing code — `github-push.py`
 
-### How the workflow operates:
-- Nick pastes your instructions into the Codespace AI and pastes its responses back to you
-- You write precise, detailed instructions for the Codespace AI to execute
-- The Codespace AI reports back what it did, what files it changed, and any errors
-- You interpret the results and decide the next step
-- When debugging, you ask the Codespace AI to run specific commands and report exact output
+A custom Python script at `C:\Users\nicho\GitHub\github-push.py` (mounted at `/sessions/.../mnt/GitHub/github-push.py`) pushes local file changes to GitHub using the Git Data API — no local git installation required.
 
-### How to write instructions for the Codespace AI:
-- Be specific — include exact file paths, exact code blocks, exact commands to run
-- Always ask it to verify changes with `cat filename` after writing
-- Always ask it to run `npm run build` or a targeted error check after significant changes
-- If something fails, ask for the exact error output before suggesting a fix
-- Reference this standards file when needed — the Codespace AI should follow all the same rules
+```bash
+# Push all changed files in a repo
+python3 github-push.py NGF-Systems-app "commit message"
 
-### What to say to Nick when ready:
-Frame your message as something Nick can copy and paste directly into the Codespace AI. For example:
-> "Send this to the other AI: [your instructions]"
+# Push specific files only
+python3 github-push.py NorthCoveBuilders-Mockup "commit message" lib/site-data.ts app/floor-plans/page.tsx
+```
+
+Known repos are configured in `github-push-config.json` alongside the script. To add a new repo, add an entry to the `repos` object mapping repo name → local path.
+
+### File access in Cowork:
+- Mounted workspace: `/sessions/magical-wonderful-galileo/mnt/GitHub/`
+- Always read `CLAUDE.md` in the repo before starting any coding session
+- Use the Read/Edit/Write tools for file changes, Bash for commands
+- Always read files before editing — never guess at content
+
+### What to do when something fails:
+- Check Vercel build logs via the Vercel MCP tool (list_deployments → get_deployment_build_logs)
+- Fix TypeScript errors before pushing — run `npx tsc --noEmit` if in doubt
+- If a push truncates files (Windows mount issue), the push script double-reads each file to detect it
 
 ---
 
@@ -289,6 +298,83 @@ export default config
 ```
 
 **app/layout.tsx must import globals.css at the top.**
+
+---
+
+## CLIENT WEBSITE ARCHITECTURE
+
+Client websites (e.g. WrenchTime Cycles, North Cove Builders) are **separate Next.js projects** deployed independently on Vercel. They are not part of the NGF app. Each has its own repo in the Nick-NGFsystems GitHub org.
+
+### Two types of client sites
+
+**1. NGF Content-Connected Sites** (e.g. WrenchTime Cycles)
+- Fetch published content from the NGF portal API: `GET /api/public/content?domain=<domain>`
+- Use `lib/ngf.ts` with `getNgfContent()` and `getItems()` helpers
+- Have `NgfEditBridge` in the layout — enables click-to-edit from the NGF portal website editor
+- Annotate editable elements with `data-ngf-*` attributes so the portal scraper discovers the schema automatically:
+  ```html
+  <h1 data-ngf-field="hero.headline" data-ngf-label="Headline" data-ngf-type="text" data-ngf-section="Hero">
+    {content['hero.headline']}
+  </h1>
+  ```
+- Repeatable arrays (services, gallery items, etc.) use `data-ngf-group`:
+  ```html
+  <div data-ngf-group="services.items" data-ngf-item-label="Service"
+       data-ngf-min-items="1" data-ngf-max-items="16"
+       data-ngf-item-fields='[{"key":"name","label":"Name","type":"text"}]'>
+  ```
+- New client sites scaffold from the `ngf-client-starter` repo
+
+**2. Standalone Static Sites** (e.g. NorthCoveBuilders-Mockup)
+- No connection to the NGF portal — no NgfEditBridge, no content API
+- All content lives in `lib/site-data.ts` — edit that file and push to update the site
+- May use Drizzle instead of Prisma (leaner, no migration tooling overhead)
+- May run on newer Next.js/React/Tailwind versions than the NGF main app
+
+### Stack differences between project types
+
+| | NGF Main App | Content-Connected Client | Standalone Client |
+|---|---|---|---|
+| Next.js | 15.3.8 (pinned) | latest stable | latest stable |
+| React | 18.x (pinned) | 19.x ok | 19.x ok |
+| Tailwind | 3.x | 4.x ok | 4.x ok |
+| ORM | Prisma 5.x | Prisma or Drizzle | Drizzle preferred |
+| Auth | Clerk v6 | Clerk v6 if needed | none |
+| Content | Postgres via Prisma | NGF portal API | lib/site-data.ts |
+
+The strict version pins in this document apply to the **NGF main app only**. Client sites should use whatever versions were established when the project was created — do not upgrade without explicit instruction.
+
+---
+
+## NGF CONTENT SYSTEM — `data-ngf-*` ATTRIBUTES
+
+When working on a content-connected client site, editable fields are declared via HTML attributes. The NGF portal scrapes these on every editor load to build the sidebar schema dynamically — no template files, no NGF app changes required.
+
+### Attribute contract
+
+| Attribute | Required | Description |
+|---|---|---|
+| `data-ngf-field="section.field"` | ✓ | Dot-notation path, e.g. `hero.headline` |
+| `data-ngf-label="Human Label"` | ✓ | Label shown in the sidebar |
+| `data-ngf-type="text\|textarea\|color\|image\|toggle"` | ✓ | Field input type |
+| `data-ngf-section="Section Name"` | ✓ | Groups fields under a sidebar section |
+
+For repeatable arrays (services, gallery, etc.):
+
+| Attribute | Description |
+|---|---|
+| `data-ngf-group="section.array"` | Declares a repeatable group |
+| `data-ngf-item-label="Item"` | Singular label for one item |
+| `data-ngf-min-items="1"` | Minimum items |
+| `data-ngf-max-items="16"` | Maximum items |
+| `data-ngf-item-fields='[{"key":"...","label":"...","type":"..."}]'` | JSON array of sub-fields |
+
+For fields with no visible DOM element (colors, toggles), use an invisible anchor:
+```html
+<span data-ngf-field="brand.primaryColor" data-ngf-label="Primary Color"
+      data-ngf-type="color" data-ngf-section="Brand"
+      aria-hidden="true" className="sr-only" />
+```
 
 ---
 
