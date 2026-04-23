@@ -156,26 +156,52 @@ export default async function Home() {
               </Link>
             </div>
           </Reveal>
-          <div className="grid gap-6 md:grid-cols-3">
-            {featuredProjects.slice(0, 3).map((project) => (
+          <div
+            className="grid gap-6 md:grid-cols-3"
+            data-ngf-group="projects.featured"
+            data-ngf-item-label="Featured Project"
+            data-ngf-min-items="0"
+            data-ngf-max-items="6"
+            data-ngf-item-fields='[{"key":"name","label":"Project Name","type":"text"},{"key":"ctaLabel","label":"Link Label","type":"text"}]'
+          >
+            {featuredProjects.slice(0, 3).map((project, idx) => {
+              const name = content[`projects.featured.${idx}.name`] || project.name
+              const ctaLabel = content[`projects.featured.${idx}.ctaLabel`] || 'View on Houzz'
+              return (
               <Reveal key={project.name}>
                 <article className="overflow-hidden rounded-2xl bg-white">
                   <Link href={project.houzzUrl} target="_blank" rel="noreferrer" className="block">
                     <div className="relative h-60">
-                      <Image src={project.image} alt={project.name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                      <Image src={project.image} alt={name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                     </div>
                     <div className="p-5 text-center">
-                      <h3 className="text-xl text-brand">{project.name}</h3>
+                      <h3
+                        data-ngf-field={`projects.featured.${idx}.name`}
+                        data-ngf-label="Project Name"
+                        data-ngf-type="text"
+                        data-ngf-section="Projects"
+                        className="text-xl text-brand"
+                      >
+                        {name}
+                      </h3>
                     </div>
                   </Link>
                   <div className="px-5 pb-5 text-center">
                     <Link href={project.houzzUrl} target="_blank" rel="noreferrer" className="text-sm font-semibold text-brand hover:underline">
-                      View on Houzz
+                      <span
+                        data-ngf-field={`projects.featured.${idx}.ctaLabel`}
+                        data-ngf-label="Link Label"
+                        data-ngf-type="text"
+                        data-ngf-section="Projects"
+                      >
+                        {ctaLabel}
+                      </span>
                     </Link>
                   </div>
                 </article>
               </Reveal>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -195,7 +221,7 @@ export default async function Home() {
         </Reveal>
         <Reveal>
           <div className="px-5">
-            <ReviewsCarousel />
+            <ReviewsCarousel content={content} />
           </div>
         </Reveal>
       </section>

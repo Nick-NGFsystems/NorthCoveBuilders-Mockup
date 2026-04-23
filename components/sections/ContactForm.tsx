@@ -35,10 +35,30 @@ const initialState: FormState = {
   message: "",
 };
 
-export function ContactForm() {
+type Props = {
+  content?: Record<string, string>
+}
+
+export function ContactForm({ content = {} }: Props) {
   const [form, setForm] = useState<FormState>(initialState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  const labels = {
+    name:       content['contactForm.labels.name']       || 'Name',
+    email:      content['contactForm.labels.email']      || 'Email',
+    phone:      content['contactForm.labels.phone']      || 'Phone',
+    hasLot:     content['contactForm.labels.hasLot']     || 'Do you have a lot?',
+    timeline:   content['contactForm.labels.timeline']   || 'Timeline',
+    homeType:   content['contactForm.labels.homeType']   || 'Home Type',
+    bedrooms:   content['contactForm.labels.bedrooms']   || 'Bedrooms',
+    bathrooms:  content['contactForm.labels.bathrooms']  || 'Bathrooms',
+    budget:     content['contactForm.labels.idealBudget']|| 'Ideal Budget',
+    message:    content['contactForm.labels.message']    || 'Message',
+  }
+  const submitIdle    = content['contactForm.submit']      || 'Submit Inquiry'
+  const submitSending = content['contactForm.sending']     || 'Sending...'
+  const successMsg    = content['contactForm.successMsg']  || 'Thanks! We received your request and will follow up soon.'
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -59,7 +79,7 @@ export function ContactForm() {
       }
 
       setStatus("success");
-      setMessage("Thanks! We received your request and will follow up soon.");
+      setMessage(successMsg);
       setForm(initialState);
     } catch (error) {
       setStatus("error");
@@ -67,11 +87,22 @@ export function ContactForm() {
     }
   };
 
+  const lbl = (key: string, label: string, text: string) => (
+    <span
+      data-ngf-field={`contactForm.labels.${key}`}
+      data-ngf-label={label}
+      data-ngf-type="text"
+      data-ngf-section="ContactForm"
+    >
+      {text}
+    </span>
+  )
+
   return (
     <form onSubmit={onSubmit} className="card-soft !p-4 sm:!p-6 grid gap-4 text-center sm:text-left" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          Name
+          {lbl('name', 'Name Label', labels.name)}
           <input
             required
             value={form.name}
@@ -84,7 +115,7 @@ export function ContactForm() {
         </label>
 
         <label className="grid gap-2 text-sm font-medium">
-          Email
+          {lbl('email', 'Email Label', labels.email)}
           <input
             required
             value={form.email}
@@ -99,7 +130,7 @@ export function ContactForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          Phone
+          {lbl('phone', 'Phone Label', labels.phone)}
           <input
             required
             value={form.phone}
@@ -112,7 +143,7 @@ export function ContactForm() {
         </label>
 
         <label className="grid gap-2 text-sm font-medium">
-          Do you have a lot?
+          {lbl('hasLot', 'Has Lot Label', labels.hasLot)}
           <select
             value={form.hasLot}
             onChange={(event) => setForm((previous) => ({ ...previous, hasLot: event.target.value }))}
@@ -130,7 +161,7 @@ export function ContactForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          Timeline
+          {lbl('timeline', 'Timeline Label', labels.timeline)}
           <select
             value={form.timeline}
             onChange={(event) => setForm((previous) => ({ ...previous, timeline: event.target.value }))}
@@ -146,7 +177,7 @@ export function ContactForm() {
         </label>
 
         <label className="grid gap-2 text-sm font-medium">
-          Home Type
+          {lbl('homeType', 'Home Type Label', labels.homeType)}
           <select
             value={form.homeType}
             onChange={(event) => setForm((previous) => ({ ...previous, homeType: event.target.value }))}
@@ -164,7 +195,7 @@ export function ContactForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
-          Bedrooms
+          {lbl('bedrooms', 'Bedrooms Label', labels.bedrooms)}
           <select
             value={form.bedrooms}
             onChange={(event) => setForm((previous) => ({ ...previous, bedrooms: event.target.value }))}
@@ -180,7 +211,7 @@ export function ContactForm() {
         </label>
 
         <label className="grid gap-2 text-sm font-medium">
-          Bathrooms
+          {lbl('bathrooms', 'Bathrooms Label', labels.bathrooms)}
           <select
             value={form.bathrooms}
             onChange={(event) => setForm((previous) => ({ ...previous, bathrooms: event.target.value }))}
@@ -197,7 +228,7 @@ export function ContactForm() {
       </div>
 
       <label className="grid gap-2 text-sm font-medium">
-        Ideal Budget
+        {lbl('idealBudget', 'Budget Label', labels.budget)}
         <select
           value={form.idealBudget}
           onChange={(event) => setForm((previous) => ({ ...previous, idealBudget: event.target.value }))}
@@ -213,7 +244,7 @@ export function ContactForm() {
       </label>
 
       <label className="grid gap-2 text-sm font-medium">
-        Message
+        {lbl('message', 'Message Label', labels.message)}
         <textarea
           required
           value={form.message}
@@ -225,7 +256,14 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button type="submit" className="btn-brand mx-auto disabled:cursor-not-allowed disabled:opacity-70 sm:mx-0" disabled={status === "submitting"}>
-          {status === "submitting" ? "Sending..." : "Submit Inquiry"}
+          <span
+            data-ngf-field={status === "submitting" ? "contactForm.sending" : "contactForm.submit"}
+            data-ngf-label={status === "submitting" ? "Sending Text" : "Submit Button Text"}
+            data-ngf-type="text"
+            data-ngf-section="ContactForm"
+          >
+            {status === "submitting" ? submitSending : submitIdle}
+          </span>
         </button>
         <p className={`text-sm ${status === "error" ? "text-red-600" : "text-foreground/70"}`}>{message}</p>
       </div>

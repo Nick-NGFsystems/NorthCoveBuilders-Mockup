@@ -110,7 +110,7 @@ export default async function ContactPage() {
 
       <Reveal>
         <div className="mx-auto mt-10 max-w-3xl">
-          <ContactForm />
+          <ContactForm content={content} />
         </div>
       </Reveal>
     </section>

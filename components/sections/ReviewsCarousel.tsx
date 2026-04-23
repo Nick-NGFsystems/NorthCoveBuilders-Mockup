@@ -12,11 +12,19 @@ const platformStyles: Record<string, { initial: string; color: string }> = {
 
 const REVIEW_PREVIEW_LENGTH = 420;
 
-export function ReviewsCarousel() {
+type Props = {
+  content?: Record<string, string>
+}
+
+export function ReviewsCarousel({ content = {} }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
+
+  const showMoreLabel = content['reviews.showMore'] || 'Show more'
+  const showLessLabel = content['reviews.showLess'] || 'Show less'
+  const readMoreLabel = content['reviews.readMore'] || 'Read more reviews'
 
   const updateScrollState = () => {
     const container = containerRef.current;
@@ -72,11 +80,22 @@ export function ReviewsCarousel() {
         onScroll={updateScrollState}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth"
       >
-        {reviews.map((review) => {
-          const platform = platformStyles[review.platform] ?? { initial: "?", color: "#9CA3AF" };
+        <div
+          data-ngf-group="reviews.items"
+          data-ngf-item-label="Review"
+          data-ngf-min-items="1"
+          data-ngf-max-items="30"
+          data-ngf-item-fields='[{"key":"quote","label":"Review Quote","type":"textarea"},{"key":"name","label":"Reviewer Name","type":"text"},{"key":"platform","label":"Platform","type":"text"}]'
+          className="contents"
+        >
+        {reviews.map((review, idx) => {
+          const quote = content[`reviews.items.${idx}.quote`] || review.quote
+          const name  = content[`reviews.items.${idx}.name`]  || review.name
+          const platformName = content[`reviews.items.${idx}.platform`] || review.platform
+          const platform = platformStyles[platformName] ?? { initial: "?", color: "#9CA3AF" };
           const isExpanded = expandedReviews[review.name] ?? false;
-          const isLongReview = review.quote.length > REVIEW_PREVIEW_LENGTH;
-          const quoteToDisplay = isExpanded || !isLongReview ? review.quote : `${review.quote.slice(0, REVIEW_PREVIEW_LENGTH).trim()}...`;
+          const isLongReview = quote.length > REVIEW_PREVIEW_LENGTH;
+          const quoteToDisplay = isExpanded || !isLongReview ? quote : `${quote.slice(0, REVIEW_PREVIEW_LENGTH).trim()}...`;
 
           return (
             <article
@@ -85,17 +104,40 @@ export function ReviewsCarousel() {
               className="card-soft flex-none snap-start rounded-2xl md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
             >
               <p className="text-brand">★★★★★</p>
-              <p className="mt-3 whitespace-pre-line text-sm leading-7 text-foreground/80">“{quoteToDisplay}”</p>
+              <p
+                data-ngf-field={`reviews.items.${idx}.quote`}
+                data-ngf-label="Review Quote"
+                data-ngf-type="textarea"
+                data-ngf-section="Reviews"
+                className="mt-3 whitespace-pre-line text-sm leading-7 text-foreground/80"
+              >
+                {`“${quoteToDisplay}”`}
+              </p>
               {isLongReview ? (
                 <button
                   type="button"
                   onClick={() => toggleExpanded(review.name)}
                   className="mt-2 text-sm font-semibold text-brand hover:underline"
                 >
-                  {isExpanded ? "Show less" : "Show more"}
+                  <span
+                    data-ngf-field={isExpanded ? 'reviews.showLess' : 'reviews.showMore'}
+                    data-ngf-label={isExpanded ? 'Show Less Label' : 'Show More Label'}
+                    data-ngf-type="text"
+                    data-ngf-section="Reviews"
+                  >
+                    {isExpanded ? showLessLabel : showMoreLabel}
+                  </span>
                 </button>
               ) : null}
-              <p className="mt-5 text-sm font-semibold text-foreground">{review.name}</p>
+              <p
+                data-ngf-field={`reviews.items.${idx}.name`}
+                data-ngf-label="Reviewer Name"
+                data-ngf-type="text"
+                data-ngf-section="Reviews"
+                className="mt-5 text-sm font-semibold text-foreground"
+              >
+                {name}
+              </p>
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1 text-xs font-medium text-foreground/80">
                 <span
                   className="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white"
@@ -103,11 +145,19 @@ export function ReviewsCarousel() {
                 >
                   {platform.initial}
                 </span>
-                <span>{review.platform}</span>
+                <span
+                  data-ngf-field={`reviews.items.${idx}.platform`}
+                  data-ngf-label="Platform"
+                  data-ngf-type="text"
+                  data-ngf-section="Reviews"
+                >
+                  {platformName}
+                </span>
               </div>
             </article>
           );
         })}
+        </div>
 
         <article
           data-review-card
@@ -119,7 +169,14 @@ export function ReviewsCarousel() {
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
           >
-            Read more reviews
+            <span
+              data-ngf-field="reviews.readMore"
+              data-ngf-label="Read More Button"
+              data-ngf-type="text"
+              data-ngf-section="Reviews"
+            >
+              {readMoreLabel}
+            </span>
           </Link>
         </article>
       </div>

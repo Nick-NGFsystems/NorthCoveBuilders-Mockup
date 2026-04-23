@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
 import { TeamMemberBio } from "@/components/sections/TeamMemberBio";
 import { teamMembers } from "@/lib/site-data";
-import { getNgfContent } from "@/lib/ngf";
+import { getNgfContent, getItems } from "@/lib/ngf";
 
 export const metadata: Metadata = {
   title: "About",
@@ -49,6 +49,28 @@ export default async function AboutPage() {
   const valuesStatement = content['about.valuesStatement'] || 'We keep God and our values at the forefront of everything we do.'
   const coreValuesHeading = content['about.coreValuesHeading'] || 'Core Values'
   const processHeading = content['about.processHeading'] || 'Our Process'
+  const stepLabelPrefix = content['about.stepLabelPrefix'] || 'Step'
+  const tapToExpand = content['about.tapToExpand'] || 'Tap to expand'
+
+  // Core values — editable as a repeatable group
+  const savedCoreValues = getItems(content, 'about.coreValues')
+  const defaultCoreValues = [
+    { text: 'Family is first. Ours. Yours. Always!' },
+    { text: 'We treat everyone fairly, with honesty and respect.' },
+    { text: "We build trust by acting with compassion and others' best interest in mind." },
+    { text: 'Our team is built on positivity, hard work, and reliability.' },
+  ]
+  const coreValues = savedCoreValues.length > 0 ? savedCoreValues : defaultCoreValues
+
+  // Process steps — editable as a repeatable group (merged with the hardcoded
+  // defaults defined above so clients can override any field per step)
+  const savedProcessSteps = getItems(content, 'about.processSteps')
+  const processStepsDisplay = savedProcessSteps.length > 0
+    ? savedProcessSteps.map((s, i) => ({
+        title: s.title || processSteps[i]?.title || '',
+        body:  s.body  || processSteps[i]?.body  || '',
+      }))
+    : processSteps
 
   return (
     <>
@@ -191,11 +213,25 @@ export default async function AboutPage() {
                 </span>
                 <span className="accordion-chevron text-brand">▾</span>
               </summary>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80">
-                <li>Family is first. Ours. Yours. Always!</li>
-                <li>We treat everyone fairly, with honesty and respect.</li>
-                <li>We build trust by acting with compassion and others&apos; best interest in mind.</li>
-                <li>Our team is built on positivity, hard work, and reliability.</li>
+              <ul
+                className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80"
+                data-ngf-group="about.coreValues"
+                data-ngf-item-label="Value"
+                data-ngf-min-items="1"
+                data-ngf-max-items="10"
+                data-ngf-item-fields='[{"key":"text","label":"Value","type":"text"}]'
+              >
+                {coreValues.map((val, i) => (
+                  <li
+                    key={i}
+                    data-ngf-field={`about.coreValues.${i}.text`}
+                    data-ngf-label="Value"
+                    data-ngf-type="text"
+                    data-ngf-section="About"
+                  >
+                    {val.text}
+                  </li>
+                ))}
               </ul>
             </details>
           </Reveal>
@@ -213,11 +249,25 @@ export default async function AboutPage() {
               >
                 {coreValuesHeading}
               </h3>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80">
-                <li>Family is first. Ours. Yours. Always!</li>
-                <li>We treat everyone fairly, with honesty and respect.</li>
-                <li>We build trust by acting with compassion and others&apos; best interest in mind.</li>
-                <li>Our team is built on positivity, hard work, and reliability.</li>
+              <ul
+                className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80"
+                data-ngf-group="about.coreValues"
+                data-ngf-item-label="Value"
+                data-ngf-min-items="1"
+                data-ngf-max-items="10"
+                data-ngf-item-fields='[{"key":"text","label":"Value","type":"text"}]'
+              >
+                {coreValues.map((val, i) => (
+                  <li
+                    key={i}
+                    data-ngf-field={`about.coreValues.${i}.text`}
+                    data-ngf-label="Value"
+                    data-ngf-type="text"
+                    data-ngf-section="About"
+                  >
+                    {val.text}
+                  </li>
+                ))}
               </ul>
             </article>
           </Reveal>
@@ -238,33 +288,107 @@ export default async function AboutPage() {
             </h2>
           </Reveal>
 
-          <div className="grid gap-3 md:hidden">
-            {processSteps.map((step, index) => (
-              <Reveal key={step.title}>
+          <div
+            className="grid gap-3 md:hidden"
+            data-ngf-group="about.processSteps"
+            data-ngf-item-label="Process Step"
+            data-ngf-min-items="1"
+            data-ngf-max-items="12"
+            data-ngf-item-fields='[{"key":"title","label":"Step Title","type":"text"},{"key":"body","label":"Step Body","type":"textarea"}]'
+          >
+            {processStepsDisplay.map((step, index) => (
+              <Reveal key={`m-${index}`}>
                 <details className="rounded-2xl border border-black/5 bg-white p-4">
                   <summary className="accordion-summary cursor-pointer list-none text-left">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">Step {index + 1}</p>
-                        <p className="mt-1 text-base font-semibold text-foreground">{step.title}</p>
-                        <p className="mt-1 text-xs uppercase tracking-[0.12em] text-brand/70">Tap to expand</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
+                          <span
+                            data-ngf-field="about.stepLabelPrefix"
+                            data-ngf-label="Step Label Prefix"
+                            data-ngf-type="text"
+                            data-ngf-section="About"
+                          >
+                            {stepLabelPrefix}
+                          </span>
+                          {` ${index + 1}`}
+                        </p>
+                        <p
+                          data-ngf-field={`about.processSteps.${index}.title`}
+                          data-ngf-label="Step Title"
+                          data-ngf-type="text"
+                          data-ngf-section="About"
+                          className="mt-1 text-base font-semibold text-foreground"
+                        >
+                          {step.title}
+                        </p>
+                        <p
+                          data-ngf-field="about.tapToExpand"
+                          data-ngf-label="Tap-to-expand Label"
+                          data-ngf-type="text"
+                          data-ngf-section="About"
+                          className="mt-1 text-xs uppercase tracking-[0.12em] text-brand/70"
+                        >
+                          {tapToExpand}
+                        </p>
                       </div>
                       <span className="accordion-chevron mt-1 text-brand">▾</span>
                     </div>
                   </summary>
-                  <p className="mt-3 text-sm leading-7 text-foreground/80">{step.body}</p>
+                  <p
+                    data-ngf-field={`about.processSteps.${index}.body`}
+                    data-ngf-label="Step Body"
+                    data-ngf-type="textarea"
+                    data-ngf-section="About"
+                    className="mt-3 text-sm leading-7 text-foreground/80"
+                  >
+                    {step.body}
+                  </p>
                 </details>
               </Reveal>
             ))}
           </div>
 
-          <ol className="hidden gap-4 md:grid md:auto-rows-fr md:grid-cols-2 lg:grid-cols-3">
-            {processSteps.map((step, index) => (
-              <Reveal key={step.title}>
+          <ol
+            className="hidden gap-4 md:grid md:auto-rows-fr md:grid-cols-2 lg:grid-cols-3"
+            data-ngf-group="about.processSteps"
+            data-ngf-item-label="Process Step"
+            data-ngf-min-items="1"
+            data-ngf-max-items="12"
+            data-ngf-item-fields='[{"key":"title","label":"Step Title","type":"text"},{"key":"body","label":"Step Body","type":"textarea"}]'
+          >
+            {processStepsDisplay.map((step, index) => (
+              <Reveal key={`d-${index}`}>
                 <li className="card-soft h-full flex flex-col text-center md:text-left">
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">Step {index + 1}</p>
-                  <p className="mt-2 text-lg text-foreground">{step.title}</p>
-                  <p className="mt-3 flex-1 text-sm leading-7 text-foreground/80">{step.body}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-brand">
+                    <span
+                      data-ngf-field="about.stepLabelPrefix"
+                      data-ngf-label="Step Label Prefix"
+                      data-ngf-type="text"
+                      data-ngf-section="About"
+                    >
+                      {stepLabelPrefix}
+                    </span>
+                    {` ${index + 1}`}
+                  </p>
+                  <p
+                    data-ngf-field={`about.processSteps.${index}.title`}
+                    data-ngf-label="Step Title"
+                    data-ngf-type="text"
+                    data-ngf-section="About"
+                    className="mt-2 text-lg text-foreground"
+                  >
+                    {step.title}
+                  </p>
+                  <p
+                    data-ngf-field={`about.processSteps.${index}.body`}
+                    data-ngf-label="Step Body"
+                    data-ngf-type="textarea"
+                    data-ngf-section="About"
+                    className="mt-3 flex-1 text-sm leading-7 text-foreground/80"
+                  >
+                    {step.body}
+                  </p>
                 </li>
               </Reveal>
             ))}

@@ -49,7 +49,7 @@ export default async function OurWorkPage() {
       </Reveal>
 
       <div className="mt-10">
-        <PortfolioFilterGrid />
+        <PortfolioFilterGrid content={content} />
       </div>
     </section>
   );
