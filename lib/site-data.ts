@@ -156,7 +156,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheBloomPointe.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/248343/",
   },
   {
     name: "The Wave Crest",
@@ -166,7 +166,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheWaveCrest.png",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/1876/",
   },
   {
     name: "The Seascape",
@@ -176,7 +176,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheSeascape.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-jones/",
   },
   {
     name: "The Brighton",
@@ -186,7 +186,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheBrighton.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-davis/",
   },
   {
     name: "The Marina",
@@ -196,7 +196,7 @@ export const floorPlans = [
     baths: 4.5,
     garageStalls: 3,
     image: "/floor-plans/TheMarina.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-fennville/",
   },
   {
     name: "The Bayside",
@@ -206,7 +206,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 2,
     image: "/floor-plans/TheBayside.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-carew/",
   },
   {
     name: "The Arbor",
@@ -216,7 +216,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheArbor.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-sampson/",
   },
   {
     name: "The Sandstone",
@@ -226,7 +226,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheSandstone.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/multi-story/the-2-story/",
   },
   {
     name: "The Conway",
@@ -236,7 +236,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/TheConway.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-conway/",
   },
   {
     name: "The Maria",
@@ -246,7 +246,7 @@ export const floorPlans = [
     baths: 3,
     garageStalls: 3,
     image: "/floor-plans/TheMaria.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/1845/",
   },
   {
     name: "The Sterling",
@@ -256,7 +256,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 2,
     image: "/floor-plans/TheSterling.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-sterling/",
   },
   {
     name: "The Coastal",
@@ -266,7 +266,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheCoastal.png",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-montgomery/",
   },
   {
     name: "The Tessa",
@@ -276,7 +276,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheTessa.png",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-tessa/",
   },
   {
     name: "The Sea Haven",
@@ -286,7 +286,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheSeaHaven.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-hager/",
   },
   {
     name: "The Woodridge",
@@ -296,7 +296,7 @@ export const floorPlans = [
     baths: 3,
     garageStalls: 3,
     image: "/floor-plans/TheWoodridge.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-woodridge/",
   },
   {
     name: "The North Cove",
@@ -306,7 +306,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/TheNorthCove.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-north-cove/",
   },
   {
     name: "The Pearl",
@@ -316,7 +316,7 @@ export const floorPlans = [
     baths: 2.5,
     garageStalls: 3,
     image: "/floor-plans/ThePearl.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-foster/",
   },
   {
     name: "Pebble Beach",
@@ -326,7 +326,7 @@ export const floorPlans = [
     baths: 3.5,
     garageStalls: 3,
     image: "/floor-plans/PebbleBeach.jpg",
-    planUrl: "",
+    planUrl: "http://www.northcovebuilders.com/ranch/the-ranch/",
   },
 ];
 
