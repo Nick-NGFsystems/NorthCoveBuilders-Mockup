@@ -42,33 +42,11 @@ export default function NgfEditBridge() {
         100% { outline-color: rgba(59,130,246,0.45) !important; background-color: transparent !important; }
       }
 
-      /* Force-reveal any collapsed/hidden ancestor that contains editable
-         fields (dropdowns, menus, accordions). Modern :has() — Chrome 105+,
-         Safari 15.4+, Firefox 121+. Falls back gracefully on older browsers. */
-      [data-ngf-edit="true"] .opacity-0:has([data-ngf-field]),
-      [data-ngf-edit="true"] .invisible:has([data-ngf-field]),
-      [data-ngf-edit="true"] .pointer-events-none:has([data-ngf-field]),
-      [data-ngf-edit="true"] [hidden]:has([data-ngf-field]),
-      [data-ngf-edit="true"] [aria-hidden="true"]:has([data-ngf-field]),
-      [data-ngf-edit="true"] [aria-expanded="false"] + *:has([data-ngf-field]) {
-        opacity: 0.97 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        transform: none !important;
-        transition: none !important;
-        display: block !important;
-      }
-      /* Subtle banner so clients know why a hidden menu is showing */
-      [data-ngf-edit="true"] .opacity-0:has([data-ngf-field])::before,
-      [data-ngf-edit="true"] [aria-expanded="false"] + *:has([data-ngf-field])::before {
-        content: "expanded for editing";
-        display: block;
-        font-size: 10px;
-        color: #94a3b8;
-        font-style: italic;
-        letter-spacing: 0.04em;
-        padding: 2px 8px;
-        pointer-events: none;
+      /* Dropdown toggle hint — make it obvious dropdown triggers still work
+         in edit mode (they do; the click handler below lets them through). */
+      [data-ngf-edit="true"] [aria-haspopup],
+      [data-ngf-edit="true"] [aria-expanded] {
+        cursor: pointer !important;
       }
 
       /* Navigation popup injected by NgfEditBridge */
@@ -292,22 +270,35 @@ export default function NgfEditBridge() {
       if (navPopup && navPopup.contains(e.target as Node)) return
       if (navPopup) dismissNavPopup()
 
-      e.preventDefault()
-      e.stopPropagation()
-      e.stopImmediatePropagation()
-
       // Single upward walk finds the nearest anchor AND nearest field.
       let cursor: HTMLElement | null = e.target as HTMLElement | null
       let anchor: HTMLAnchorElement | null = null
       let fieldEl: HTMLElement | null = null
       let buttonEl: HTMLButtonElement | null = null
+      let toggleEl: HTMLElement | null = null
       while (cursor && cursor !== document.documentElement) {
         const tag = cursor.tagName?.toLowerCase()
         if (!anchor   && tag === 'a')                                anchor   = cursor as HTMLAnchorElement
         if (!buttonEl && tag === 'button')                           buttonEl = cursor as HTMLButtonElement
         if (!fieldEl  && cursor.getAttribute?.('data-ngf-field'))    fieldEl  = cursor
+        // A dropdown/disclosure toggle — has aria-haspopup or aria-expanded.
+        if (!toggleEl && cursor.hasAttribute?.('aria-haspopup'))     toggleEl = cursor
+        if (!toggleEl && cursor.hasAttribute?.('aria-expanded'))     toggleEl = cursor
         cursor = cursor.parentElement
       }
+
+      // If the click is on a dropdown toggle AND the toggle itself is NOT the
+      // editable field, let the site's own React/JS handle it (open/close the
+      // menu). The user can click items inside the open menu to edit them.
+      // This keeps dropdowns expandable, not always-expanded.
+      if (toggleEl && toggleEl !== fieldEl) {
+        // Don't preventDefault — let the site's onClick fire.
+        return
+      }
+
+      e.preventDefault()
+      e.stopPropagation()
+      e.stopImmediatePropagation()
 
       // Build an EditTarget from the field element, if any
       let editTarget: EditTarget | undefined
