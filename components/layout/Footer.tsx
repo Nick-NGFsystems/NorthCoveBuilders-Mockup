@@ -13,13 +13,13 @@ type FooterProps = { content: NgfSiteContent }
 
 export function Footer({ content }: FooterProps) {
 
-  const tagline = content['footer.tagline'] ?? 'Feel at home before you even move in.'
-  const navLabel = content['footer.navLabel'] ?? 'Navigation'
-  const contactLabel = content['footer.contactLabel'] ?? 'Contact'
-  const phone = content['footer.phone'] ?? '(616) 682-7422'
-  const email = content['footer.email'] ?? 'northcovebuilders@gmail.com'
-  const address = content['footer.address'] ?? '6147 N. Cove Court, Hudsonville, MI 49426'
-  const copyright = content['footer.copyright'] ?? `© ${new Date().getFullYear()} North Cove Builders. All rights reserved.`
+  const tagline = content['footer.tagline'] || 'Feel at home before you even move in.'
+  const navLabel = content['footer.navLabel'] || 'Navigation'
+  const contactLabel = content['footer.contactLabel'] || 'Contact'
+  const phone = content['footer.phone'] || '(616) 682-7422'
+  const email = content['footer.email'] || 'northcovebuilders@gmail.com'
+  const address = content['footer.address'] || '6147 N. Cove Court, Hudsonville, MI 49426'
+  const copyright = content['footer.copyright'] || `© ${new Date().getFullYear()} North Cove Builders. All rights reserved.`
 
   return (
     <footer className="bg-brand text-white">

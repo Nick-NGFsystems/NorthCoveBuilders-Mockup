@@ -7,9 +7,9 @@ type ContactSectionProps = {
 };
 
 export function ContactSection({ content }: ContactSectionProps) {
-  const eyebrow = content['contact.eyebrow'] ?? 'How Can We Help?'
-  const heading = content['contact.heading'] ?? 'Wherever you are with your planning, we would love to help.'
-  const intro = content['contact.intro'] ?? 'Please share more about your plans and ideas for your dream home, and we will be in touch soon.'
+  const eyebrow = content['contact.eyebrow'] || 'How Can We Help?'
+  const heading = content['contact.heading'] || 'Wherever you are with your planning, we would love to help.'
+  const intro = content['contact.intro'] || 'Please share more about your plans and ideas for your dream home, and we will be in touch soon.'
 
   return (
     <section className="bg-surface">

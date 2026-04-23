@@ -16,26 +16,26 @@ export default async function Home() {
   const content = await getNgfContent()
 
   // ── Brand ──────────────────────────────────────────────────────────────────
-  const businessName = content['brand.businessName'] ?? 'North Cove Builders'
-  const serviceArea  = content['brand.serviceArea']  ?? 'West Michigan'
+  const businessName = content['brand.businessName'] || 'North Cove Builders'
+  const serviceArea  = content['brand.serviceArea'] || 'West Michigan'
 
   // ── Hero ───────────────────────────────────────────────────────────────────
-  const heroEyebrow    = content['hero.eyebrow']    ?? `${businessName} - ${serviceArea}`
-  const heroHeadline   = content['hero.headline']   ?? "Build the home you've always dreamed of."
-  const heroSubheadline = content['hero.subheadline'] ?? 'Custom Designs. Straightforward Pricing. A Clear & Precise Process.'
-  const heroCta        = content['hero.cta']        ?? "Let's connect!"
+  const heroEyebrow    = content['hero.eyebrow'] || `${businessName} - ${serviceArea}`
+  const heroHeadline   = content['hero.headline'] || "Build the home you've always dreamed of."
+  const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Process.'
+  const heroCta        = content['hero.cta'] || "Let's connect!"
 
   // ── About ──────────────────────────────────────────────────────────────────
-  const aboutTitle  = content['about.title']  ?? "You'll feel at home long before you move in."
-  const aboutBody1  = content['about.body1']  ?? "We pride ourselves in our dedication to making your home building experience a great one. Good communication is the foundation of our building process, and your involvement and satisfaction is our #1 concern."
-  const aboutBody2  = content['about.body2']  ?? "Working with a builder you trust is key to limiting the stress of building a new home. Our transparent pricing structure, thorough process, and commitment to service are the key elements of our success."
+  const aboutTitle  = content['about.title'] || "You'll feel at home long before you move in."
+  const aboutBody1  = content['about.body1'] || "We pride ourselves in our dedication to making your home building experience a great one. Good communication is the foundation of our building process, and your involvement and satisfaction is our #1 concern."
+  const aboutBody2  = content['about.body2'] || "Working with a builder you trust is key to limiting the stress of building a new home. Our transparent pricing structure, thorough process, and commitment to service are the key elements of our success."
 
   // ── Projects ───────────────────────────────────────────────────────────────
-  const projectsTitle = content['projects.title'] ?? 'Featured Projects'
-  const projectsViewAll = content['projects.viewAll'] ?? 'View All Work'
+  const projectsTitle = content['projects.title'] || 'Featured Projects'
+  const projectsViewAll = content['projects.viewAll'] || 'View All Work'
 
   // ── Reviews ───────────────────────────────────────────────────────────────
-  const reviewsTitle = content['reviews.title'] ?? 'What Homeowners Are Saying'
+  const reviewsTitle = content['reviews.title'] || 'What Homeowners Are Saying'
 
   return (
     <>

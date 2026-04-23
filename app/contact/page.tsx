@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const content = await getNgfContent()
 
-  const heading = content['contactPage.heading'] ?? 'Let\'s build your home vision together.'
-  const callText = content['contactPage.callText'] ?? 'Call'
-  const phone = content['contactPage.phone'] ?? '(616) 682-7422'
-  const sendMessageText = content['contactPage.sendMessage'] ?? 'or send a message below.'
-  const emailLabel = content['contactPage.emailLabel'] ?? 'Email:'
-  const email = content['contactPage.email'] ?? 'northcovebuilders@gmail.com'
-  const address = content['contactPage.address'] ?? '6147 N. Cove Court, Hudsonville, MI 49426'
-  const serviceArea = content['contactPage.serviceArea'] ?? 'Serving Greater Grand Rapids, the Lakeshore, and surrounding West Michigan communities, including Hudsonville, Byron Center, Caledonia, Grand Rapids, Fennville, Saugatuck, Holland, and Grand Haven.'
+  const heading = content['contactPage.heading'] || 'Let\'s build your home vision together.'
+  const callText = content['contactPage.callText'] || 'Call'
+  const phone = content['contactPage.phone'] || '(616) 682-7422'
+  const sendMessageText = content['contactPage.sendMessage'] || 'or send a message below.'
+  const emailLabel = content['contactPage.emailLabel'] || 'Email:'
+  const email = content['contactPage.email'] || 'northcovebuilders@gmail.com'
+  const address = content['contactPage.address'] || '6147 N. Cove Court, Hudsonville, MI 49426'
+  const serviceArea = content['contactPage.serviceArea'] || 'Serving Greater Grand Rapids, the Lakeshore, and surrounding West Michigan communities, including Hudsonville, Byron Center, Caledonia, Grand Rapids, Fennville, Saugatuck, Holland, and Grand Haven.'
 
   return (
     <section className="section-shell !pt-40 md:!pt-[8.5rem]">

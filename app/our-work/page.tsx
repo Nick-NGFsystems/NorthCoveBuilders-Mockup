@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default async function OurWorkPage() {
   const content = await getNgfContent()
 
-  const eyebrow = content['ourWork.eyebrow'] ?? 'Completed Project Portfolio'
-  const heading = content['ourWork.heading'] ?? 'Our Work'
-  const description = content['ourWork.description'] ?? 'Each home we build begins with a vision and comes to life through thoughtful design, careful planning, and expert craftsmanship.'
+  const eyebrow = content['ourWork.eyebrow'] || 'Completed Project Portfolio'
+  const heading = content['ourWork.heading'] || 'Our Work'
+  const description = content['ourWork.description'] || 'Each home we build begins with a vision and comes to life through thoughtful design, careful planning, and expert craftsmanship.'
 
   return (
     <section className="section-shell !pt-40 md:!pt-[8.5rem]">

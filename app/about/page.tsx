@@ -41,14 +41,14 @@ const processSteps = [
 export default async function AboutPage() {
   const content = await getNgfContent()
 
-  const heroEyebrow = content['about.heroEyebrow'] ?? 'About North Cove Builders'
-  const heroHeading = content['about.heroHeading'] ?? 'A personal builder experience from first conversation to final walkthrough.'
-  const teamHeading = content['about.teamHeading'] ?? 'Meet the Team'
-  const valuesHeading = content['about.valuesHeading'] ?? 'Mission & Values'
-  const valuesMission = content['about.valuesMission'] ?? 'We love what we do! Everything we do is to ensure your building experience is enjoyable and that your new home is everything you\'ve dreamt it would be.'
-  const valuesStatement = content['about.valuesStatement'] ?? 'We keep God and our values at the forefront of everything we do.'
-  const coreValuesHeading = content['about.coreValuesHeading'] ?? 'Core Values'
-  const processHeading = content['about.processHeading'] ?? 'Our Process'
+  const heroEyebrow = content['about.heroEyebrow'] || 'About North Cove Builders'
+  const heroHeading = content['about.heroHeading'] || 'A personal builder experience from first conversation to final walkthrough.'
+  const teamHeading = content['about.teamHeading'] || 'Meet the Team'
+  const valuesHeading = content['about.valuesHeading'] || 'Mission & Values'
+  const valuesMission = content['about.valuesMission'] || 'We love what we do! Everything we do is to ensure your building experience is enjoyable and that your new home is everything you\'ve dreamt it would be.'
+  const valuesStatement = content['about.valuesStatement'] || 'We keep God and our values at the forefront of everything we do.'
+  const coreValuesHeading = content['about.coreValuesHeading'] || 'Core Values'
+  const processHeading = content['about.processHeading'] || 'Our Process'
 
   return (
     <>

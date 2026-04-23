@@ -24,16 +24,16 @@ type NavbarProps = {
 export function Navbar({ content }: NavbarProps) {
   const navLinks = navLinkKeys.map(link => ({
     ...link,
-    label: content[`nav.${link.key}`] ?? link.defaultLabel,
+    label: content[`nav.${link.key}`] || link.defaultLabel,
   }));
 
   const secondaryLinks = secondaryLinkKeys.map(link => ({
     ...link,
-    label: content[`nav.${link.key}`] ?? link.defaultLabel,
+    label: content[`nav.${link.key}`] || link.defaultLabel,
   }));
 
-  const ctaLabel = content['nav.cta'] ?? "Let's connect!";
-  const moreLabel = content['nav.more'] ?? 'More';
+  const ctaLabel = content['nav.cta'] || "Let's connect!";
+  const moreLabel = content['nav.more'] || 'More';
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
