@@ -239,7 +239,10 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      {/* Hidden brand anchors for portal editor */}
+      {/* Hidden brand anchors for portal editor. The sr-only spans carry
+          the live value so the scraper + editor sidebar show meaningful
+          text (not an empty "Business Name" box). These values flow into
+          hero.eyebrow and similar interpolated strings above. */}
       <span
         data-ngf-field="brand.businessName"
         data-ngf-label="Business Name"
@@ -247,7 +250,9 @@ export default async function Home() {
         data-ngf-section="Brand"
         aria-hidden="true"
         className="sr-only"
-      />
+      >
+        {businessName}
+      </span>
       <span
         data-ngf-field="brand.serviceArea"
         data-ngf-label="Service Area"
@@ -255,7 +260,9 @@ export default async function Home() {
         data-ngf-section="Brand"
         aria-hidden="true"
         className="sr-only"
-      />
+      >
+        {serviceArea}
+      </span>
     </>
   );
 }
