@@ -1,25 +1,26 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ContactSection } from "@/components/sections/ContactSection";
-import { getNgfContent } from "@/lib/ngf";
-import { PageChromeClient } from "@/components/layout/PageChromeClient";
+import type { NgfSiteContent } from "@/lib/ngf";
 
 type PageChromeProps = {
   children: React.ReactNode;
+  content: NgfSiteContent;
 };
 
-export async function PageChrome({ children }: PageChromeProps) {
-  const content = await getNgfContent()
+export function PageChrome({ children, content }: PageChromeProps) {
+  const pathname = usePathname();
+  const showGlobalContact = pathname !== "/contact";
 
   return (
     <>
       <Navbar content={content} />
-      <PageChromeClient>
-        <main id="main-content">{children}</main>
-      </PageChromeClient>
-      <ContactSection content={content} />
-      <Footer />
+      <main id="main-content">{children}</main>
+      {showGlobalContact ? <ContactSection content={content} /> : null}
+      <Footer content={content} />
     </>
   );
 }

@@ -30,7 +30,7 @@ const processSteps = [
   },
   {
     title: "Construction",
-    body: "Our in-house carpentry crews support consistency in quality and schedule. You’ll have key on-site meetings plus regular updates on milestones, progress photos, and timelines.",
+    body: "Our in-house carpentry crews support consistency in quality and schedule. You'll have key on-site meetings plus regular updates on milestones, progress photos, and timelines.",
   },
   {
     title: "After You Move In",

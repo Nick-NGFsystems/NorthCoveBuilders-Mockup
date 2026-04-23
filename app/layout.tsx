@@ -6,6 +6,7 @@ import { LocalBusinessSchema } from "@/app/local-business-schema";
 import { PageChrome } from "@/components/layout/PageChrome";
 import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 import NgfEditBridge from "@/components/NgfEditBridge";
+import { getNgfContent } from "@/lib/ngf";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -67,11 +68,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const content = await getNgfContent();
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.variable} ${dmSerif.variable} antialiased`}>
@@ -89,7 +91,7 @@ export default function RootLayout({
         </a>
         <NgfEditBridge />
         <LocalBusinessSchema />
-        <PageChrome>{children}</PageChrome>
+        <PageChrome content={content}>{children}</PageChrome>
       </body>
     </html>
   );

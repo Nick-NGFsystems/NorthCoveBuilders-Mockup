@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getNgfContent } from "@/lib/ngf";
+import type { NgfSiteContent } from "@/lib/ngf";
 
 const links = [
   { href: "/", label: "Home" },
@@ -9,8 +9,9 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
-export async function Footer() {
-  const content = await getNgfContent()
+type FooterProps = { content: NgfSiteContent }
+
+export function Footer({ content }: FooterProps) {
 
   const tagline = content['footer.tagline'] ?? 'Feel at home before you even move in.'
   const navLabel = content['footer.navLabel'] ?? 'Navigation'
