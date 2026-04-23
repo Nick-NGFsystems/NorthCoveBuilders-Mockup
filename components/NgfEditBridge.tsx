@@ -42,6 +42,35 @@ export default function NgfEditBridge() {
         100% { outline-color: rgba(59,130,246,0.45) !important; background-color: transparent !important; }
       }
 
+      /* Force-reveal any collapsed/hidden ancestor that contains editable
+         fields (dropdowns, menus, accordions). Modern :has() — Chrome 105+,
+         Safari 15.4+, Firefox 121+. Falls back gracefully on older browsers. */
+      [data-ngf-edit="true"] .opacity-0:has([data-ngf-field]),
+      [data-ngf-edit="true"] .invisible:has([data-ngf-field]),
+      [data-ngf-edit="true"] .pointer-events-none:has([data-ngf-field]),
+      [data-ngf-edit="true"] [hidden]:has([data-ngf-field]),
+      [data-ngf-edit="true"] [aria-hidden="true"]:has([data-ngf-field]),
+      [data-ngf-edit="true"] [aria-expanded="false"] + *:has([data-ngf-field]) {
+        opacity: 0.97 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        transition: none !important;
+        display: block !important;
+      }
+      /* Subtle banner so clients know why a hidden menu is showing */
+      [data-ngf-edit="true"] .opacity-0:has([data-ngf-field])::before,
+      [data-ngf-edit="true"] [aria-expanded="false"] + *:has([data-ngf-field])::before {
+        content: "expanded for editing";
+        display: block;
+        font-size: 10px;
+        color: #94a3b8;
+        font-style: italic;
+        letter-spacing: 0.04em;
+        padding: 2px 8px;
+        pointer-events: none;
+      }
+
       /* Navigation popup injected by NgfEditBridge */
       #ngf-nav-popup {
         position: fixed;
