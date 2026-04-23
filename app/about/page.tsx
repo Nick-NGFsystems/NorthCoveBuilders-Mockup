@@ -88,15 +88,26 @@ export default async function AboutPage() {
               {teamHeading}
             </h2>
           </Reveal>
-          <div className="grid gap-6 lg:grid-cols-2">
-            {teamMembers.map((member, index) => (
+          <div
+            className="grid gap-6 lg:grid-cols-2"
+            data-ngf-group="team.members"
+            data-ngf-item-label="Team Member"
+            data-ngf-min-items="1"
+            data-ngf-max-items="12"
+            data-ngf-item-fields='[{"key":"name","label":"Name","type":"text"},{"key":"role","label":"Role","type":"text"},{"key":"bio","label":"Bio","type":"textarea"}]'
+          >
+            {teamMembers.map((member, index) => {
+              const name = content[`team.members.${index}.name`] || member.name
+              const role = content[`team.members.${index}.role`] || member.role
+              const bio  = content[`team.members.${index}.bio`]  || member.bio
+              return (
               <Reveal key={member.name}>
                 <article className="rounded-2xl bg-white p-4 sm:p-5 lg:h-full lg:p-6">
                   <div className="flex items-start gap-4 lg:flex-col lg:items-center lg:gap-5 lg:text-center">
                     <div className="relative h-44 w-32 shrink-0 overflow-hidden rounded-xl sm:h-48 sm:w-36 lg:h-56 lg:w-44">
                     <Image
                       src={member.image}
-                      alt={member.name}
+                      alt={name}
                       fill
                       priority={index === 0}
                       unoptimized
@@ -105,14 +116,31 @@ export default async function AboutPage() {
                     />
                     </div>
                     <div className="min-w-0 text-left lg:text-center">
-                      <h3 className="text-lg text-brand sm:text-xl">{member.name}</h3>
-                      <p className="mt-1 text-sm text-foreground/70">{member.role}</p>
-                      <TeamMemberBio bio={member.bio} />
+                      <h3
+                        data-ngf-field={`team.members.${index}.name`}
+                        data-ngf-label="Name"
+                        data-ngf-type="text"
+                        data-ngf-section="Team"
+                        className="text-lg text-brand sm:text-xl"
+                      >
+                        {name}
+                      </h3>
+                      <p
+                        data-ngf-field={`team.members.${index}.role`}
+                        data-ngf-label="Role"
+                        data-ngf-type="text"
+                        data-ngf-section="Team"
+                        className="mt-1 text-sm text-foreground/70"
+                      >
+                        {role}
+                      </p>
+                      <TeamMemberBio bio={bio} fieldPath={`team.members.${index}.bio`} />
                     </div>
                   </div>
                 </article>
               </Reveal>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
