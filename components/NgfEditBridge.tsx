@@ -33,6 +33,14 @@ export default function NgfEditBridge() {
         font-style: italic;
         pointer-events: none;
       }
+      /* Pulse highlight when editor scrolls to a field */
+      [data-ngf-field].ngf-field-focus {
+        animation: ngfFieldFocus 1.6s ease-out;
+      }
+      @keyframes ngfFieldFocus {
+        0%   { outline-color: #3b82f6 !important; background-color: rgba(59,130,246,0.25) !important; }
+        100% { outline-color: rgba(59,130,246,0.45) !important; background-color: transparent !important; }
+      }
 
       /* Navigation popup injected by NgfEditBridge */
       #ngf-nav-popup {
@@ -184,12 +192,28 @@ export default function NgfEditBridge() {
       popup.style.visibility = ''
     }
 
+    // ── Default-text cache ────────────────────────────────────────────────────
+    // Capture the server-rendered textContent of every annotated field on first
+    // sight. Stored on the element itself (dataset.ngfDefault) so it survives
+    // later DOM mutations. The editor sends empty strings (or omits keys) to
+    // mean "restore to default" — that only works if we remember the default.
+    function captureDefaults() {
+      document.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(el => {
+        if (el.dataset.ngfDefault === undefined) {
+          el.dataset.ngfDefault = el.textContent ?? ''
+        }
+      })
+    }
+    captureDefaults()
+
     window.parent.postMessage({ type: 'ngfReady' }, '*')
 
     const messageHandler = (e: MessageEvent) => {
       if (e.data?.type === 'setEditMode') {
         editMode = !!e.data.enabled
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
+        // Re-run in case fields were hydrated after initial capture
+        captureDefaults()
         if (!editMode) dismissNavPopup()
       }
 
@@ -198,7 +222,12 @@ export default function NgfEditBridge() {
           if (obj === null || obj === undefined) return
           if (typeof obj === 'string') {
             const el = document.querySelector<HTMLElement>(`[data-ngf-field="${path}"]`)
-            if (el) el.textContent = obj
+            if (el) {
+              // Empty string = restore the original SSR text (the hardcoded
+              // fallback the page renders for an unpopulated field). A real
+              // user-entered value overwrites.
+              el.textContent = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
+            }
             return
           }
           if (Array.isArray(obj)) {
@@ -212,6 +241,19 @@ export default function NgfEditBridge() {
           }
         }
         walk(e.data.content, '')
+      }
+
+      // Editor asks us to scroll the iframe to a specific field + flash it
+      if (e.data?.type === 'scrollToField' && typeof e.data.path === 'string') {
+        const el = document.querySelector<HTMLElement>(`[data-ngf-field="${e.data.path}"]`)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          el.classList.remove('ngf-field-focus')
+          // Restart animation
+          void el.offsetWidth
+          el.classList.add('ngf-field-focus')
+          setTimeout(() => el.classList.remove('ngf-field-focus'), 1700)
+        }
       }
     }
 
