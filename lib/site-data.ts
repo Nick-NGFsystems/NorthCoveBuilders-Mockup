@@ -162,6 +162,7 @@ export const floorPlans = [
       { label: "Upper Floor", src: "/floor-plans/the-bloom-pointe/upper.png" },
       { label: "Lower Level", src: "/floor-plans/the-bloom-pointe/lower.png" },
     ],
+    planPdf: "/floor-plans/the-bloom-pointe/floor-plan.pdf",
   },
   {
     name: "The Wave Crest",

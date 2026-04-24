@@ -5,15 +5,23 @@ import { useState } from "react";
 
 type PlanImage = { label: string; src: string };
 
-export function FloorPlanViewer({ images, planName }: { images: PlanImage[]; planName: string }) {
+export function FloorPlanViewer({
+  images,
+  planName,
+  planPdf,
+}: {
+  images: PlanImage[];
+  planName: string;
+  planPdf?: string;
+}) {
   const [active, setActive] = useState(0);
 
   return (
     <div>
-      {/* Tab buttons */}
-      {images.length > 1 && (
-        <div className="mt-4 flex gap-2 flex-wrap">
-          {images.map((img, i) => (
+      {/* Tabs row + download button */}
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {images.length > 1 &&
+          images.map((img, i) => (
             <button
               key={img.label}
               onClick={() => setActive(i)}
@@ -26,8 +34,20 @@ export function FloorPlanViewer({ images, planName }: { images: PlanImage[]; pla
               {img.label}
             </button>
           ))}
-        </div>
-      )}
+
+        {planPdf && (
+          <a
+            href={planPdf}
+            download
+            className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-brand/20 bg-surface px-4 py-2 text-sm font-semibold text-brand transition hover:bg-brand/5"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+              <path d="M12 3v13m0 0l-4-4m4 4l4-4M4 20h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Download PDF
+          </a>
+        )}
+      </div>
 
       {/* Image */}
       <div className="mt-4 relative w-full overflow-hidden rounded-2xl bg-slate-50" style={{ aspectRatio: "4/3" }}>

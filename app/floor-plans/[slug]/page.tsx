@@ -96,7 +96,11 @@ export default async function FloorPlanDetailPage({ params }: Props) {
         <div className="mt-10">
           <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
           {"planImages" in plan && plan.planImages && plan.planImages.length > 0 ? (
-            <FloorPlanViewer images={plan.planImages} planName={plan.name} />
+            <FloorPlanViewer
+              images={plan.planImages}
+              planName={plan.name}
+              planPdf={"planPdf" in plan ? (plan.planPdf as string) : undefined}
+            />
           ) : plan.planUrl ? (
             <div className="mt-4 overflow-hidden rounded-2xl border border-black/5 bg-surface">
               <iframe
