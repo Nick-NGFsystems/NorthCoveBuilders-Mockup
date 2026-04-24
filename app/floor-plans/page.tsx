@@ -38,7 +38,7 @@ export default function FloorPlansPage() {
             </Reveal>
 
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {plans.map((plan) => (
+              {plans.map((plan, i) => (
                 <Link key={plan.name} href={`/floor-plans/${toSlug(plan.name)}`} className="block group">
                   <article className="overflow-hidden rounded-2xl border border-black/5 bg-white transition hover:shadow-md">
                     <div className="relative h-56 bg-slate-100">
@@ -48,6 +48,7 @@ export default function FloorPlansPage() {
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition group-hover:scale-[1.02]"
+                        priority={homeType === "Multi-Story" && i < 3}
                       />
                     </div>
                     <div className="p-5">
