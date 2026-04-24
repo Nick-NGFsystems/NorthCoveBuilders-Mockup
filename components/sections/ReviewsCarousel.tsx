@@ -12,19 +12,11 @@ const platformStyles: Record<string, { initial: string; color: string }> = {
 
 const REVIEW_PREVIEW_LENGTH = 420;
 
-type Props = {
-  content?: Record<string, string>
-}
-
-export function ReviewsCarousel({ content = {} }: Props) {
+export function ReviewsCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
-
-  const showMoreLabel = content['reviews.showMore'] || 'Show more'
-  const showLessLabel = content['reviews.showLess'] || 'Show less'
-  const readMoreLabel = content['reviews.readMore'] || 'Read more reviews'
 
   const updateScrollState = () => {
     const container = containerRef.current;
@@ -67,7 +59,7 @@ export function ReviewsCarousel({ content = {} }: Props) {
         type="button"
         onClick={() => scrollByCard("left")}
         disabled={!canScrollLeft}
-        className="absolute left-0 top-1/2 z-10 -translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 text-brand shadow-sm disabled:opacity-30"
+        className="absolute left-0 top-1/2 z-10 -translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 text-brand shadow-sm disabled:opacity-30 hidden md:block"
         aria-label="Scroll reviews left"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
@@ -78,66 +70,32 @@ export function ReviewsCarousel({ content = {} }: Props) {
       <div
         ref={containerRef}
         onScroll={updateScrollState}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth"
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
-        <div
-          data-ngf-group="reviews.items"
-          data-ngf-item-label="Review"
-          data-ngf-min-items="1"
-          data-ngf-max-items="30"
-          data-ngf-item-fields='[{"key":"quote","label":"Review Quote","type":"textarea"},{"key":"name","label":"Reviewer Name","type":"text"},{"key":"platform","label":"Platform","type":"text"}]'
-          className="contents"
-        >
-        {reviews.map((review, idx) => {
-          const quote = content[`reviews.items.${idx}.quote`] || review.quote
-          const name  = content[`reviews.items.${idx}.name`]  || review.name
-          const platformName = content[`reviews.items.${idx}.platform`] || review.platform
-          const platform = platformStyles[platformName] ?? { initial: "?", color: "#9CA3AF" };
+        {reviews.map((review) => {
+          const platform = platformStyles[review.platform] ?? { initial: "?", color: "#9CA3AF" };
           const isExpanded = expandedReviews[review.name] ?? false;
-          const isLongReview = quote.length > REVIEW_PREVIEW_LENGTH;
-          const quoteToDisplay = isExpanded || !isLongReview ? quote : `${quote.slice(0, REVIEW_PREVIEW_LENGTH).trim()}...`;
+          const isLongReview = review.quote.length > REVIEW_PREVIEW_LENGTH;
+          const quoteToDisplay = isExpanded || !isLongReview ? review.quote : `${review.quote.slice(0, REVIEW_PREVIEW_LENGTH).trim()}...`;
 
           return (
             <article
               key={review.name}
               data-review-card
-              className="card-soft flex-none snap-start rounded-2xl md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+              className="card-soft flex-none snap-start rounded-2xl w-[85vw] sm:w-[70vw] md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
             >
               <p className="text-brand">★★★★★</p>
-              <p
-                data-ngf-field={`reviews.items.${idx}.quote`}
-                data-ngf-label="Review Quote"
-                data-ngf-type="textarea"
-                data-ngf-section="Reviews"
-                className="mt-3 whitespace-pre-line text-sm leading-7 text-foreground/80"
-              >
-                {`“${quoteToDisplay}”`}
-              </p>
+              <p className="mt-3 whitespace-pre-line text-sm leading-7 text-foreground/80">“{quoteToDisplay}”</p>
               {isLongReview ? (
                 <button
                   type="button"
                   onClick={() => toggleExpanded(review.name)}
                   className="mt-2 text-sm font-semibold text-brand hover:underline"
                 >
-                  <span
-                    data-ngf-field={isExpanded ? 'reviews.showLess' : 'reviews.showMore'}
-                    data-ngf-label={isExpanded ? 'Show Less Label' : 'Show More Label'}
-                    data-ngf-type="text"
-                    data-ngf-section="Reviews"
-                  >
-                    {isExpanded ? showLessLabel : showMoreLabel}
-                  </span>
+                  {isExpanded ? "Show less" : "Show more"}
                 </button>
               ) : null}
-              <p
-                data-ngf-field={`reviews.items.${idx}.name`}
-                data-ngf-label="Reviewer Name"
-                data-ngf-type="text"
-                data-ngf-section="Reviews"
-                className="mt-5 text-sm font-semibold text-foreground"
-              >
-                {name}
-              </p>
+              <p className="mt-5 text-sm font-semibold text-foreground">{review.name}</p>
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1 text-xs font-medium text-foreground/80">
                 <span
                   className="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white"
@@ -145,23 +103,15 @@ export function ReviewsCarousel({ content = {} }: Props) {
                 >
                   {platform.initial}
                 </span>
-                <span
-                  data-ngf-field={`reviews.items.${idx}.platform`}
-                  data-ngf-label="Platform"
-                  data-ngf-type="text"
-                  data-ngf-section="Reviews"
-                >
-                  {platformName}
-                </span>
+                <span>{review.platform}</span>
               </div>
             </article>
           );
         })}
-        </div>
 
         <article
           data-review-card
-          className="card-soft flex min-h-full flex-none snap-start items-center justify-center rounded-2xl text-center md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+          className="card-soft flex min-h-full flex-none snap-start items-center justify-center rounded-2xl text-center w-[85vw] sm:w-[70vw] md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
         >
           <Link
             href="https://www.google.com/maps?output=search&q=north+cove+builders+google+reviews&source=lnms&entry=mc"
@@ -169,14 +119,7 @@ export function ReviewsCarousel({ content = {} }: Props) {
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-full border border-brand/20 bg-white px-5 py-2.5 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
           >
-            <span
-              data-ngf-field="reviews.readMore"
-              data-ngf-label="Read More Button"
-              data-ngf-type="text"
-              data-ngf-section="Reviews"
-            >
-              {readMoreLabel}
-            </span>
+            Read more reviews
           </Link>
         </article>
       </div>
@@ -185,7 +128,7 @@ export function ReviewsCarousel({ content = {} }: Props) {
         type="button"
         onClick={() => scrollByCard("right")}
         disabled={!canScrollRight}
-        className="absolute right-0 top-1/2 z-10 translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 text-brand shadow-sm disabled:opacity-30"
+        className="absolute right-0 top-1/2 z-10 translate-x-4 -translate-y-1/2 rounded-full bg-white p-2 text-brand shadow-sm disabled:opacity-30 hidden md:block"
         aria-label="Scroll reviews right"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
