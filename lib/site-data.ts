@@ -157,6 +157,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheBloomPointe.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/248343/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-bloom-pointe/main.png" },
+      { label: "Upper Floor", src: "/floor-plans/the-bloom-pointe/upper.png" },
+      { label: "Lower Level", src: "/floor-plans/the-bloom-pointe/lower.png" },
+    ],
   },
   {
     name: "The Wave Crest",
