@@ -214,7 +214,7 @@ export const floorPlans = [
     squareFeet: 2458,
     bedrooms: 4,
     baths: 2.5,
-    garageStalls: 3,
+    garageStalls: 2,
     image: "/floor-plans/TheArbor.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-sampson/",
   },
@@ -271,7 +271,7 @@ export const floorPlans = [
   {
     name: "The Tessa",
     homeType: "Single-Story",
-    squareFeet: 3142,
+    squareFeet: 3360,
     bedrooms: 4,
     baths: 3.5,
     garageStalls: 3,
