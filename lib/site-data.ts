@@ -189,6 +189,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheSeascape.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-jones/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-seascape/main.png" },
+      { label: "Upper Floor", src: "/floor-plans/the-seascape/upper.png" },
+    ],
+    planPdf: "/floor-plans/the-seascape/floor-plan.pdf",
   },
   {
     name: "The Brighton",
@@ -199,6 +204,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheBrighton.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-davis/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-brighton/main.jpg" },
+      { label: "Upper Floor", src: "/floor-plans/the-brighton/upper.jpg" },
+    ],
+    planPdf: "/floor-plans/the-brighton/floor-plan.pdf",
   },
   {
     name: "The Marina",
@@ -209,6 +219,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheMarina.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-fennville/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-marina/main.jpg" },
+      { label: "Upper Floor", src: "/floor-plans/the-marina/upper.jpg" },
+    ],
+    planPdf: "/floor-plans/the-marina/floor-plan.pdf",
   },
   {
     name: "The Bayside",
@@ -219,6 +234,11 @@ export const floorPlans = [
     garageStalls: 2,
     image: "/floor-plans/TheBayside.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-carew/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-bayside/main.jpg" },
+      { label: "Upper Floor", src: "/floor-plans/the-bayside/upper.jpg" },
+    ],
+    planPdf: "/floor-plans/the-bayside/floor-plan.pdf",
   },
   {
     name: "The Arbor",
@@ -229,6 +249,11 @@ export const floorPlans = [
     garageStalls: 2,
     image: "/floor-plans/TheArbor.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-sampson/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-arbor/main.jpg" },
+      { label: "Upper Floor", src: "/floor-plans/the-arbor/upper.jpg" },
+    ],
+    planPdf: "/floor-plans/the-arbor/floor-plan.pdf",
   },
   {
     name: "The Sandstone",
@@ -239,6 +264,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheSandstone.jpg",
     planUrl: "http://www.northcovebuilders.com/multi-story/the-2-story/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-sandstone/main.png" },
+      { label: "Upper Floor", src: "/floor-plans/the-sandstone/upper.png" },
+    ],
+    planPdf: "/floor-plans/the-sandstone/floor-plan.pdf",
   },
   {
     name: "The Conway",
@@ -249,6 +279,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheConway.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-conway/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-conway/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-conway/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-conway/floor-plan.pdf",
   },
   {
     name: "The Maria",
@@ -259,6 +294,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheMaria.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/1845/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-maria/main.jpg" },
+      { label: "Lower Level", src: "/floor-plans/the-maria/lower.jpg" },
+    ],
+    planPdf: "/floor-plans/the-maria/floor-plan.pdf",
   },
   {
     name: "The Sterling",
@@ -269,6 +309,11 @@ export const floorPlans = [
     garageStalls: 2,
     image: "/floor-plans/TheSterling.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-sterling/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-sterling/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-sterling/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-sterling/floor-plan.pdf",
   },
   {
     name: "The Coastal",
@@ -279,6 +324,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheCoastal.png",
     planUrl: "http://www.northcovebuilders.com/ranch/the-montgomery/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-coastal/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-coastal/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-coastal/floor-plan.pdf",
   },
   {
     name: "The Tessa",
@@ -289,6 +339,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheTessa.png",
     planUrl: "http://www.northcovebuilders.com/ranch/the-tessa/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-tessa/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-tessa/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-tessa/floor-plan.pdf",
   },
   {
     name: "The Sea Haven",
@@ -299,6 +354,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheSeaHaven.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-hager/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-sea-haven/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-sea-haven/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-sea-haven/floor-plan.pdf",
   },
   {
     name: "The Woodridge",
@@ -309,6 +369,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheWoodridge.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-woodridge/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-woodridge/main.png" },
+      { label: "Lower Level", src: "/floor-plans/the-woodridge/lower.png" },
+    ],
+    planPdf: "/floor-plans/the-woodridge/floor-plan.pdf",
   },
   {
     name: "The North Cove",
@@ -319,6 +384,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheNorthCove.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-north-cove/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-north-cove/main.jpg" },
+      { label: "Lower Level", src: "/floor-plans/the-north-cove/lower.jpg" },
+    ],
+    planPdf: "/floor-plans/the-north-cove/floor-plan.pdf",
   },
   {
     name: "The Pearl",
@@ -329,6 +399,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/ThePearl.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-foster/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-pearl/main.jpg" },
+      { label: "Lower Level", src: "/floor-plans/the-pearl/lower.jpg" },
+    ],
+    planPdf: "/floor-plans/the-pearl/floor-plan.pdf",
   },
   {
     name: "Pebble Beach",
@@ -339,6 +414,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/PebbleBeach.jpg",
     planUrl: "http://www.northcovebuilders.com/ranch/the-ranch/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/pebble-beach/main.jpg" },
+      { label: "Lower Level", src: "/floor-plans/pebble-beach/lower.jpg" },
+    ],
+    planPdf: "/floor-plans/pebble-beach/floor-plan.pdf",
   },
 ];
 
