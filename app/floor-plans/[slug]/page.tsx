@@ -33,12 +33,12 @@ export default async function FloorPlanDetailPage({ params }: Props) {
 
   const content = await getNgfContent();
 
-  const planDetailsHeading = content['floorPlanDetail.planDetailsHeading'] ?? 'Plan Details';
-  const floorPlanHeading   = content['floorPlanDetail.floorPlanHeading']   ?? 'Floor Plan';
-  const ctaHeading         = content['floorPlanDetail.ctaHeading']         ?? 'Interested in this plan?';
-  const ctaBody            = content['floorPlanDetail.ctaBody']            ?? "Every home we build is customized to fit your lifestyle. Start with this plan and we'll tailor it to your needs, lot, and style.";
-  const ctaButton          = content['floorPlanDetail.ctaButton']          ?? "Let's talk";
-  const ctaSecondary       = content['floorPlanDetail.ctaSecondary']       ?? 'Browse all plans';
+  const planDetailsHeading = content['floorPlanDetail.planDetailsHeading'] || 'Plan Details';
+  const floorPlanHeading   = content['floorPlanDetail.floorPlanHeading']   || 'Floor Plan';
+  const ctaHeading         = content['floorPlanDetail.ctaHeading']         || 'Interested in this plan?';
+  const ctaBody            = content['floorPlanDetail.ctaBody']            || "Every home we build is customized to fit your lifestyle. Start with this plan and we'll tailor it to your needs, lot, and style.";
+  const ctaButton          = content['floorPlanDetail.ctaButton']          || "Let's talk";
+  const ctaSecondary       = content['floorPlanDetail.ctaSecondary']       || 'Browse all plans';
 
   const stats = [
     { label: "Sq. Feet", value: plan.squareFeet.toLocaleString() },
@@ -185,13 +185,4 @@ export default async function FloorPlanDetailPage({ params }: Props) {
               data-ngf-label="Secondary Link Text"
               data-ngf-type="text"
               data-ngf-section="Floor Plan Detail"
-              className="text-center text-sm font-medium text-brand/70 hover:text-brand transition-colors whitespace-nowrap"
-            >
-              {ctaSecondary}
-            </Link>
-          </div>
-        </div>
-      </Reveal>
-    </section>
-  );
-}
+              className="text-center text-sm font-medium text-brand/70 

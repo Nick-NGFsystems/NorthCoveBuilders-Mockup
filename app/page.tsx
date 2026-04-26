@@ -16,22 +16,26 @@ export default async function Home() {
   const content = await getNgfContent()
 
   // ── Brand ──────────────────────────────────────────────────────────────────
-  const businessName = content['brand.businessName'] ?? 'North Cove Builders'
-  const serviceArea  = content['brand.serviceArea']  ?? 'West Michigan'
+  const businessName = content['brand.businessName'] || 'North Cove Builders'
+  const serviceArea  = content['brand.serviceArea']  || 'West Michigan'
 
   // ── Hero ───────────────────────────────────────────────────────────────────
-  const heroEyebrow    = content['hero.eyebrow']    ?? `${businessName} - ${serviceArea}`
-  const heroHeadline   = content['hero.headline']   ?? "Build the home you've always dreamed of."
-  const heroSubheadline = content['hero.subheadline'] ?? 'Custom Designs. Straightforward Pricing. A Clear & Precise Process.'
-  const heroCta        = content['hero.cta']        ?? "Let's connect!"
+  const heroEyebrow     = content['hero.eyebrow']     || `${businessName} - ${serviceArea}`
+  const heroHeadline    = content['hero.headline']    || "Build the home you've always dreamed of."
+  const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Process.'
+  const heroCta         = content['hero.cta']         || "Let's connect!"
 
   // ── About ──────────────────────────────────────────────────────────────────
-  const aboutTitle  = content['about.title']  ?? "You'll feel at home long before you move in."
-  const aboutBody1  = content['about.body1']  ?? "We pride ourselves in our dedication to making your home building experience a great one. Good communication is the foundation of our building process, and your involvement and satisfaction is our #1 concern."
-  const aboutBody2  = content['about.body2']  ?? "Working with a builder you trust is key to limiting the stress of building a new home. Our transparent pricing structure, thorough process, and commitment to service are the key elements of our success."
+  const aboutTitle = content['about.title'] || "You'll feel at home long before you move in."
+  const aboutBody1 = content['about.body1'] || "We pride ourselves in our dedication to making your home building experience a great one. Good communication is the foundation of our building process, and your involvement and satisfaction is our #1 concern."
+  const aboutBody2 = content['about.body2'] || "Working with a builder you trust is key to limiting the stress of building a new home. Our transparent pricing structure, thorough process, and commitment to service are the key elements of our success."
 
   // ── Projects ───────────────────────────────────────────────────────────────
-  const projectsTitle = content['projects.title'] ?? 'Featured Projects'
+  const projectsTitle  = content['projects.title']   || 'Featured Projects'
+  const viewAllWork    = content['projects.viewAll']  || 'View All Work'
+
+  // ── Reviews ────────────────────────────────────────────────────────────────
+  const reviewsTitle = content['reviews.title'] || 'What Homeowners Are Saying'
 
   return (
     <>
@@ -144,7 +148,14 @@ export default async function Home() {
                 href="/our-work"
                 className="inline-flex items-center rounded-full border border-brand/20 bg-white px-4 py-2 text-sm font-semibold text-brand shadow-sm transition hover:-translate-y-0.5 hover:bg-brand hover:text-white"
               >
-                View All Work
+                <span
+                  data-ngf-field="projects.viewAll"
+                  data-ngf-label="View All Link Text"
+                  data-ngf-type="text"
+                  data-ngf-section="Projects"
+                >
+                  {viewAllWork}
+                </span>
               </Link>
             </div>
           </Reveal>
@@ -175,7 +186,15 @@ export default async function Home() {
       {/* ── Reviews ── */}
       <section className="section-shell">
         <Reveal>
-          <h2 className="mb-8 text-center text-2xl text-brand sm:text-3xl">What Homeowners Are Saying</h2>
+          <h2
+            data-ngf-field="reviews.title"
+            data-ngf-label="Section Title"
+            data-ngf-type="text"
+            data-ngf-section="Reviews"
+            className="mb-8 text-center text-2xl text-brand sm:text-3xl"
+          >
+            {reviewsTitle}
+          </h2>
         </Reveal>
         <Reveal>
           <div className="md:px-6">
@@ -192,7 +211,9 @@ export default async function Home() {
         data-ngf-section="Brand"
         aria-hidden="true"
         className="sr-only"
-      />
+      >
+        {businessName}
+      </span>
       <span
         data-ngf-field="brand.serviceArea"
         data-ngf-label="Service Area"
@@ -200,7 +221,9 @@ export default async function Home() {
         data-ngf-section="Brand"
         aria-hidden="true"
         className="sr-only"
-      />
+      >
+        {serviceArea}
+      </span>
     </>
   );
 }
