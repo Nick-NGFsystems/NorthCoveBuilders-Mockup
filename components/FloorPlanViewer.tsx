@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 
-type PlanImage = { label: string; src: string };
+type PlanImage = { label: string; src: string; sqFt?: number };
 
 export function FloorPlanViewer({
   images,
@@ -25,13 +25,18 @@ export function FloorPlanViewer({
             <button
               key={img.label}
               onClick={() => setActive(i)}
-              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              className={`rounded-lg px-4 py-2 text-left text-sm font-semibold transition ${
                 active === i
                   ? "bg-brand text-white"
                   : "border border-brand/20 bg-surface text-brand hover:bg-brand/5"
               }`}
             >
-              {img.label}
+              <span className="block">{img.label}</span>
+              {img.sqFt && (
+                <span className={`block text-xs font-normal ${active === i ? "text-white/80" : "text-brand/60"}`}>
+                  {img.sqFt.toLocaleString()} sq ft
+                </span>
+              )}
             </button>
           ))}
 
