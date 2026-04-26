@@ -16,13 +16,13 @@ const homeTypeOrder = ["Multi-Story", "Single-Story"] as const;
 export default async function FloorPlansPage() {
   const content = await getNgfContent();
 
-  const eyebrow         = content['floorPlans.eyebrow']         || 'Floor Plans';
-  const headline        = content['floorPlans.headline']        || 'Start with a plan, then make it yours.';
-  const body            = content['floorPlans.body']            || 'Designing your home should be one of the most exciting parts of the journey and we are here to make sure it is. Start with one of our existing floor plans and tailor it to fit your lifestyle, or collaborate with us to design something entirely your own. However you begin, the process is built around your ideas, your style, and the way you want to live!';
-  const multiStoryLabel = content['floorPlans.multiStoryLabel'] || 'Multi-Story Homes';
+  const eyebrow          = content['floorPlans.eyebrow']          || 'Floor Plans';
+  const headline         = content['floorPlans.headline']         || 'Start with a plan, then make it yours.';
+  const body             = content['floorPlans.body']             || 'Designing your home should be one of the most exciting parts of the journey and we are here to make sure it is. Start with one of our existing floor plans and tailor it to fit your lifestyle, or collaborate with us to design something entirely your own. However you begin, the process is built around your ideas, your style, and the way you want to live!';
+  const multiStoryLabel  = content['floorPlans.multiStoryLabel']  || 'Multi-Story Homes';
   const singleStoryLabel = content['floorPlans.singleStoryLabel'] || 'Single-Story Homes';
-  const cardCta         = content['floorPlans.cardCta']         || 'View Plan Details';
-  const cta             = content['floorPlans.cta']             || "Let's discuss your ideas!";
+  const cardCta          = content['floorPlans.cardCta']          || 'View Plan Details';
+  const cta              = content['floorPlans.cta']              || "Let's discuss your ideas!";
 
   const sectionLabels: Record<string, string> = {
     'Multi-Story': multiStoryLabel,
@@ -140,4 +140,13 @@ export default async function FloorPlansPage() {
             data-ngf-field="floorPlans.cta"
             data-ngf-label="Bottom CTA Button"
             data-ngf-type="text"
-            data-ngf-section="Floor Plans
+            data-ngf-section="Floor Plans Page"
+            className="btn-brand"
+          >
+            {cta}
+          </Link>
+        </div>
+      </Reveal>
+    </section>
+  );
+}

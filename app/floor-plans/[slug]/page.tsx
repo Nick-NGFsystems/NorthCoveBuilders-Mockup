@@ -185,4 +185,14 @@ export default async function FloorPlanDetailPage({ params }: Props) {
               data-ngf-label="Secondary Link Text"
               data-ngf-type="text"
               data-ngf-section="Floor Plan Detail"
-              className="text-center text-sm font-medium text-brand/70 
+              className="text-center text-sm font-medium text-brand/70 hover:text-brand transition-colors"
+            >
+              {ctaSecondary}
+            </Link>
+          </div>
+        </div>
+      </Reveal>
+
+    </section>
+  );
+}
