@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/motion/Reveal";
 import { FloorPlanViewer } from "@/components/FloorPlanViewer";
 import { floorPlans, toSlug } from "@/lib/site-data";
+import { getNgfContent } from "@/lib/ngf";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -29,6 +30,15 @@ export default async function FloorPlanDetailPage({ params }: Props) {
   const plan = floorPlans.find((p) => toSlug(p.name) === slug);
 
   if (!plan) notFound();
+
+  const content = await getNgfContent();
+
+  const planDetailsHeading = content['floorPlanDetail.planDetailsHeading'] ?? 'Plan Details';
+  const floorPlanHeading   = content['floorPlanDetail.floorPlanHeading']   ?? 'Floor Plan';
+  const ctaHeading         = content['floorPlanDetail.ctaHeading']         ?? 'Interested in this plan?';
+  const ctaBody            = content['floorPlanDetail.ctaBody']            ?? "Every home we build is customized to fit your lifestyle. Start with this plan and we'll tailor it to your needs, lot, and style.";
+  const ctaButton          = content['floorPlanDetail.ctaButton']          ?? "Let's talk";
+  const ctaSecondary       = content['floorPlanDetail.ctaSecondary']       ?? 'Browse all plans';
 
   const stats = [
     { label: "Sq. Feet", value: plan.squareFeet.toLocaleString() },
@@ -77,7 +87,15 @@ export default async function FloorPlanDetailPage({ params }: Props) {
       {/* Stats — full width */}
       <Reveal>
         <div className="mt-10">
-          <h2 className="text-xl font-semibold text-brand">Plan Details</h2>
+          <h2
+            data-ngf-field="floorPlanDetail.planDetailsHeading"
+            data-ngf-label="Plan Details Heading"
+            data-ngf-type="text"
+            data-ngf-section="Floor Plan Detail"
+            className="text-xl font-semibold text-brand"
+          >
+            {planDetailsHeading}
+          </h2>
           <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {stats.map(({ label, value }) => (
               <div key={label} className="card-soft rounded-xl p-4 min-w-0">
@@ -92,7 +110,15 @@ export default async function FloorPlanDetailPage({ params }: Props) {
       {/* Floor plan — full width */}
       <Reveal>
         <div className="mt-10">
-          <h2 className="text-xl font-semibold text-brand">Floor Plan</h2>
+          <h2
+            data-ngf-field="floorPlanDetail.floorPlanHeading"
+            data-ngf-label="Floor Plan Heading"
+            data-ngf-type="text"
+            data-ngf-section="Floor Plan Detail"
+            className="text-xl font-semibold text-brand"
+          >
+            {floorPlanHeading}
+          </h2>
           {"planImages" in plan && plan.planImages && plan.planImages.length > 0 ? (
             <FloorPlanViewer
               images={plan.planImages}
@@ -123,21 +149,45 @@ export default async function FloorPlanDetailPage({ params }: Props) {
       <Reveal>
         <div className="mt-10 card-soft rounded-2xl p-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-brand">Interested in this plan?</h3>
-            <p className="mt-1 text-sm text-foreground/70 leading-relaxed max-w-xl">
-              Every home we build is customized to fit your lifestyle. Start with this plan and we&apos;ll tailor
-              it to your needs, lot, and style.
+            <h3
+              data-ngf-field="floorPlanDetail.ctaHeading"
+              data-ngf-label="CTA Heading"
+              data-ngf-type="text"
+              data-ngf-section="Floor Plan Detail"
+              className="text-lg font-semibold text-brand"
+            >
+              {ctaHeading}
+            </h3>
+            <p
+              data-ngf-field="floorPlanDetail.ctaBody"
+              data-ngf-label="CTA Body Text"
+              data-ngf-type="textarea"
+              data-ngf-section="Floor Plan Detail"
+              className="mt-1 text-sm text-foreground/70 leading-relaxed max-w-xl"
+            >
+              {ctaBody}
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:items-end shrink-0">
-            <Link href="/contact" className="btn-brand text-center whitespace-nowrap">
-              Let&apos;s talk
+            <Link
+              href="/contact"
+              data-ngf-field="floorPlanDetail.ctaButton"
+              data-ngf-label="CTA Button Text"
+              data-ngf-type="text"
+              data-ngf-section="Floor Plan Detail"
+              className="btn-brand text-center whitespace-nowrap"
+            >
+              {ctaButton}
             </Link>
             <Link
               href="/floor-plans"
+              data-ngf-field="floorPlanDetail.ctaSecondary"
+              data-ngf-label="Secondary Link Text"
+              data-ngf-type="text"
+              data-ngf-section="Floor Plan Detail"
               className="text-center text-sm font-medium text-brand/70 hover:text-brand transition-colors whitespace-nowrap"
             >
-              Browse all plans
+              {ctaSecondary}
             </Link>
           </div>
         </div>
