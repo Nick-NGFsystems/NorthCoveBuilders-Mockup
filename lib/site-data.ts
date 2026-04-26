@@ -283,7 +283,7 @@ export const floorPlans = [
   {
     name: "The Tessa",
     homeType: "Single-Story",
-    squareFeet: 3360,
+    squareFeet: 3151,
     bedrooms: 4,
     baths: 3.5,
     garageStalls: 3,
