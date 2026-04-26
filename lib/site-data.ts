@@ -178,6 +178,7 @@ export const floorPlans = [
       { label: "Upper Floor", src: "/floor-plans/the-wave-crest/upper.png" },
       { label: "Lower Level", src: "/floor-plans/the-wave-crest/lower.png" },
     ],
+    planPdf: "/floor-plans/the-wave-crest/floor-plan.pdf",
   },
   {
     name: "The Seascape",
