@@ -33,9 +33,9 @@ if git diff --quiet HEAD^ HEAD -- . \
     ':(exclude)CLAUDE.md' \
     ':(exclude)NGF-STANDARDS.md' \
     ':(exclude)README.md'; then
-  echo "📄 Only docs/config changed — skipping deploy."
+  echo "Only docs/config changed — skipping deploy."
   exit 0
 fi
 
-echo "✅ Code changes detected — proceeding with deploy."
+echo "Code changes detected — proceeding with deploy."
 exit 1
