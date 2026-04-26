@@ -31,7 +31,6 @@ export default async function FloorPlanDetailPage({ params }: Props) {
   if (!plan) notFound();
 
   const stats = [
-    { label: "Home Type", value: plan.homeType },
     { label: "Sq. Feet", value: plan.squareFeet.toLocaleString() },
     { label: "Bedrooms", value: plan.bedrooms },
     { label: "Baths", value: plan.baths },
@@ -57,7 +56,6 @@ export default async function FloorPlanDetailPage({ params }: Props) {
       {/* Header */}
       <Reveal>
         <div className="mt-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-brand">{plan.homeType}</p>
           <h1 className="mt-2 text-3xl text-brand sm:text-4xl md:text-5xl">{plan.name}</h1>
         </div>
       </Reveal>
