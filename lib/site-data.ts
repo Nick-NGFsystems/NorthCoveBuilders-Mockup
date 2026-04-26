@@ -173,6 +173,11 @@ export const floorPlans = [
     garageStalls: 3,
     image: "/floor-plans/TheWaveCrest.png",
     planUrl: "http://www.northcovebuilders.com/multi-story/1876/",
+    planImages: [
+      { label: "Main Floor", src: "/floor-plans/the-wave-crest/main.png" },
+      { label: "Upper Floor", src: "/floor-plans/the-wave-crest/upper.png" },
+      { label: "Lower Level", src: "/floor-plans/the-wave-crest/lower.png" },
+    ],
   },
   {
     name: "The Seascape",
