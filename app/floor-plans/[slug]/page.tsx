@@ -78,7 +78,7 @@ export default async function FloorPlanDetailPage({ params }: Props) {
       <Reveal>
         <div className="mt-10">
           <h2 className="text-xl font-semibold text-brand">Plan Details</h2>
-          <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {stats.map(({ label, value }) => (
               <div key={label} className="card-soft rounded-xl p-4 min-w-0">
                 <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-brand/70 truncate">{label}</dt>
