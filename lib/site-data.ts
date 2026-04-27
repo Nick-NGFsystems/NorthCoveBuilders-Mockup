@@ -422,24 +422,45 @@ export const floorPlans = [
   },
 ];
 
-export const availableHomes = [
+export const availableProperties = [
   {
-    name: "Prairie View Residence",
-    image: "/placeholders/image-coming-soon.svg",
+    name: "Lot 271 — Railside West #8",
+    address: "8071 Erie Dr, Byron Center, MI",
+    status: "Under Construction" as const,
+    price: "$920,000",
+    image: "/available/erie-dr-rendering.jpg",
+    images: ["/available/erie-dr-rendering.jpg", "/available/erie-drive-flier.png"],
+    flierPdf: "/available/lot-271.pdf",
+    listingUrl: "",
   },
   {
-    name: "Harbor Light Home",
-    image: "/placeholders/image-coming-soon.svg",
+    name: "Lot D",
+    address: "6537 118th Ave Lot D, Fennville, MI 49408",
+    status: "Vacant Lot" as const,
+    price: "",
+    image: "/available/lot-d-1.jpg",
+    images: ["/available/lot-d-1.jpg", "/available/lot-d-2.jpg", "/available/lot-d-3.jpg"],
+    flierPdf: "",
+    listingUrl: "https://my.flexmls.com/ElishaFoster/search/shared_links/DriUK/listings/20250726140022036183000000",
   },
-];
-
-export const availableSites = [
   {
-    name: "Hudsonville Meadow Lot",
-    image: "/placeholders/image-coming-soon.svg",
+    name: "Lot E",
+    address: "Blueberry Hill Development, Fennville, MI",
+    status: "Vacant Lot" as const,
+    price: "$180,000",
+    image: "/available/blueberry-site-map.jpg",
+    images: ["/available/blueberry-site-map.jpg"],
+    flierPdf: "",
+    listingUrl: "",
   },
   {
-    name: "Jenison Ridge Homesite",
-    image: "/placeholders/image-coming-soon.svg",
+    name: "Lot F",
+    address: "Blueberry Hill Development, Fennville, MI",
+    status: "Vacant Lot" as const,
+    price: "$165,000",
+    image: "/available/blueberry-site-map.jpg",
+    images: ["/available/blueberry-site-map.jpg"],
+    flierPdf: "",
+    listingUrl: "",
   },
 ];

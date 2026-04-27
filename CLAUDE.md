@@ -166,4 +166,174 @@ Already set — do not regress.
 
 ## Content — `lib/site-data.ts`
 
-All hardcoded fallbacks + static data live here. The NGF portal editor overrides these via `content['…']`, but when the DB has no value or the site is served outside
+All hardcoded fallbacks + static data live here. The NGF portal editor overrides these via `content['…']`, but when the DB has no value or the site is served outside the portal, these are what renders.
+
+Exported arrays:
+
+- `featuredProjects` — portfolio cards on the home page and Our Work page
+- `reviews` — testimonials shown in `ReviewsCarousel`
+- `teamMembers` — bios on the About page
+- `floorPlans` — Floor Plans page (`Multi-Story` + `Single-Story`)
+- `availableHomes` / `availableSites` — Available page
+
+### Floor Plans
+
+Each plan has:
+```ts
+{
+  name: string          // Display name
+  homeType: string      // "Multi-Story" | "Single-Story"
+  squareFeet: number
+  bedrooms: number
+  baths: number
+  garageStalls: number
+  image: string         // Path under /public — e.g. "/floor-plans/TheBloomPointe.jpg"
+  planUrl: string       // External link. Empty string = no button shown.
+}
+```
+
+The "View Floor Plan" button on each card only renders when `planUrl` is non-empty.
+
+---
+
+## Contact Form
+
+```
+User submits ContactForm
+  → POST /api/contact/route.ts
+  → Zod validation
+  → Insert row into Neon via Drizzle (db/schema.ts → contact_submissions table)
+  → Send email via Resend to EMAIL_TO
+```
+
+Schema is in `db/schema.ts`. Single Drizzle client exported from `db/client.ts` — always import from there, never instantiate another.
+
+---
+
+## Route Structure
+
+```
+app/
+  layout.tsx                  ← Wraps all pages, mounts NgfEditBridge, fetches content once
+  page.tsx                    ← Home (hero, about, projects, reviews)
+  about/page.tsx              ← Team, Mission/Values, Process (6 editable steps)
+  our-work/page.tsx           ← Full portfolio grid with category filter
+  floor-plans/page.tsx        ← Floor plan cards by type
+  floor-plans/[slug]/page.tsx ← Individual floor plan detail
+  available/page.tsx          ← Available homes and sites
+  contact/page.tsx            ← Contact form
+  gallery/page.tsx            ← Houzz gallery link page
+  api/contact/route.ts        ← Contact form POST handler
+
+components/
+  NgfEditBridge.tsx           ← Portal editor integration — do not remove
+  layout/
+    Navbar.tsx                ← Sticky nav, mobile menu, "More" dropdown
+    Footer.tsx
+    PageChrome.tsx            ← Wraps pages with nav + footer, threads content prop
+  sections/
+    ReviewsCarousel.tsx       ← Horizontally scrollable review cards (client component)
+    ContactForm.tsx           ← Contact/inquiry form (client component)
+    ContactSection.tsx        ← Contact block shown on every page except /contact
+    PortfolioFilterGrid.tsx   ← Filterable project grid (client component)
+    TeamMemberBio.tsx         ← Expandable team bio (client component)
+  motion/
+    Reveal.tsx                ← Framer Motion scroll reveal wrapper
+
+lib/
+  site-data.ts                ← Hardcoded content fallbacks + static plan/review/team data
+  ngf.ts                      ← getNgfContent(), getItems() — NGF portal content fetch
+  analytics.ts
+  email.ts
+
+db/
+  client.ts                   ← Single Drizzle/Neon client
+  schema.ts                   ← Database schema (contact_submissions)
+```
+
+---
+
+## Design System
+
+The site uses Tailwind 4 + CSS variables in `app/globals.css`. Key utility classes:
+
+- `btn-brand` — primary CTA button (brand navy, rounded-full)
+- `section-shell` — standard page section padding and max-width
+- `card-soft` — white card with subtle border and shadow
+- `text-brand`, `bg-brand`, `border-brand` — use these instead of hex literals for the brand navy (`#0f2f57`)
+
+---
+
+## Navbar
+
+`Navbar.tsx` has two link arrays:
+
+- `navLinks` — main nav bar: Home, About, Our Work, Floor Plans
+- `secondaryLinks` — "More" dropdown: Houzz Gallery, Available
+
+The "Let's connect!" button is a separate CTA always visible, linking to `/contact`. Do not add a Contact link to `navLinks` — the CTA button covers it.
+
+In edit mode the bridge lets the site's own React state handle dropdown toggles (aria-haspopup/aria-expanded), so clicking the "More" button opens the menu naturally and clicking inside opens the edit popover for that link's text.
+
+---
+
+## Environment Variables
+
+```
+DATABASE_URL              ← Neon Postgres connection string (pooled)
+RESEND_API_KEY            ← Resend API key
+EMAIL_FROM                ← Verified sender, e.g. "North Cove Builders <hello@northcovebuilders.com>"
+EMAIL_TO                  ← Recipient of contact form submissions
+NEXT_PUBLIC_SITE_URL      ← Full site URL, e.g. https://northcovebuilders.com — MUST match client_configs.site_url in NGF
+NGF_APP_URL               ← Optional. Defaults to https://app.ngfsystems.com
+```
+
+`NEXT_PUBLIC_SITE_URL` is critical. The NGF public content API matches by normalized domain — if this env var doesn't match `client_configs.site_url` exactly (case, `www.`, trailing slash all normalized away), the site renders only hardcoded defaults.
+
+---
+
+## Pushing Code
+
+Use the portable `github-push.py` (resolves the repo dynamically — no hardcoded session path):
+
+```bash
+python3 github-push.py NorthCoveBuilders-Mockup "commit message"
+```
+
+Or from inside a Cowork session, if you've set `NGF_REPOS_ROOT` or the repo is at a standard location, any recent `github-push.py` from this machine's `~/GitHub/` will work.
+
+---
+
+## Known Gaps / Integration Checklist
+
+Things that are shipped but **not verified end-to-end**, or known rough edges. Skim before starting a multi-hour session.
+
+| Area | Status | Notes |
+|---|---|---|
+| Bridge version | ⚠️ May lag | `components/NgfEditBridge.tsx` must match the reference in `NGF-Systems-app` root CLAUDE.md. Bridge updates are synced by hand across client sites — if you change the editor's postMessage contract, propagate here and to WrenchTime-Cycles. Currently supports: `setEditMode`, `contentUpdate` (text + image routing via `dataset.ngfDefault`), `scrollToField`, `addGroupItem`, `removeGroupItem`, `moveGroupItem`. |
+| `<select><option>` editing | ❌ Not supported | Native browser UI; the bridge can't intercept. Contact form dropdowns have editable labels but the option values are fixed in source. |
+| Multi-story floor plan images | ✅ Present | `public/floor-plans/*.jpg` |
+| Single-story floor plan images | ⚠️ Placeholder | Still using `/placeholders/image-coming-soon.svg`. Replace per-plan when renderings are available. |
+| `planUrl` for all plans | ⚠️ Some empty | Plans with empty `planUrl` correctly suppress the "View Floor Plan" button — double-check when adding a new plan. |
+| `reviews` / `featuredProjects` / `teamMembers` annotations | ✅ Editable | All three render inside `data-ngf-group` containers; clients can add/remove/reorder from the editor sidebar. |
+| CSP frame-ancestors | ✅ Set | Removing it breaks the portal editor's iframe preview. Do not remove. |
+
+**When finishing a session, add or update an entry here for anything you committed but couldn't verify live.** Saves the next agent the audit-from-scratch round-trip.
+
+---
+
+## What Not To Do
+
+- Do not add Clerk, Prisma, or Stripe to this project — it has no auth and no payments (the NGF main app handles all that separately)
+- Do not create an admin panel or CMS in this repo — content editing happens through the NGF portal
+- Do not hardcode content inline in page files for new content — add to `site-data.ts` as the fallback AND read from `content['key'] || fallback` so the portal can override it
+- Do not use `next/image` with `fill` for fields that need to be editable as images — the bridge needs a plain `<img>` to read/write `src` directly
+- Do not use `??` instead of `||` for content fallbacks — published content may contain `''` which `??` doesn't catch, so the empty value would render instead of the hardcoded default
+- Do not remove `NgfEditBridge` from `app/layout.tsx` — the portal editor breaks without it
+- Do not remove the CSP `frame-ancestors` header in `next.config.ts` — the editor iframe breaks without it
+- Do not change the bridge contract in isolation — every change must be synced to all client sites (see Known Gaps table)
+- Do not add inline styles — Tailwind and the design system classes only
+- Do not add a Contact link to the main navbar — the "Let's connect!" button covers it
+- Do not upgrade to a different ORM — Drizzle is correct for this project; Prisma is for NGF-Systems-app only
+- Do not rename or restructure `lib/site-data.ts` — it's the hardcoded-fallback source of truth
+- Do not omit any of `data-ngf-field`, `data-ngf-label`, `data-ngf-type`, `data-ngf-section` on an editable element — the scraper silently drops fields missing label or section
