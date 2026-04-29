@@ -8,6 +8,7 @@ import type { NgfSiteContent } from "@/lib/ngf";
 const navLinkKeys = [
   { href: "/", key: "home", defaultLabel: "Home" },
   { href: "/about", key: "about", defaultLabel: "About" },
+  { href: "/process", key: "process", defaultLabel: "Our Process" },
   { href: "/our-work", key: "ourWork", defaultLabel: "Our Work" },
   { href: "/floor-plans", key: "floorPlans", defaultLabel: "Floor Plans" },
 ];

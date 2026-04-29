@@ -5,7 +5,9 @@ import type { NgfSiteContent } from "@/lib/ngf";
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/process", label: "Our Process" },
   { href: "/our-work", label: "Our Work" },
+  { href: "/floor-plans", label: "Floor Plans" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -13,7 +15,7 @@ type FooterProps = { content: NgfSiteContent }
 
 export function Footer({ content }: FooterProps) {
 
-  const tagline = content['footer.tagline'] || 'Feel at home before you even move in.'
+  const tagline = content['footer.tagline'] || 'Custom Home Builder serving Grand Rapids, the West Michigan Lakeshore, and surrounding areas.'
   const navLabel = content['footer.navLabel'] || 'Navigation'
   const contactLabel = content['footer.contactLabel'] || 'Contact'
   const phone = content['footer.phone'] || '(616) 682-7422'

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { ReviewsCarousel } from "@/components/sections/ReviewsCarousel";
+import { InteriorPhotoReel } from "@/components/sections/InteriorPhotoReel";
 import { featuredProjects } from "@/lib/site-data";
 import { getNgfContent } from "@/lib/ngf";
 
@@ -20,9 +21,9 @@ export default async function Home() {
   const serviceArea  = content['brand.serviceArea']  || 'West Michigan'
 
   // ── Hero ───────────────────────────────────────────────────────────────────
-  const heroEyebrow     = content['hero.eyebrow']     || `${businessName} - ${serviceArea}`
+  const heroEyebrow     = content['hero.eyebrow']     || `${businessName} - Your custom home builder in ${serviceArea}`
   const heroHeadline    = content['hero.headline']    || "Build the home you've always dreamed of."
-  const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Process.'
+  const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Building Process.'
   const heroCta         = content['hero.cta']         || "Let's connect!"
 
   // ── About ──────────────────────────────────────────────────────────────────
@@ -168,7 +169,10 @@ export default async function Home() {
                       <Image src={project.image} alt={project.name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                     </div>
                     <div className="p-5 text-center">
-                      <h3 className="text-xl text-brand">{project.name}</h3>
+                      <h3 className="text-xl font-semibold text-brand sm:text-2xl">{project.name}</h3>
+                      {project.location && (
+                        <p className="mt-0.5 text-sm text-foreground/50">{project.location}</p>
+                      )}
                     </div>
                   </Link>
                   <div className="px-5 pb-5 text-center">
@@ -182,6 +186,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Interior Photo Reel ── */}
+      <InteriorPhotoReel />
 
       {/* ── Reviews ── */}
       <section className="section-shell">

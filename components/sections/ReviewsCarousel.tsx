@@ -96,6 +96,9 @@ export function ReviewsCarousel() {
                 </button>
               ) : null}
               <p className="mt-5 text-sm font-semibold text-foreground">{review.name}</p>
+              {review.location && (
+                <p className="text-xs text-foreground/50">{review.location}</p>
+              )}
               <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1 text-xs font-medium text-foreground/80">
                 <span
                   className="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white"

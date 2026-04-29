@@ -67,10 +67,13 @@ export function PortfolioFilterGrid({ content = {} }: Props) {
                     data-ngf-label="Project Name"
                     data-ngf-type="text"
                     data-ngf-section="OurWork"
-                    className="text-lg text-brand"
+                    className="text-xl font-semibold text-brand sm:text-2xl"
                   >
                     {name}
                   </h3>
+                  {project.location && (
+                    <p className="mt-0.5 text-sm text-foreground/50">{project.location}</p>
+                  )}
                 </div>
               </Link>
             </article>
