@@ -18,6 +18,7 @@ export default async function AboutPage() {
 
   const heroEyebrow = content['about.heroEyebrow'] || 'About North Cove Builders'
   const heroHeading = content['about.heroHeading'] || 'A Clear and Personal Home Building Process from Design to Move-In'
+  const heroIntro   = content['about.heroIntro']   || 'North Cove Builders has built over 250 custom homes in West Michigan, with experience spanning a wide range of settings and lifestyles. From waterfront lake homes and homes on rural acreage to thoughtfully designed neighborhood residences and short-term rental properties, each project is tailored to fit the land, the vision, and the way our clients live. Whether building on a wooded parcel, a lakefront lot, or within a growing community, we bring the same level of detail, organization, and care to every home we create.'
   const teamHeading = content['about.teamHeading'] || 'The Team Behind Your Building Experience'
   const valuesHeading = content['about.valuesHeading'] || 'We Keep God and our values at the forefront of everything we do'
   const valuesMission = content['about.valuesMission'] || 'At North Cove Builders, our faith & core values guide every decision we make. As a custom home builder, we are committed to creating a building experience that is personal, enjoyable, and that your new home is everything you\'ve dreamt it would be.'
@@ -56,6 +57,15 @@ export default async function AboutPage() {
           >
             {heroHeading}
           </h1>
+          <p
+            data-ngf-field="about.heroIntro"
+            data-ngf-label="Intro Paragraph"
+            data-ngf-type="textarea"
+            data-ngf-section="About"
+            className="mt-6 text-center text-base leading-8 text-foreground/70 md:max-w-3xl md:text-left"
+          >
+            {heroIntro}
+          </p>
         </div>
       </section>
 

@@ -187,9 +187,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── Interior Photo Reel ── */}
-      <InteriorPhotoReel />
-
       {/* ── Reviews ── */}
       <section className="section-shell">
         <Reveal>
@@ -209,6 +206,9 @@ export default async function Home() {
           </div>
         </Reveal>
       </section>
+
+      {/* ── Interior Photo Reel ── */}
+      <InteriorPhotoReel />
 
       {/* Hidden brand anchors for portal editor */}
       <span
