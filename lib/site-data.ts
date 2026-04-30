@@ -36,7 +36,7 @@ export const featuredProjects = [
   },
   {
     name: "Conway",
-    location: "",
+    location: "Byron Center, MI",
     image: "/projects/conway.jpg",
     category: "Ranch",
     houzzUrl: "https://www.houzz.com/hznb/projects/conway-pj-vj~7698805",
@@ -50,7 +50,7 @@ export const featuredProjects = [
   },
   {
     name: "Emerald",
-    location: "",
+    location: "Grand Rapids, MI",
     image: "/projects/emerald.jpg",
     category: "Two Story",
     houzzUrl: "https://www.houzz.com/hznb/projects/emerald-pj-vj~3383027",
