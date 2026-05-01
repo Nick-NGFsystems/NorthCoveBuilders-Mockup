@@ -445,7 +445,7 @@ export const availableProperties = [
     name: "Lot 271 — Railside West #8",
     address: "8071 Erie Dr, Byron Center, MI",
     status: "Under Construction" as const,
-    price: "$920,000",
+    price: "$929,000",
     image: "/available/erie-dr-rendering.jpg",
     images: ["/available/erie-dr-rendering.jpg", "/available/erie-drive-flier.png"],
     flierPdf: "/available/lot-271.pdf",
