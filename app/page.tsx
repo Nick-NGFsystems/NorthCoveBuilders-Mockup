@@ -21,7 +21,8 @@ export default async function Home() {
   const serviceArea  = content['brand.serviceArea']  || 'West Michigan'
 
   // ── Hero ───────────────────────────────────────────────────────────────────
-  const heroEyebrow     = content['hero.eyebrow']     || `${businessName} - Your custom home builder in ${serviceArea}`
+  const heroEyebrowLine1 = content['hero.eyebrowLine1'] || businessName
+  const heroEyebrowLine2 = content['hero.eyebrowLine2'] || `Your custom home builder in ${serviceArea}`
   const heroHeadline    = content['hero.headline']    || "Build the home you've always dreamed of."
   const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Building Process.'
   const heroCta         = content['hero.cta']         || "Let's connect!"
@@ -54,15 +55,26 @@ export default async function Home() {
         <div className="section-shell relative z-10 flex min-h-[78lvh] items-end pb-12 md:items-end">
           <Reveal>
             <div className="mx-auto w-full max-w-2xl space-y-6 text-center md:mx-0 md:text-left">
-              <p
-                data-ngf-field="hero.eyebrow"
-                data-ngf-label="Eyebrow Text"
-                data-ngf-type="text"
-                data-ngf-section="Hero"
-                className="text-sm font-semibold uppercase tracking-[0.2em] text-white/85"
-              >
-                {heroEyebrow}
-              </p>
+              <div className="space-y-0.5">
+                <p
+                  data-ngf-field="hero.eyebrowLine1"
+                  data-ngf-label="Eyebrow Line 1"
+                  data-ngf-type="text"
+                  data-ngf-section="Hero"
+                  className="text-sm font-semibold uppercase tracking-[0.2em] text-white/85"
+                >
+                  {heroEyebrowLine1}
+                </p>
+                <p
+                  data-ngf-field="hero.eyebrowLine2"
+                  data-ngf-label="Eyebrow Line 2"
+                  data-ngf-type="text"
+                  data-ngf-section="Hero"
+                  className="text-sm font-semibold uppercase tracking-[0.2em] text-white/85"
+                >
+                  {heroEyebrowLine2}
+                </p>
+              </div>
               <h1
                 data-ngf-field="hero.headline"
                 data-ngf-label="Headline"
