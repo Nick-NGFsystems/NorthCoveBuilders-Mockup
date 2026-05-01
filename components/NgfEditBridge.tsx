@@ -49,6 +49,13 @@ export default function NgfEditBridge() {
         cursor: pointer !important;
       }
 
+      /* Force-reveal the desktop More dropdown in edit mode so its items are clickable */
+      [data-ngf-edit="true"] #desktop-more-menu {
+        pointer-events: auto !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+      }
+
       /* Navigation popup injected by NgfEditBridge */
       #ngf-nav-popup {
         position: fixed;

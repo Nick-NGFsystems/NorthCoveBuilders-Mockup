@@ -53,7 +53,8 @@ export function PortfolioFilterGrid({ content = {} }: Props) {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, idx) => {
-          const name = content[`ourWork.projects.${idx}.name`] || project.name
+          const name     = content[`ourWork.projects.${idx}.name`]     || project.name
+          const location = content[`ourWork.projects.${idx}.location`] || project.location || ''
           return (
           <Reveal key={project.name}>
             <article className="overflow-hidden rounded-2xl border border-black/5 bg-white">
@@ -71,8 +72,16 @@ export function PortfolioFilterGrid({ content = {} }: Props) {
                   >
                     {name}
                   </h3>
-                  {project.location && (
-                    <p className="mt-0.5 text-sm text-foreground/50">{project.location}</p>
+                  {location && (
+                    <p
+                      data-ngf-field={`ourWork.projects.${idx}.location`}
+                      data-ngf-label="Project Location"
+                      data-ngf-type="text"
+                      data-ngf-section="OurWork"
+                      className="mt-0.5 text-sm text-foreground/50"
+                    >
+                      {location}
+                    </p>
                   )}
                 </div>
               </Link>

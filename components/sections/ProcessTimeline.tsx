@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 
@@ -47,30 +47,6 @@ const heroStats = [
 
 type Step = { title: string; body: string };
 
-// ── Expanded panel (used by mobile step rows) ────────────────────────────────
-
-function ExpandedPanel({ step }: { step: Step }) {
-  return (
-    <div className="flex flex-col rounded-2xl border border-brand/15 bg-white p-6 shadow-sm">
-      <div className="flex flex-1 items-center justify-center overflow-hidden rounded-xl bg-slate-100 min-h-[140px]">
-        <div className="flex flex-col items-center gap-2 text-slate-300">
-          <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" aria-hidden="true">
-            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-            <path d="M21 15l-5-5L5 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="text-sm font-medium">Photo coming soon</span>
-        </div>
-      </div>
-      <p className="mt-4 text-sm italic leading-7 text-foreground/50">
-        More detail about the{" "}
-        <strong className="not-italic font-semibold text-foreground/60">{step.title}</strong>{" "}
-        stage — including photos, timelines, and what to expect at each milestone.
-      </p>
-    </div>
-  );
-}
-
 // ── Desktop grid card ────────────────────────────────────────────────────────
 
 function DesktopGridCard({ step, index, stepLabel }: { step: Step; index: number; stepLabel: string }) {
@@ -90,8 +66,24 @@ function DesktopGridCard({ step, index, stepLabel }: { step: Step; index: number
           {stepLabel} {index + 1}
         </span>
       </div>
-      <h3 className="mt-3 text-lg font-semibold text-foreground">{step.title}</h3>
-      <p className="mt-2 text-sm leading-7 text-foreground/70">{step.body}</p>
+      <h3
+        data-ngf-field={`process.steps.${index}.title`}
+        data-ngf-label="Step Title"
+        data-ngf-type="text"
+        data-ngf-section="Process"
+        className="mt-3 text-lg font-semibold text-foreground"
+      >
+        {step.title}
+      </h3>
+      <p
+        data-ngf-field={`process.steps.${index}.body`}
+        data-ngf-label="Step Body"
+        data-ngf-type="textarea"
+        data-ngf-section="Process"
+        className="mt-2 text-sm leading-7 text-foreground/70"
+      >
+        {step.body}
+      </p>
     </motion.div>
   );
 }
@@ -119,8 +111,24 @@ function StepCard({
           {stepLabel} {index + 1}
         </span>
       </div>
-      <h3 className="mt-3 text-lg font-semibold text-foreground">{step.title}</h3>
-      <p className="mt-2 text-sm leading-7 text-foreground/70">{step.body}</p>
+      <h3
+        data-ngf-field={`process.steps.${index}.title`}
+        data-ngf-label="Step Title"
+        data-ngf-type="text"
+        data-ngf-section="Process"
+        className="mt-3 text-lg font-semibold text-foreground"
+      >
+        {step.title}
+      </h3>
+      <p
+        data-ngf-field={`process.steps.${index}.body`}
+        data-ngf-label="Step Body"
+        data-ngf-type="textarea"
+        data-ngf-section="Process"
+        className="mt-2 text-sm leading-7 text-foreground/70"
+      >
+        {step.body}
+      </p>
     </div>
   );
 }
@@ -130,7 +138,6 @@ function StepCard({
 function MobileStepRow({ step, index, stepLabel }: { step: Step; index: number; stepLabel: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: false, margin: "-20% 0px -20% 0px" });
-  const [expanded, setExpanded] = useState(false);
 
   return (
     <motion.div
@@ -138,7 +145,7 @@ function MobileStepRow({ step, index, stepLabel }: { step: Step; index: number; 
       ref={ref}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       className="flex gap-4"
     >
       {/* Circle + connector */}
@@ -151,45 +158,9 @@ function MobileStepRow({ step, index, stepLabel }: { step: Step; index: number; 
         <div className="mt-2 flex-1 w-px bg-brand/20" />
       </div>
 
-      {/* Card + expandable section below */}
+      {/* Card */}
       <div className="pb-8 flex-1 min-w-0">
-        <div className="relative">
-          <StepCard step={step} index={index} stepLabel={stepLabel} isInView={isInView} />
-          {/* Arrow on bottom-right, pointing down */}
-          <button
-            type="button"
-            onClick={() => setExpanded((e) => !e)}
-            aria-expanded={expanded}
-            aria-label={expanded ? "Collapse detail" : "Expand detail"}
-            className="absolute -bottom-4 right-6 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-brand text-white shadow-md transition hover:bg-brand/80"
-          >
-            <motion.svg
-              viewBox="0 0 24 24" className="h-5 w-5" fill="none"
-              animate={{ rotate: expanded ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-              aria-hidden="true"
-            >
-              <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </motion.svg>
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              key="mobile-panel"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="mt-6">
-                <ExpandedPanel step={step} />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <StepCard step={step} index={index} stepLabel={stepLabel} isInView={isInView} />
       </div>
     </motion.div>
   );

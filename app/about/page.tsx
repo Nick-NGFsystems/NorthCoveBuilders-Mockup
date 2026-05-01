@@ -160,15 +160,28 @@ export default async function AboutPage() {
           >
             {valuesMission}
           </p>
-          <p
-            data-ngf-field="about.valuesStatement"
-            data-ngf-label="Values Statement"
-            data-ngf-type="textarea"
-            data-ngf-section="About"
-            className="mt-3 text-center leading-8 text-foreground/80 md:text-left"
-          >
-            {valuesStatement}
-          </p>
+          {/* Only render when non-empty so an unset field doesn't add blank space */}
+          {valuesStatement ? (
+            <p
+              data-ngf-field="about.valuesStatement"
+              data-ngf-label="Values Statement"
+              data-ngf-type="textarea"
+              data-ngf-section="About"
+              className="mt-3 text-center leading-8 text-foreground/80 md:text-left"
+            >
+              {valuesStatement}
+            </p>
+          ) : (
+            /* sr-only anchor keeps the field discoverable by the portal scraper */
+            <span
+              data-ngf-field="about.valuesStatement"
+              data-ngf-label="Values Statement"
+              data-ngf-type="textarea"
+              data-ngf-section="About"
+              aria-hidden="true"
+              className="sr-only"
+            />
+          )}
         </Reveal>
 
         <div className="mt-8 grid gap-3 md:hidden">
