@@ -49,7 +49,7 @@ export default async function GalleryPage() {
             {body}
           </p>
           <Link
-            href="https://www.houzz.com/professionals/home-builders"
+            href="https://www.houzz.com/professionals/home-builders/north-cove-builders-pfvwus-pf~1260420502"
             className="btn-brand mt-8"
             target="_blank"
             rel="noreferrer"
