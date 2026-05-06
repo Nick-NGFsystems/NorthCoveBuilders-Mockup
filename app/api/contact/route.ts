@@ -14,7 +14,7 @@ const contactSchema = z.object({
   bedrooms: z.string().optional(),
   bathrooms: z.string().optional(),
   idealBudget: z.string().optional(),
-  message: z.string().min(10),
+  message: z.string().min(1),
 });
 
 export async function POST(request: Request) {
