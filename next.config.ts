@@ -13,6 +13,23 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      // Old WordPress site pages → nearest equivalent on new site
+      { source: "/parade-of-homes", destination: "/our-work", permanent: true },
+      { source: "/parade-of-homes/", destination: "/our-work", permanent: true },
+      { source: "/property/:path*", destination: "/available", permanent: true },
+      { source: "/author/:path*", destination: "/about", permanent: true },
+      { source: "/home-sites", destination: "/available", permanent: true },
+      { source: "/home-sites/", destination: "/available", permanent: true },
+      { source: "/our-home-plans", destination: "/floor-plans", permanent: true },
+      { source: "/our-home-plans/", destination: "/floor-plans", permanent: true },
+      { source: "/homes-for-sale", destination: "/available", permanent: true },
+      { source: "/homes-for-sale/", destination: "/available", permanent: true },
+      // Catch-all numeric WordPress post IDs
+      { source: "/:id(\\d+)-:slug*", destination: "/", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
