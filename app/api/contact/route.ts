@@ -26,20 +26,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: "Please complete all fields." }, { status: 400 });
     }
 
-    const db = getDb();
-
-    await db.insert(contactSubmissions).values({
-      name: parsed.data.name,
-      email: parsed.data.email,
-      phone: parsed.data.phone,
-      hasLot: parsed.data.hasLot ?? "",
-      timeline: parsed.data.timeline ?? "",
-      homeType: parsed.data.homeType ?? "",
-      bedrooms: parsed.data.bedrooms ?? "",
-      bathrooms: parsed.data.bathrooms ?? "",
-      idealBudget: parsed.data.idealBudget ?? "",
-      message: parsed.data.message,
-    });
+    // DB insert is optional — silently skip if DATABASE_URL is not configured
+    if (process.env.DATABASE_URL) {
+      try {
+        const db = getDb();
+        await db.insert(contactSubmissions).values({
+          name: parsed.data.name,
+          email: parsed.data.email,
+          phone: parsed.data.phone,
+          hasLot: parsed.data.hasLot ?? "",
+          timeline: parsed.data.timeline ?? "",
+          homeType: parsed.data.homeType ?? "",
+          bedrooms: parsed.data.bedrooms ?? "",
+          bathrooms: parsed.data.bathrooms ?? "",
+          idealBudget: parsed.data.idealBudget ?? "",
+          message: parsed.data.message,
+        });
+      } catch (dbError) {
+        console.warn("DB insert skipped:", dbError);
+      }
+    }
 
     await sendContactNotification(parsed.data);
 
