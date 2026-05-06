@@ -26,8 +26,6 @@ const nextConfig: NextConfig = {
       { source: "/our-home-plans/", destination: "/floor-plans", permanent: true },
       { source: "/homes-for-sale", destination: "/available", permanent: true },
       { source: "/homes-for-sale/", destination: "/available", permanent: true },
-      // Catch-all numeric WordPress post IDs
-      { source: "/:id(\\d+)-:slug*", destination: "/", permanent: true },
     ];
   },
   async headers() {
