@@ -112,13 +112,14 @@ function buildHtml({
 export async function sendContactNotification(args: ContactEmailArgs) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM;
-  const to = process.env.EMAIL_TO;
+  const toRaw = process.env.EMAIL_TO;
 
-  if (!apiKey || !from || !to) {
+  if (!apiKey || !from || !toRaw) {
     console.warn("Email env vars not configured — skipping notification.");
     return;
   }
 
+  const to = toRaw.split(",").map((e) => e.trim()).filter(Boolean);
   const resend = new Resend(apiKey);
 
   const { name, email, phone, hasLot, timeline, homeType, bedrooms, bathrooms, idealBudget, message } = args;
