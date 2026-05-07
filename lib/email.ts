@@ -39,7 +39,7 @@ function buildHtml({
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Georgia,serif;">
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,Helvetica,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 16px;">
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">
@@ -47,8 +47,8 @@ function buildHtml({
         <!-- Header -->
         <tr>
           <td style="background:#0f2f57;padding:28px 32px;">
-            <p style="margin:0;color:#a8c4e0;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">North Cove Builders</p>
-            <h1 style="margin:6px 0 0;color:#ffffff;font-size:22px;font-weight:normal;font-family:Georgia,serif;">New Inquiry</h1>
+            <p style="margin:0;color:#a8c4e0;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:Arial,Helvetica,sans-serif;">North Cove Builders</p>
+            <h1 style="margin:6px 0 0;color:#ffffff;font-size:22px;font-weight:600;font-family:Arial,Helvetica,sans-serif;">New Inquiry</h1>
           </td>
         </tr>
 
