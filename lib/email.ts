@@ -16,8 +16,8 @@ type ContactEmailArgs = {
 function row(label: string, value: string) {
   return `
     <tr>
-      <td style="padding:8px 16px 8px 0;color:#6b7280;font-size:13px;white-space:nowrap;vertical-align:top;width:140px;">${label}</td>
-      <td style="padding:8px 0;color:#111827;font-size:14px;vertical-align:top;">${value}</td>
+      <td style="padding:8px 16px 8px 0;color:#6b7280;font-size:13px;font-family:Arial,Helvetica,sans-serif;white-space:nowrap;vertical-align:top;width:140px;">${label}</td>
+      <td style="padding:8px 0;color:#111827;font-size:14px;font-family:Arial,Helvetica,sans-serif;vertical-align:top;">${value}</td>
     </tr>`;
 }
 
@@ -81,7 +81,7 @@ function buildHtml({
           <td style="padding:24px 32px 0;">
             <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 20px;">
             <p style="margin:0 0 12px;font-size:13px;color:#6b7280;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;">Message</p>
-            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;">${message}</p>
+            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;">${message}</p>
           </td>
         </tr>
 
