@@ -10,7 +10,7 @@ type ContactEmailArgs = {
   bedrooms?: string;
   bathrooms?: string;
   idealBudget?: string;
-  message: string;
+  message?: string;
 };
 
 function row(label: string, value: string) {
@@ -81,7 +81,7 @@ function buildHtml({
           <td style="padding:24px 32px 0;">
             <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 20px;">
             <p style="margin:0 0 12px;font-size:13px;color:#6b7280;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;">Message</p>
-            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;">${message}</p>
+            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;">${message ?? ""}</p>
           </td>
         </tr>
 
@@ -140,7 +140,7 @@ export async function sendContactNotification(args: ContactEmailArgs) {
     `Email: ${email}`,
     `Phone: ${phone}`,
     optionalFields,
-    `\nMessage:\n${message}`,
+    message ? `\nMessage:\n${message}` : "",
   ]
     .filter(Boolean)
     .join("\n");
