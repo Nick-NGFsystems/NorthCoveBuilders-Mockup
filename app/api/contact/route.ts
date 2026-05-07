@@ -14,7 +14,7 @@ const contactSchema = z.object({
   bedrooms: z.string().optional(),
   bathrooms: z.string().optional(),
   idealBudget: z.string().optional(),
-  message: z.string().min(1),
+  message: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
           bedrooms: parsed.data.bedrooms ?? "",
           bathrooms: parsed.data.bathrooms ?? "",
           idealBudget: parsed.data.idealBudget ?? "",
-          message: parsed.data.message,
+          message: parsed.data.message ?? "",
         });
       } catch (dbError) {
         console.warn("DB insert skipped:", dbError);
