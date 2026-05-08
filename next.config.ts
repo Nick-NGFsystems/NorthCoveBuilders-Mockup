@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "plus.unsplash.com",
       },
+      {
+        // Vercel Blob — uploaded images from the NGF portal editor
+        protocol: "https",
+        hostname: "public.blob.vercel-storage.com",
+      },
     ],
   },
   async redirects() {
@@ -36,6 +41,22 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value: "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },

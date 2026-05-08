@@ -148,7 +148,7 @@ export default function NgfEditBridge() {
             height: t.rect.height,
           },
         },
-        '*',
+        trustedOrigin ?? 'https://app.ngfsystems.com',
       )
     }
 
@@ -227,9 +227,37 @@ export default function NgfEditBridge() {
     }
     captureDefaults()
 
+    // Track the trusted parent origin once the editor introduces itself.
+    // Initially unknown (could be app.ngfsystems.com or a Vercel preview URL).
+    let trustedOrigin: string | null = null
+
+    // ngfReady goes to '*' because we don't yet know the parent's origin.
+    // After the editor responds with setEditMode we lock in its origin.
     window.parent.postMessage({ type: 'ngfReady' }, '*')
 
+    // Reject image src values that aren't safe — prevents javascript: URIs
+    // or other non-HTTP schemes being injected via a rogue contentUpdate.
+    function sanitizeImageUrl(url: string): string {
+      if (url === '') return ''   // empty = restore default
+      if (/^https?:\/\//i.test(url) || url.startsWith('/') || /^data:image\//i.test(url)) {
+        return url
+      }
+      return ''   // silently drop anything else (javascript:, blob: from untrusted, etc.)
+    }
+
     const messageHandler = (e: MessageEvent) => {
+      // ── Origin guard ────────────────────────────────────────────────────────
+      // Accept messages only from the NGF portal (production or Vercel previews).
+      const isNgfOrigin =
+        e.origin === 'https://app.ngfsystems.com' ||
+        /^https:\/\/[^.]+\.vercel\.app$/.test(e.origin) ||
+        /^http:\/\/localhost(:\d+)?$/.test(e.origin)
+      if (!isNgfOrigin) return
+
+      // Lock in the trusted origin from the first valid message so outbound
+      // postMessages are targeted instead of broadcast to '*'.
+      if (!trustedOrigin) trustedOrigin = e.origin
+
       if (e.data?.type === 'setEditMode') {
         editMode = !!e.data.enabled
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
@@ -249,7 +277,7 @@ export default function NgfEditBridge() {
               // swap `src`; for everything else we swap textContent.
               const next = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
               if (isImageField(el)) {
-                el.setAttribute('src', next)
+                el.setAttribute('src', sanitizeImageUrl(next))
               } else {
                 el.textContent = next
               }
