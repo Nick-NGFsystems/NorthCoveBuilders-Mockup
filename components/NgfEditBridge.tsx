@@ -474,6 +474,14 @@ export default function NgfEditBridge() {
           return
         }
         if (href && href !== '#') {
+          const isExternal = /^https?:\/\//.test(anchor.href) && !anchor.href.startsWith(window.location.origin)
+          if (isExternal) {
+            // External links never navigate the editor iframe — if the link
+            // wraps an editable field (e.g. a nav label), open the edit
+            // popover directly; otherwise block silently.
+            if (editTarget) postFieldClick(editTarget)
+            return
+          }
           const label = anchor.textContent?.trim() || anchor.getAttribute('aria-label') || 'Link'
           showNavPopup(anchor.href, label, e.clientX, e.clientY, editTarget)
           return
