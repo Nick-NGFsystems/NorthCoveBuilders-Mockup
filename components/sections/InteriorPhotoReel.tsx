@@ -17,15 +17,34 @@ const photos = [
 // Duplicate for seamless infinite loop
 const reel = [...photos, ...photos];
 
-export function InteriorPhotoReel() {
+type InteriorPhotoReelProps = {
+  content?: Record<string, string>
+}
+
+export function InteriorPhotoReel({ content = {} }: InteriorPhotoReelProps) {
+  const eyebrow = content['interiorReel.eyebrow'] || 'Interior Craftsmanship'
+  const heading = content['interiorReel.heading'] || 'Every detail, built for how you live.'
+
   return (
     <section className="overflow-hidden bg-brand py-16">
       <div className="section-shell mb-10">
-        <p className="text-center text-sm font-semibold uppercase tracking-[0.15em] text-white/70 md:text-left">
-          Interior Craftsmanship
+        <p
+          data-ngf-field="interiorReel.eyebrow"
+          data-ngf-label="Eyebrow"
+          data-ngf-type="text"
+          data-ngf-section="Interior Reel"
+          className="text-center text-sm font-semibold uppercase tracking-[0.15em] text-white/70 md:text-left"
+        >
+          {eyebrow}
         </p>
-        <h2 className="mt-2 text-center text-2xl text-white sm:text-3xl md:text-left">
-          Every detail, built for how you live.
+        <h2
+          data-ngf-field="interiorReel.heading"
+          data-ngf-label="Heading"
+          data-ngf-type="text"
+          data-ngf-section="Interior Reel"
+          className="mt-2 text-center text-2xl text-white sm:text-3xl md:text-left"
+        >
+          {heading}
         </h2>
       </div>
 

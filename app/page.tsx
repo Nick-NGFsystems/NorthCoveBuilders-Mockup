@@ -220,7 +220,7 @@ export default async function Home() {
       </section>
 
       {/* ── Interior Photo Reel ── */}
-      <InteriorPhotoReel />
+      <InteriorPhotoReel content={content} />
 
       {/* Hidden brand anchors for portal editor */}
       <span
