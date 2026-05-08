@@ -47,7 +47,7 @@ export function ContactSection({ content }: ContactSectionProps) {
         </Reveal>
         <Reveal>
           <div className="mx-auto max-w-3xl">
-            <ContactForm />
+            <ContactForm content={content} />
           </div>
         </Reveal>
       </div>
