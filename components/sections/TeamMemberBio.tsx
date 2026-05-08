@@ -21,7 +21,7 @@ export function TeamMemberBio({ bio, fieldPath }: TeamMemberBioProps) {
 
   return (
     <div>
-      <p {...editorProps} className="mt-3 text-sm leading-7 text-foreground/80 md:hidden">
+      <p className="mt-3 text-sm leading-7 text-foreground/80 md:hidden">
         {expanded
           ? bio
           : `${bio.slice(0, 180).trimEnd()}${bio.length > 180 ? "..." : ""}`}

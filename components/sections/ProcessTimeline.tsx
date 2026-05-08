@@ -289,11 +289,6 @@ export function ProcessTimeline({
         {/* ── Mobile timeline ── */}
         <div
           className="md:hidden"
-          data-ngf-group="process.steps"
-          data-ngf-item-label="Process Step"
-          data-ngf-min-items="1"
-          data-ngf-max-items="12"
-          data-ngf-item-fields='[{"key":"title","label":"Step Title","type":"text"},{"key":"body","label":"Step Body","type":"textarea"}]'
         >
           {steps.map((step, i) => (
             <MobileStepRow

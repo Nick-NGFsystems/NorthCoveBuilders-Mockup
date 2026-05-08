@@ -201,8 +201,7 @@ export function Navbar({ content }: NavbarProps) {
             data-ngf-type="text"
             data-ngf-section="Nav"
           >
-            <span className="sm:hidden">Connect</span>
-            <span className="hidden sm:inline">{ctaLabel}</span>
+            {ctaLabel}
           </Link>
 
           <button
@@ -236,10 +235,6 @@ export function Navbar({ content }: NavbarProps) {
                   menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
                 }`}
                 style={{ transitionDelay: `${index * 45}ms` }}
-                data-ngf-field={`nav.${link.key}`}
-                data-ngf-label={`${link.key.charAt(0).toUpperCase() + link.key.slice(1)} Link`}
-                data-ngf-type="text"
-                data-ngf-section="Nav"
               >
                 {link.label}
               </Link>
