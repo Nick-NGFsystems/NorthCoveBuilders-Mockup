@@ -188,35 +188,14 @@ export default async function AboutPage() {
           <Reveal>
             <details className="rounded-2xl border border-black/5 bg-white p-4">
               <summary className="accordion-summary flex cursor-pointer list-none items-center justify-between gap-3 text-left">
-                <span
-                  data-ngf-field="about.coreValuesHeading"
-                  data-ngf-label="Core Values Heading"
-                  data-ngf-type="text"
-                  data-ngf-section="About"
-                  className="text-lg font-semibold text-brand"
-                >
+                <span className="text-lg font-semibold text-brand">
                   {coreValuesHeading}
                 </span>
                 <span className="accordion-chevron text-brand">▾</span>
               </summary>
-              <ul
-                className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80"
-                data-ngf-group="about.coreValues"
-                data-ngf-item-label="Value"
-                data-ngf-min-items="1"
-                data-ngf-max-items="10"
-                data-ngf-item-fields='[{"key":"text","label":"Value","type":"text"}]'
-              >
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-foreground/80">
                 {coreValues.map((val, i) => (
-                  <li
-                    key={i}
-                    data-ngf-field={`about.coreValues.${i}.text`}
-                    data-ngf-label="Value"
-                    data-ngf-type="text"
-                    data-ngf-section="About"
-                  >
-                    {val.text}
-                  </li>
+                  <li key={i}>{val.text}</li>
                 ))}
               </ul>
             </details>
