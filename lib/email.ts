@@ -13,6 +13,15 @@ type ContactEmailArgs = {
   message?: string;
 };
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}
+
 function row(label: string, value: string) {
   return `
     <tr>
@@ -24,6 +33,12 @@ function row(label: string, value: string) {
 function buildHtml({
   name, email, phone, hasLot, timeline, homeType, bedrooms, bathrooms, idealBudget, message,
 }: ContactEmailArgs) {
+  // Escape all user-supplied values before interpolating into HTML
+  const safeName    = escapeHtml(name)
+  const safeEmail   = escapeHtml(email)
+  const safePhone   = escapeHtml(phone)
+  const safeMessage = escapeHtml(message ?? "")
+
   const optionalRows = [
     ["Lot Status", hasLot],
     ["Timeline", timeline],
@@ -32,8 +47,8 @@ function buildHtml({
     ["Bathrooms", bathrooms],
     ["Ideal Budget", idealBudget],
   ]
-    .filter(([, v]) => Boolean(v && v.trim().length > 0))
-    .map(([label, value]) => row(label as string, value as string))
+    .filter(([, v]) => Boolean(v && (v as string).trim().length > 0))
+    .map(([label, value]) => row(label as string, escapeHtml(value as string)))
     .join("");
 
   return `<!DOCTYPE html>
@@ -57,9 +72,9 @@ function buildHtml({
           <td style="padding:28px 32px 0;">
             <p style="margin:0 0 16px;font-size:13px;color:#6b7280;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;">Contact</p>
             <table cellpadding="0" cellspacing="0" width="100%">
-              ${row("Name", name)}
-              ${row("Email", `<a href="mailto:${email}" style="color:#0f2f57;text-decoration:none;">${email}</a>`)}
-              ${row("Phone", `<a href="tel:${phone}" style="color:#0f2f57;text-decoration:none;">${phone}</a>`)}
+              ${row("Name", safeName)}
+              ${row("Email", `<a href="mailto:${safeEmail}" style="color:#0f2f57;text-decoration:none;">${safeEmail}</a>`)}
+              ${row("Phone", `<a href="tel:${safePhone}" style="color:#0f2f57;text-decoration:none;">${safePhone}</a>`)}
             </table>
           </td>
         </tr>
@@ -81,16 +96,16 @@ function buildHtml({
           <td style="padding:24px 32px 0;">
             <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 20px;">
             <p style="margin:0 0 12px;font-size:13px;color:#6b7280;font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;">Message</p>
-            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;">${message ?? ""}</p>
+            <p style="margin:0;font-size:15px;color:#111827;line-height:1.7;white-space:pre-wrap;font-family:Arial,Helvetica,sans-serif;">${safeMessage}</p>
           </td>
         </tr>
 
         <!-- Reply button -->
         <tr>
           <td style="padding:28px 32px 32px;">
-            <a href="mailto:${email}?subject=Re: Your North Cove Builders Inquiry"
+            <a href="mailto:${safeEmail}?subject=Re%3A%20Your%20North%20Cove%20Builders%20Inquiry"
                style="display:inline-block;background:#0f2f57;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:4px;font-size:14px;font-family:Arial,sans-serif;">
-              Reply to ${name}
+              Reply to ${safeName}
             </a>
           </td>
         </tr>
