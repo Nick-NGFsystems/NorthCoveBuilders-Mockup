@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+// Note: hero background uses a plain <img> (not next/image fill) so the NGF
+// portal bridge can read and write its src directly for image editing.
 import { Reveal } from "@/components/motion/Reveal";
 import { ReviewsCarousel } from "@/components/sections/ReviewsCarousel";
 import { InteriorPhotoReel } from "@/components/sections/InteriorPhotoReel";
@@ -21,11 +23,12 @@ export default async function Home() {
   const serviceArea  = content['brand.serviceArea']  || 'West Michigan'
 
   // ── Hero ───────────────────────────────────────────────────────────────────
-  const heroEyebrowLine1 = content['hero.eyebrowLine1'] || businessName
-  const heroEyebrowLine2 = content['hero.eyebrowLine2'] || `Your custom home builder in ${serviceArea}`
-  const heroHeadline    = content['hero.headline']    || "Build the home you've always dreamed of."
-  const heroSubheadline = content['hero.subheadline'] || 'Custom Designs. Straightforward Pricing. A Clear & Precise Building Process.'
-  const heroCta         = content['hero.cta']         || "Let's connect!"
+  const heroEyebrowLine1      = content['hero.eyebrowLine1']      || businessName
+  const heroEyebrowLine2      = content['hero.eyebrowLine2']      || `Your custom home builder in ${serviceArea}`
+  const heroHeadline          = content['hero.headline']          || "Build the home you've always dreamed of."
+  const heroSubheadline       = content['hero.subheadline']       || 'Custom Designs. Straightforward Pricing. A Clear & Precise Building Process.'
+  const heroCta               = content['hero.cta']               || "Let's connect!"
+  const heroBackgroundImage   = content['hero.backgroundImage']   || '/projects/001.jpg'
 
   // ── About ──────────────────────────────────────────────────────────────────
   const aboutTitle = content['about.title'] || "You'll feel at home long before you move in."
@@ -43,13 +46,15 @@ export default async function Home() {
     <>
       {/* ── Hero ── */}
       <section className="relative min-h-[78lvh] overflow-hidden pt-28 text-white md:pt-24">
-        <Image
-          src="/projects/001.jpg"
+        {/* Plain <img> (not next/image fill) so the NGF bridge can read/write src */}
+        <img
+          src={heroBackgroundImage}
           alt="Featured North Cove Builders custom home"
-          fill
-          priority
-          sizes="100vw"
-          className="origin-top object-cover object-[73%_top] md:object-top"
+          data-ngf-field="hero.backgroundImage"
+          data-ngf-label="Hero Background Image"
+          data-ngf-type="image"
+          data-ngf-section="Hero"
+          className="absolute inset-0 h-full w-full origin-top object-cover object-[73%_top] md:object-top"
         />
         <div className="absolute inset-0 bg-black/35" />
         <div className="section-shell relative z-10 flex min-h-[78lvh] items-end pb-12 md:items-end">
