@@ -183,7 +183,7 @@ export default async function FloorPlansPage() {
       </div>
 
       <Reveal>
-        <div className="mt-10 text-center md:text-left">
+        <div className="mt-10 text-center">
           <Link
             href="/contact"
             data-ngf-field="floorPlans.cta"
