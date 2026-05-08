@@ -127,6 +127,7 @@ export default function NgfEditBridge() {
       section: string
       field: string
       value: string
+      fieldType: string   // data-ngf-type value — sent so editor doesn't rely on schema alone
       rect: DOMRect
     }
 
@@ -137,6 +138,7 @@ export default function NgfEditBridge() {
           section: t.section,
           field:   t.field,
           currentValue: t.value,
+          fieldType: t.fieldType,
           elementRect: {
             top:    t.rect.top,
             left:   t.rect.left,
@@ -449,13 +451,15 @@ export default function NgfEditBridge() {
         const dot = attr.indexOf('.')
         if (dot > -1) {
           const isImg = isImageField(fieldEl)
+          const ngfType = fieldEl.getAttribute('data-ngf-type') || (isImg ? 'image' : 'text')
           editTarget = {
-            section: attr.substring(0, dot),
-            field:   attr.substring(dot + 1),
-            value:   isImg
+            section:   attr.substring(0, dot),
+            field:     attr.substring(dot + 1),
+            value:     isImg
               ? (fieldEl.getAttribute('src') ?? '')
               : (fieldEl.textContent?.trim() ?? ''),
-            rect:    fieldEl.getBoundingClientRect(),
+            fieldType: ngfType,
+            rect:      fieldEl.getBoundingClientRect(),
           }
         }
       }
