@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 
-const hasLotOptions = ["", "Yes", "No", "In Progress"];
-const timelineOptions = ["", "As soon as possible", "3–6 months", "6–12 months", "1–2 years", "2+ years", "Just exploring"];
-const homeTypeOptions = ["", "Ranch", "Two Story", "Not Sure Yet"];
+// Bedrooms and bathrooms are static numbers — not worth portal-editing
 const bedroomOptions = ["", "2", "3", "4", "5", "5+"];
 const bathroomOptions = ["", "1", "1.5", "2", "2.5", "3", "3.5", "4+"];
-const idealBudgetOptions = ["", "$400k - $500k", "$500k - $600k", "$600k - $700k", "$700k - $800k", "$800k - $900k", "$900k+"];
 
 type FormState = {
   name: string;
@@ -59,6 +56,38 @@ export function ContactForm({ content = {} }: Props) {
   const submitIdle    = content['contactForm.submit']      || 'Submit Inquiry'
   const submitSending = content['contactForm.sending']     || 'Sending...'
   const successMsg    = content['contactForm.successMsg']  || 'Thanks! We received your request and will follow up soon.'
+
+  // Dropdown options — editable from portal sidebar (ContactForm section → Show all fields)
+  const hasLotOptions = [
+    '',
+    content['contactForm.options.hasLot.0'] || 'Yes',
+    content['contactForm.options.hasLot.1'] || 'No',
+    content['contactForm.options.hasLot.2'] || 'In Progress',
+  ]
+  const timelineOptions = [
+    '',
+    content['contactForm.options.timeline.0'] || 'As soon as possible',
+    content['contactForm.options.timeline.1'] || '3–6 months',
+    content['contactForm.options.timeline.2'] || '6–12 months',
+    content['contactForm.options.timeline.3'] || '1–2 years',
+    content['contactForm.options.timeline.4'] || '2+ years',
+    content['contactForm.options.timeline.5'] || 'Just exploring',
+  ]
+  const homeTypeOptions = [
+    '',
+    content['contactForm.options.homeType.0'] || 'Ranch',
+    content['contactForm.options.homeType.1'] || 'Two Story',
+    content['contactForm.options.homeType.2'] || 'Not Sure Yet',
+  ]
+  const idealBudgetOptions = [
+    '',
+    content['contactForm.options.idealBudget.0'] || '$400k - $500k',
+    content['contactForm.options.idealBudget.1'] || '$500k - $600k',
+    content['contactForm.options.idealBudget.2'] || '$600k - $700k',
+    content['contactForm.options.idealBudget.3'] || '$700k - $800k',
+    content['contactForm.options.idealBudget.4'] || '$800k - $900k',
+    content['contactForm.options.idealBudget.5'] || '$900k+',
+  ]
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -265,6 +294,29 @@ export function ContactForm({ content = {} }: Props) {
           </span>
         </button>
         <p className={`text-sm ${status === "error" ? "text-red-600" : "text-foreground/70"}`}>{message}</p>
+      </div>
+
+      {/* Dropdown option config — hidden from visitors, editable from portal sidebar.
+          Use "Show all fields" toggle in the editor sidebar, then scroll to ContactForm. */}
+      <div className="sr-only" aria-hidden="true">
+        <span data-ngf-field="contactForm.options.hasLot.0" data-ngf-label="Has Lot Option 1" data-ngf-type="text" data-ngf-section="ContactForm">{hasLotOptions[1]}</span>
+        <span data-ngf-field="contactForm.options.hasLot.1" data-ngf-label="Has Lot Option 2" data-ngf-type="text" data-ngf-section="ContactForm">{hasLotOptions[2]}</span>
+        <span data-ngf-field="contactForm.options.hasLot.2" data-ngf-label="Has Lot Option 3" data-ngf-type="text" data-ngf-section="ContactForm">{hasLotOptions[3]}</span>
+        <span data-ngf-field="contactForm.options.timeline.0" data-ngf-label="Timeline Option 1" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[1]}</span>
+        <span data-ngf-field="contactForm.options.timeline.1" data-ngf-label="Timeline Option 2" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[2]}</span>
+        <span data-ngf-field="contactForm.options.timeline.2" data-ngf-label="Timeline Option 3" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[3]}</span>
+        <span data-ngf-field="contactForm.options.timeline.3" data-ngf-label="Timeline Option 4" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[4]}</span>
+        <span data-ngf-field="contactForm.options.timeline.4" data-ngf-label="Timeline Option 5" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[5]}</span>
+        <span data-ngf-field="contactForm.options.timeline.5" data-ngf-label="Timeline Option 6" data-ngf-type="text" data-ngf-section="ContactForm">{timelineOptions[6]}</span>
+        <span data-ngf-field="contactForm.options.homeType.0" data-ngf-label="Home Type Option 1" data-ngf-type="text" data-ngf-section="ContactForm">{homeTypeOptions[1]}</span>
+        <span data-ngf-field="contactForm.options.homeType.1" data-ngf-label="Home Type Option 2" data-ngf-type="text" data-ngf-section="ContactForm">{homeTypeOptions[2]}</span>
+        <span data-ngf-field="contactForm.options.homeType.2" data-ngf-label="Home Type Option 3" data-ngf-type="text" data-ngf-section="ContactForm">{homeTypeOptions[3]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.0" data-ngf-label="Budget Option 1" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[1]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.1" data-ngf-label="Budget Option 2" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[2]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.2" data-ngf-label="Budget Option 3" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[3]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.3" data-ngf-label="Budget Option 4" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[4]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.4" data-ngf-label="Budget Option 5" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[5]}</span>
+        <span data-ngf-field="contactForm.options.idealBudget.5" data-ngf-label="Budget Option 6" data-ngf-type="text" data-ngf-section="ContactForm">{idealBudgetOptions[6]}</span>
       </div>
     </form>
   );
