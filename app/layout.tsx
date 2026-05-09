@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Serif_Display, Inter } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { LocalBusinessSchema } from "@/app/local-business-schema";
 import { PageChrome } from "@/components/layout/PageChrome";
@@ -92,6 +93,7 @@ export default async function RootLayout({
         <NgfEditBridge />
         <LocalBusinessSchema />
         <PageChrome content={content}>{children}</PageChrome>
+        <Analytics />
       </body>
     </html>
   );
