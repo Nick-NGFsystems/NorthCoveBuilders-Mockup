@@ -112,6 +112,46 @@ export default function NgfEditBridge() {
       #ngf-nav-popup .ngf-edit-btn:hover {
         background: #f3f4f6;
       }
+
+      /* Image field overlay button — permanent visible affordance for image
+         replacement. Solves the discoverability gap: clients don't always
+         realize they can click an image to change it. Positioned by JS on
+         scroll/resize via requestAnimationFrame. */
+      .ngf-image-edit-btn {
+        position: fixed;
+        z-index: 2147483646;
+        padding: 8px 14px;
+        background: rgba(15, 23, 42, 0.92);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+        pointer-events: auto !important;
+        transition: background 0.15s, transform 0.1s;
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+        line-height: 1;
+        user-select: none;
+      }
+      .ngf-image-edit-btn:hover {
+        background: rgba(15, 23, 42, 1);
+        transform: scale(1.04);
+      }
+      .ngf-image-edit-btn:active {
+        transform: scale(0.96);
+      }
+      .ngf-image-edit-btn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
     `
     document.head.appendChild(style)
 
@@ -227,6 +267,87 @@ export default function NgfEditBridge() {
     }
     captureDefaults()
 
+    // ── Image edit-button overlay ─────────────────────────────────────────────
+    // Adds a permanent visible "Replace photo" button on every annotated image
+    // when edit mode is on. Reposition on scroll/resize via rAF throttling.
+    const editButtons = new Map<HTMLElement, HTMLButtonElement>()
+
+    function positionEditButton(btn: HTMLButtonElement, img: HTMLElement) {
+      const rect = img.getBoundingClientRect()
+      // Don't overlay buttons on tiny images (logos / icons) or off-screen ones.
+      if (rect.width < 40 || rect.height < 40) {
+        btn.style.display = 'none'
+        return
+      }
+      btn.style.display = ''
+      // Wait for layout, then position 8px from top-right of the image. Clamp
+      // to viewport so the button is always reachable.
+      const btnWidth = btn.offsetWidth || 140
+      const top  = Math.max(8, Math.min(rect.top + 8, window.innerHeight - 50))
+      const left = Math.max(8, Math.min(rect.right - btnWidth - 8, window.innerWidth - btnWidth - 8))
+      btn.style.top  = `${top}px`
+      btn.style.left = `${left}px`
+    }
+
+    function ensureEditButton(el: HTMLElement) {
+      if (!isImageField(el)) return
+      if (editButtons.has(el)) return
+      const btn = document.createElement('button')
+      btn.className = 'ngf-image-edit-btn'
+      btn.type      = 'button'
+      btn.setAttribute('aria-label', 'Replace photo')
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14.74 6.46l-7.55 7.55a2 2 0 0 0-.55 1.06l-.7 3.45 3.45-.7a2 2 0 0 0 1.06-.55l7.55-7.55-3.26-3.26z"/><path d="M16.6 4.6l2.8 2.8"/></svg>Replace photo'
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation()
+        e.preventDefault()
+        const path = el.getAttribute('data-ngf-field') || ''
+        const dot  = path.indexOf('.')
+        const section = dot === -1 ? path : path.slice(0, dot)
+        const field   = dot === -1 ? ''   : path.slice(dot + 1)
+        const value   = (el as HTMLImageElement).getAttribute('src') ?? ''
+        postFieldClick({
+          section, field, value, fieldType: 'image',
+          rect: el.getBoundingClientRect(),
+        })
+      })
+      document.body.appendChild(btn)
+      editButtons.set(el, btn)
+      // Defer initial positioning until after the button has measured itself.
+      requestAnimationFrame(() => positionEditButton(btn, el))
+    }
+
+    function injectAllImageButtons() {
+      document.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(ensureEditButton)
+    }
+
+    function removeAllImageButtons() {
+      editButtons.forEach(btn => btn.remove())
+      editButtons.clear()
+    }
+
+    function pruneOrphanButtons() {
+      // Buttons whose image element is no longer in the DOM (e.g. removed
+      // repeatable cards) get cleaned up here on the next animation frame.
+      editButtons.forEach((btn, el) => {
+        if (!document.contains(el)) {
+          btn.remove()
+          editButtons.delete(el)
+        }
+      })
+    }
+
+    let positionRAF: number | null = null
+    function schedulePositionUpdate() {
+      if (positionRAF !== null) return
+      positionRAF = window.requestAnimationFrame(() => {
+        pruneOrphanButtons()
+        editButtons.forEach((btn, el) => positionEditButton(btn, el))
+        positionRAF = null
+      })
+    }
+    window.addEventListener('scroll', schedulePositionUpdate, { passive: true, capture: true })
+    window.addEventListener('resize', schedulePositionUpdate)
+
     // Track the trusted parent origin once the editor introduces itself.
     // Initially unknown (could be app.ngfsystems.com or a Vercel preview URL).
     let trustedOrigin: string | null = null
@@ -263,7 +384,13 @@ export default function NgfEditBridge() {
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
         // Re-run in case fields were hydrated after initial capture
         captureDefaults()
-        if (!editMode) dismissNavPopup()
+        if (editMode) {
+          // Add visible "Replace photo" overlay buttons on every image field.
+          injectAllImageButtons()
+        } else {
+          removeAllImageButtons()
+          dismissNavPopup()
+        }
       }
 
       if (e.data?.type === 'contentUpdate' && e.data.content) {
@@ -295,6 +422,8 @@ export default function NgfEditBridge() {
           }
         }
         walk(e.data.content, '')
+        // Image src may have changed — update overlay button positions
+        if (editMode) schedulePositionUpdate()
       }
 
       // Editor asks us to scroll the iframe to a specific field + flash it
@@ -357,6 +486,8 @@ export default function NgfEditBridge() {
         })
         group.appendChild(clone)
         clone.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Add overlay buttons to image fields in the newly added card
+        if (editMode) injectAllImageButtons()
       }
 
       // Editor asks us to reorder two cards within a group. Swap the DOM
@@ -397,6 +528,7 @@ export default function NgfEditBridge() {
             }
           })
         })
+        if (editMode) schedulePositionUpdate()
       }
 
       // Editor asks us to remove a card and re-index subsequent siblings.
@@ -433,6 +565,8 @@ export default function NgfEditBridge() {
             }
           })
         })
+        // Clean up orphan overlay buttons (image elements no longer in DOM)
+        if (editMode) schedulePositionUpdate()
       }
     }
 
@@ -536,6 +670,10 @@ export default function NgfEditBridge() {
     return () => {
       window.removeEventListener('message', messageHandler)
       document.removeEventListener('click', clickHandler, true)
+      window.removeEventListener('scroll', schedulePositionUpdate, true)
+      window.removeEventListener('resize', schedulePositionUpdate)
+      if (positionRAF !== null) window.cancelAnimationFrame(positionRAF)
+      removeAllImageButtons()
       document.getElementById('ngf-edit-styles')?.remove()
       document.documentElement.removeAttribute('data-ngf-edit')
       dismissNavPopup()
@@ -544,3 +682,4 @@ export default function NgfEditBridge() {
 
   return null
 }
+
