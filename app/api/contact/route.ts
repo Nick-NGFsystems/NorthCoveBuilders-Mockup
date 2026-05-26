@@ -32,8 +32,8 @@ export async function POST(request: Request) {
         const db = getDb();
         await db.insert(contactSubmissions).values({
           name: parsed.data.name,
-          email: parsed.data.email,
-          phone: parsed.data.phone,
+          email: parsed.data.email ?? "",
+          phone: parsed.data.phone ?? "",
           hasLot: parsed.data.hasLot ?? "",
           timeline: parsed.data.timeline ?? "",
           homeType: parsed.data.homeType ?? "",
@@ -47,7 +47,11 @@ export async function POST(request: Request) {
       }
     }
 
-    await sendContactNotification(parsed.data);
+    await sendContactNotification({
+      ...parsed.data,
+      email: parsed.data.email ?? "",
+      phone: parsed.data.phone ?? "",
+    });
 
     return NextResponse.json({ message: "Inquiry submitted successfully." }, { status: 200 });
   } catch (error) {
