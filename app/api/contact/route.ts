@@ -6,8 +6,8 @@ import { sendContactNotification } from "@/lib/email";
 
 const contactSchema = z.object({
   name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().min(7),
+  email: z.string().email().optional().or(z.literal('')),
+  phone: z.string().optional(),
   hasLot: z.string().optional(),
   timeline: z.string().optional(),
   homeType: z.string().optional(),

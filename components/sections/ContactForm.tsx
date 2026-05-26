@@ -146,7 +146,6 @@ export function ContactForm({ content = {} }: Props) {
         <label className="grid gap-2 text-sm font-medium">
           {lbl('email', 'Email Label', labels.email)}
           <input
-            required
             value={form.email}
             onChange={(event) => setForm((previous) => ({ ...previous, email: event.target.value }))}
             className="rounded-xl border border-black/10 px-4 py-3 outline-none ring-brand transition focus:ring-2"
@@ -161,7 +160,6 @@ export function ContactForm({ content = {} }: Props) {
         <label className="grid gap-2 text-sm font-medium">
           {lbl('phone', 'Phone Label', labels.phone)}
           <input
-            required
             value={form.phone}
             onChange={(event) => setForm((previous) => ({ ...previous, phone: event.target.value }))}
             className="rounded-xl border border-black/10 px-4 py-3 outline-none ring-brand transition focus:ring-2"
