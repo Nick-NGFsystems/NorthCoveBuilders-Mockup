@@ -8,7 +8,12 @@ export async function getNgfContent(): Promise<NgfSiteContent> {
   try {
     const domain = getDomain().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')
     const url = `${process.env.NGF_APP_URL || 'https://app.ngfsystems.com'}/api/public/content?domain=${encodeURIComponent(domain)}`
-    const res = await fetch(url, { cache: 'no-store' })
+    // ISR: cache content and revalidate on a 60s window so we don't hit the NGF
+    // content API (and Neon) on every request. The NGF push handler busts this
+    // instantly on publish via /api/revalidate (revalidatePath). If that ping
+    // never lands, content still refreshes within 60s.
+    // See NGF-STANDARDS.md -> "Content caching & revalidation".
+    const res = await fetch(url, { next: { revalidate: 60 } })
     if (!res.ok) return {}
     const data = (await res.json()) as { content?: NgfSiteContent }
     return data.content ?? {}
