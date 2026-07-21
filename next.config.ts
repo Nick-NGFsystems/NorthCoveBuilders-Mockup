@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Pin the workspace root so Turbopack doesn't walk up to C:\Users\nicho\GitHub
+  // (a parent lockfile there was being inferred as the root, breaking module resolution).
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {

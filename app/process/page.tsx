@@ -11,27 +11,27 @@ export const metadata: Metadata = {
 const defaultSteps = [
   {
     title: "Price Planning",
-    body: "Upfront and transparent pricing from the beginning. In your 1-hour consultation, you receive a customized itemized quote and interactive pricing tool. No floor plans needed—just bring your ideas.",
+    body: "A better way to start building; Transparent pricing from the very beginning. During your initial one-hour consultation, you'll receive a customized, itemized quote along with an interactive pricing tool to explore your options. No floor plans required—just bring your ideas.",
   },
   {
-    title: "Secure a Home Site",
-    body: "If you already own property, great. If not, we help identify options through local relationships and area knowledge. We also provide a complimentary site assessment to review prep work and costs.",
+    title: "Secure a Homesite",
+    body: "Every great home begins with the right homesite. Whether you already own property or need help finding it, we can help you through the process using our local expertise and trusted relationships. Our complimentary site assessment provides a clear understanding of site preparation requirements and expected costs before you move forward.",
   },
   {
-    title: "Design Your Custom Home Plan",
-    body: "Design a plan that fits your lifestyle and budget. We can customize existing floor plans or help you create your dream home from scratch.",
+    title: "Design Your Custom Home",
+    body: "Design a home that fits your lifestyle, priorities, and budget. Whether you customize an existing floor plan or create a one-of-a-kind design from scratch, we'll help bring your vision to life.",
   },
   {
     title: "Choose Your Finishes & Colors",
-    body: "With our design team, you select interior and exterior finishes that make your house feel like home. Work with trusted vendors or bring your own favorites.",
+    body: "Bring your vision to life with our experienced design team. Together, you'll select the interior and exterior finishes that reflect your style and make your home uniquely yours. Choose from our trusted vendor partners or work with your own favorites.",
   },
   {
     title: "Construction",
-    body: "Our in-house carpentry crews support consistency in quality and schedule. You'll have key on-site meetings plus regular updates on milestones, progress photos, and timelines.",
+    body: "Our in-house carpentry crews help ensure exceptional craftsmanship, consistent quality, and reliable scheduling. Throughout construction, you'll meet with us at key milestones and receive regular updates, progress photos, and timeline updates, so you're always informed.",
   },
   {
     title: "After You Move In",
-    body: "Every new home includes a full 1-year warranty and a 30-day touch-up appointment to handle dents or dings from move-in.",
+    body: "We stand behind our work. Every home includes a comprehensive one-year warranty, plus a 30-day touch-up visit to ensure your home looks just as beautiful after move-in as it did on closing day.",
   },
 ];
 
