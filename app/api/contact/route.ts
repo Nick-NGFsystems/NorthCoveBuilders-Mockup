@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getDb } from "@/db/client";
 import { contactSubmissions } from "@/db/schema";
 import { sendContactNotification } from "@/lib/email";
+import { relayLeadToNgf } from '@/lib/ngf-lead'
 
 const contactSchema = z.object({
   name: z.string().min(2),
@@ -46,6 +47,10 @@ export async function POST(request: Request) {
         console.warn("DB insert skipped:", dbError);
       }
     }
+
+    // Persist to the central NGF lead store as the system of record — the
+    // site's own DB insert above is best-effort (its catch only warns).
+    await relayLeadToNgf("contact", parsed.data);
 
     await sendContactNotification({
       ...parsed.data,
