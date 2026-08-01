@@ -33,8 +33,9 @@ export async function relayLeadToNgf(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ domain, formType, payload }),
-      // Never let a slow portal hold up the customer's submission.
-      signal: AbortSignal.timeout(8000),
+      // Never let a slow portal hold up the customer's submission: worst case
+      // this adds 5s before the notification email is sent, then gives up.
+      signal: AbortSignal.timeout(5000),
     })
 
     if (!res.ok) {
