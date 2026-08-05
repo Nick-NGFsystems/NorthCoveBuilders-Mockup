@@ -1,19 +1,29 @@
 /**
  * Relay a form submission to the central NGF lead store.
  *
- * WHY: this site's form was email-only. If the notification failed to send, the
- * enquiry was gone — there was no record of it anywhere. The central store
- * persists the submission as the system of record and surfaces it in the
- * client's portal under "Form Submissions", where they can track and work it.
+ * WHEN TO USE THIS vs <LeadForm>:
+ * - NEW sites: use `components/LeadForm.tsx`. It posts straight to the central
+ *   store from the browser — no API route on the site at all, nothing to drift.
+ * - EXISTING sites that already have a bespoke form + API route: call this from
+ *   inside that route. It is deliberately ADDITIVE, so the site's own
+ *   validation, branded email and success/error UX stay exactly as they are.
+ *   Retrofitting a live client's form wholesale is how you lose leads.
  *
- * Deliberately ADDITIVE: the site's existing validation, branded email and
- * success/error UX are unchanged. Call this first, then carry on. A relay
- * failure is logged and swallowed so it can never make the request worse than
- * it is today — the existing email still goes out.
+ * WHY IT EXISTS: several client sites captured leads by EMAIL ONLY. If the
+ * notification failed to send, the enquiry was gone with no record anywhere,
+ * and nothing appeared in the client's portal. The central store persists the
+ * submission as the system of record and surfaces it under Form Submissions.
  *
- * The endpoint resolves which client this is from the domain, so
- * NEXT_PUBLIC_SITE_URL must match `site_url` in the NGF admin (the same pairing
- * the content API relies on).
+ * CONTRACT:
+ * - Call it BEFORE sending your notification email (persist first, notify
+ *   second — see the "Lead capture: persist first" standard).
+ * - It NEVER throws. Every path returns { ok } — no domain configured, non-2xx,
+ *   network error, timeout. So it can never make an existing submission worse
+ *   than it is today; your email still goes out.
+ * - It resolves the client from NEXT_PUBLIC_SITE_URL, so that value must match
+ *   `site_url` in the NGF admin exactly (the same pairing the content API uses).
+ *   If it doesn't, this logs loudly and the lead never reaches the portal —
+ *   check Admin -> Ecosystem, which tests that binding end to end.
  */
 export async function relayLeadToNgf(
   formType: string,

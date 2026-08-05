@@ -2,6 +2,19 @@
 import { useEffect } from 'react'
 
 /**
+ * Canonical version of this file. Bump when the postMessage contract changes.
+ *
+ * This exists so drift is detectable. The bridge is copied per-site rather than
+ * installed, and an audit found 7 of 9 live sites running a stale copy (9.9 KB
+ * to 38.6 KB against the canonical ~43 KB) with no way to tell from the outside.
+ * `npm run doctor` reads this constant; `npm run sync-ngf` refreshes the file.
+ *
+ * DO NOT hand-edit this file in a client site. Run `npm run sync-ngf` instead —
+ * local edits are overwritten and the version then lies about what the code does.
+ */
+export const NGF_BRIDGE_VERSION = '1.1.0'
+
+/**
  * NgfEditBridge — enables the NGF portal's live preview and click-to-edit.
  * Must be included in app/layout.tsx. Do not remove.
  */
@@ -33,6 +46,33 @@ export default function NgfEditBridge() {
         font-style: italic;
         pointer-events: none;
       }
+      /* Toggle (show/hide) section that is OFF — only inside the editor it
+         stays visible but dimmed + badged so the client can switch it back on.
+         On the live site it's display:none (set inline by applyToggleState). */
+      [data-ngf-edit="true"] [data-ngf-type="toggle"][data-ngf-hidden="true"] {
+        position: relative;
+        opacity: 0.5 !important;
+        outline: 2px dashed #f59e0b !important;
+        outline-offset: -2px;
+      }
+      [data-ngf-edit="true"] [data-ngf-type="toggle"][data-ngf-hidden="true"]::after {
+        content: "Hidden on your live site";
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #f59e0b;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        z-index: 5;
+        pointer-events: none;
+        font-family: system-ui, -apple-system, sans-serif;
+        white-space: nowrap;
+      }
+
       /* Pulse highlight when editor scrolls to a field */
       [data-ngf-field].ngf-field-focus {
         animation: ngfFieldFocus 1.6s ease-out;
@@ -311,8 +351,25 @@ export default function NgfEditBridge() {
     function isImageField(el: HTMLElement) {
       return el.tagName?.toLowerCase() === 'img' || el.getAttribute('data-ngf-type') === 'image'
     }
+    function isToggleField(el: HTMLElement) {
+      return el.getAttribute('data-ngf-type') === 'toggle'
+    }
+    // Show/hide a whole section from a boolean-ish value: '' or 'true' => shown,
+    // 'false' => hidden. On the live site we hard-hide with display:none. Inside
+    // the editor we keep the section in view (dimmed + badged via CSS) so the
+    // client can switch it back on — never strand a section off-screen.
+    function applyToggleState(el: HTMLElement, value: string) {
+      const hidden = value === 'false'
+      el.dataset.ngfHidden = hidden ? 'true' : 'false'
+      if (editMode) {
+        el.style.removeProperty('display')
+      } else {
+        el.style.display = hidden ? 'none' : ''
+      }
+    }
     function captureDefaults() {
       document.querySelectorAll<HTMLElement>('[data-ngf-field]').forEach(el => {
+        if (isToggleField(el)) return   // visibility state, not text — nothing to cache
         if (el.dataset.ngfDefault === undefined) {
           el.dataset.ngfDefault = isImageField(el)
             ? (el as HTMLImageElement).getAttribute('src') ?? ''
@@ -327,18 +384,39 @@ export default function NgfEditBridge() {
     // when edit mode is on. Reposition on scroll/resize via rAF throttling.
     const editButtons = new Map<HTMLElement, HTMLButtonElement>()
 
+    /**
+     * True when the element is scrolled far enough out of view that an overlay
+     * button for it should not be shown at all.
+     *
+     * These buttons are `position: fixed` and positioned from
+     * getBoundingClientRect(), so they must be hidden rather than clamped into
+     * view. Clamping with Math.max(8, …) pins the button to the top of the
+     * viewport once the image scrolls above it — the button detaches from its
+     * image and, with several images, they stack up at the top of the screen.
+     */
+    function isOffscreenForOverlay(rect: DOMRect, btnHeight: number): boolean {
+      return rect.bottom < btnHeight + 16 || rect.top > window.innerHeight - 8
+    }
+
     function positionEditButton(btn: HTMLButtonElement, img: HTMLElement) {
       const rect = img.getBoundingClientRect()
-      // Don't overlay buttons on tiny images (logos / icons) or off-screen ones.
+      // Don't overlay buttons on tiny images (logos / icons).
       if (rect.width < 40 || rect.height < 40) {
         btn.style.display = 'none'
         return
       }
+      const btnHeight = btn.offsetHeight || 34
+      if (isOffscreenForOverlay(rect, btnHeight)) {
+        btn.style.display = 'none'
+        return
+      }
       btn.style.display = ''
-      // Wait for layout, then position 8px from top-right of the image. Clamp
-      // to viewport so the button is always reachable.
+      // 8px inset from the image's top-right. Clamp to the viewport so it stays
+      // reachable, but never past the image's own bottom edge — otherwise the
+      // button floats away from the image it belongs to.
       const btnWidth = btn.offsetWidth || 140
-      const top  = Math.max(8, Math.min(rect.top + 8, window.innerHeight - 50))
+      const maxTop = Math.min(window.innerHeight - btnHeight - 8, rect.bottom - btnHeight - 8)
+      const top  = Math.max(8, Math.min(rect.top + 8, maxTop))
       const left = Math.max(8, Math.min(rect.right - btnWidth - 8, window.innerWidth - btnWidth - 8))
       btn.style.top  = `${top}px`
       btn.style.left = `${left}px`
@@ -420,9 +498,17 @@ export default function NgfEditBridge() {
         btn.style.display = 'none'
         return
       }
+      const btnHeight = btn.offsetHeight || 30
+      // Same fix as the Replace-photo button: hide when scrolled out of view
+      // rather than clamping, or it pins to the top of the viewport.
+      if (isOffscreenForOverlay(rect, btnHeight)) {
+        btn.style.display = 'none'
+        return
+      }
       btn.style.display = ''
       // Top-left of image, with 8px inset. Replace photo sits top-right.
-      const top  = Math.max(8, Math.min(rect.top + 8, window.innerHeight - 40))
+      const maxTop = Math.min(window.innerHeight - btnHeight - 8, rect.bottom - btnHeight - 8)
+      const top  = Math.max(8, Math.min(rect.top + 8, maxTop))
       const left = Math.max(8, rect.left + 8)
       btn.style.top  = `${top}px`
       btn.style.left = `${left}px`
@@ -623,6 +709,18 @@ export default function NgfEditBridge() {
         document.documentElement.setAttribute('data-ngf-edit', editMode ? 'true' : 'false')
         // Re-run in case fields were hydrated after initial capture
         captureDefaults()
+        // Toggle sections: entering edit mode reveals any the live site hides
+        // (so the client can switch them back on); leaving restores the live
+        // visibility from the remembered state. The authoritative state arrives
+        // moments later via contentUpdate.
+        document.querySelectorAll<HTMLElement>('[data-ngf-type="toggle"]').forEach(el => {
+          if (editMode) {
+            if (el.style.display === 'none' && el.dataset.ngfHidden === undefined) el.dataset.ngfHidden = 'true'
+            el.style.removeProperty('display')
+          } else {
+            el.style.display = el.dataset.ngfHidden === 'true' ? 'none' : ''
+          }
+        })
         if (editMode) {
           // Add visible "Replace photo" overlay buttons on every image field,
           // delete-X buttons on every image inside a repeatable group, and
@@ -641,12 +739,23 @@ export default function NgfEditBridge() {
       if (e.data?.type === 'contentUpdate' && e.data.content) {
         const walk = (obj: unknown, path: string) => {
           if (obj === null || obj === undefined) return
+          if (typeof obj === 'boolean') {
+            // A boolean only carries meaning for a toggle (show/hide) field.
+            document.querySelectorAll<HTMLElement>(`[data-ngf-field="${path}"]`).forEach(el => {
+              if (isToggleField(el)) applyToggleState(el, obj ? '' : 'false')
+            })
+            return
+          }
           if (typeof obj === 'string') {
             // querySelectorAll, not querySelector — when the same field path
             // is annotated in multiple places (e.g. business name in header
             // AND footer), all instances update together. The schema scraper
             // dedupes by path so the sidebar still shows one entry.
             document.querySelectorAll<HTMLElement>(`[data-ngf-field="${path}"]`).forEach(el => {
+              if (isToggleField(el)) {
+                applyToggleState(el, obj)
+                return
+              }
               const next = obj === '' ? (el.dataset.ngfDefault ?? '') : obj
               if (isImageField(el)) {
                 el.setAttribute('src', sanitizeImageUrl(next))
@@ -868,12 +977,15 @@ export default function NgfEditBridge() {
         const dot = attr.indexOf('.')
         if (dot > -1) {
           const isImg = isImageField(fieldEl)
+          const isToggle = isToggleField(fieldEl)
           const ngfType = fieldEl.getAttribute('data-ngf-type') || (isImg ? 'image' : 'text')
           editTarget = {
             section:   attr.substring(0, dot),
             field:     attr.substring(dot + 1),
             value:     isImg
               ? (fieldEl.getAttribute('src') ?? '')
+              : isToggle
+              ? (fieldEl.dataset.ngfHidden === 'true' ? 'false' : '')
               : (fieldEl.textContent?.trim() ?? ''),
             fieldType: ngfType,
             rect:      fieldEl.getBoundingClientRect(),

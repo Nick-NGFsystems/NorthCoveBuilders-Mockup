@@ -10,7 +10,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "doctor": "node scripts/ngf-doctor.mjs",
-    "doctor:strict": "node scripts/ngf-doctor.mjs --strict"
+    "doctor:strict": "node scripts/ngf-doctor.mjs --strict",
+    "sync-ngf": "node scripts/sync-ngf.mjs",
+    "sync-ngf:check": "node scripts/sync-ngf.mjs --check"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
