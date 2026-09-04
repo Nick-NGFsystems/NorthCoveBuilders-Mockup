@@ -4,7 +4,6 @@ import "./globals.css";
 import { LocalBusinessSchema } from "@/app/local-business-schema";
 import { PageChrome } from "@/components/layout/PageChrome";
 import Analytics from "@/components/Analytics";
-import CookieConsent from "@/components/CookieConsent";
 import NgfEditBridge from "@/components/NgfEditBridge";
 import { getNgfContent } from "@/lib/ngf";
 
@@ -77,9 +76,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.variable} ${dmSerif.variable} antialiased`}>
-        {/* GA4 + Clarity both set cookies, so they load only after the visitor
-            accepts. Consent lives in localStorage and cannot be read from a
-            server component — see components/Analytics.tsx. */}
+        {/* GA4 + Clarity — loaded for all visitors (US-only local business,
+            no opt-in consent required). See components/Analytics.tsx. */}
         <Analytics />
         <a href="#main-content" className="skip-link">
           Skip to content
@@ -87,7 +85,6 @@ export default async function RootLayout({
         <NgfEditBridge />
         <LocalBusinessSchema />
         <PageChrome content={content}>{children}</PageChrome>
-        <CookieConsent />
       </body>
     </html>
   );

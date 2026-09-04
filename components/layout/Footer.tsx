@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { NgfSiteContent } from "@/lib/ngf";
-import CookieSettingsLink from "@/components/CookieSettingsLink";
 
 const links = [
   { href: "/", label: "Home" },
@@ -151,9 +150,6 @@ export function Footer({ content }: FooterProps) {
         >
           {copyright}
         </span>
-        {/* Consent must be as easy to withdraw as to give. Renders only when the
-            site actually loads cookie-based analytics. */}
-        <CookieSettingsLink className="ml-3 underline underline-offset-2 hover:text-white" />
       </div>
     </footer>
   );

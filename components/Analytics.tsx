@@ -1,27 +1,18 @@
 'use client'
 import Script from 'next/script'
-import { hasCookieConsent } from '@/components/CookieConsent'
 import { GA_MEASUREMENT_ID, CLARITY_PROJECT_ID } from '@/lib/analytics'
 
 /**
- * GA4 + Microsoft Clarity, gated behind cookie consent.
+ * GA4 + Microsoft Clarity, loaded for every visitor.
  *
- * WHY THIS IS A CLIENT COMPONENT: both trackers set cookies, so neither may load
- * until the visitor has actively accepted. Consent lives in localStorage, which a
- * server component cannot read — these scripts were previously rendered
- * unconditionally in app/layout.tsx, so they ran for every visitor before any
- * choice was made.
- *
- * hasCookieConsent() returns false during SSR, so nothing is emitted server-side.
- * CookieConsent reloads the page on Accept, which is what makes this re-evaluate.
- *
- * The banner only renders when NEXT_PUBLIC_COOKIE_ANALYTICS=1, so that env var
- * must be set in Vercel alongside the GA/Clarity IDs — without it consent can
- * never be granted and analytics will never load at all.
+ * North Cove is a US-only local business and is not subject to opt-in
+ * cookie-consent rules: as of 2026 no US state requires prior consent before
+ * non-essential cookies load, and Michigan has no comprehensive privacy law.
+ * Analytics use is disclosed in the privacy policy. If this site is ever
+ * marketed to EU/EEA visitors, re-gate these scripts behind consent (the shared
+ * CookieConsent component is still in the repo for that).
  */
 export default function Analytics() {
-  if (!hasCookieConsent()) return null
-
   return (
     <>
       {GA_MEASUREMENT_ID && (
