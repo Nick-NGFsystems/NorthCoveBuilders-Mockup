@@ -8,9 +8,15 @@ import { GA_MEASUREMENT_ID, CLARITY_PROJECT_ID } from '@/lib/analytics'
  * North Cove is a US-only local business and is not subject to opt-in
  * cookie-consent rules: as of 2026 no US state requires prior consent before
  * non-essential cookies load, and Michigan has no comprehensive privacy law.
- * Analytics use is disclosed in the privacy policy. If this site is ever
- * marketed to EU/EEA visitors, re-gate these scripts behind consent (the shared
- * CookieConsent component is still in the repo for that).
+ * Both are disclosed by name in app/privacy/page.tsx section 2, which is linked
+ * from the footer. That page is not optional: Google's and Microsoft's own
+ * terms require a site running their analytics to post a policy disclosing the
+ * cookies and the data collected. If either script is removed, trim that
+ * section; if another tracker is added, disclose it there too.
+ *
+ * If this site is ever marketed to EU/EEA visitors, re-gate these scripts
+ * behind consent (the shared CookieConsent component is still in the repo for
+ * that, and already links to /privacy).
  */
 export default function Analytics() {
   return (

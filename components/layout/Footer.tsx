@@ -150,6 +150,10 @@ export function Footer({ content }: FooterProps) {
         >
           {copyright}
         </span>
+        <span className="mx-2">·</span>
+        <Link href="/privacy" className="hover:underline">
+          Privacy Policy
+        </Link>
       </div>
     </footer>
   );
