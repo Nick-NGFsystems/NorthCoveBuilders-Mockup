@@ -45,7 +45,26 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+            value: [
+              "default-src 'self'",
+              // 'unsafe-inline'/'unsafe-eval' are required by Next.js runtime chunks.
+              // googletagmanager = GA4; clarity.ms = Microsoft Clarity. Both are loaded
+              // for every visitor by components/Analytics.tsx.
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.clarity.ms https://*.clarity.ms",
+              "style-src 'self' 'unsafe-inline'",
+              // Unsplash + Vercel Blob (see images.remotePatterns) and GA/Clarity beacons.
+              "img-src 'self' data: blob: https:",
+              // next/font/google self-hosts at build time, so no external font origin.
+              "font-src 'self' data:",
+              // app.ngfsystems.com is required for BROWSER-side calls to the NGF public
+              // API. getNgfContent() is a server-side fetch and is NOT governed by CSP.
+              "connect-src 'self' https://app.ngfsystems.com https://www.google-analytics.com https://*.google-analytics.com https://*.googletagmanager.com https://*.analytics.google.com https://www.clarity.ms https://*.clarity.ms",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              // Lets the NGF portal editor embed this site for live preview.
+              "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+            ].join("; "),
           },
           {
             key: "X-Content-Type-Options",
