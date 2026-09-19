@@ -317,6 +317,7 @@ Things that are shipped but **not verified end-to-end**, or known rough edges. S
 | `planUrl` for all plans | ⚠️ Some empty | Plans with empty `planUrl` correctly suppress the "View Floor Plan" button — double-check when adding a new plan. |
 | `reviews` / `featuredProjects` / `teamMembers` annotations | ✅ Editable | All three render inside `data-ngf-group` containers; clients can add/remove/reorder from the editor sidebar. |
 | CSP frame-ancestors | ✅ Set | Removing it breaks the portal editor's iframe preview. Do not remove. |
+| Privacy policy | ⚠️ Committed, not live | `app/privacy/page.tsx` added 2026-09-19, linked from the footer bottom bar and `app/sitemap.ts`. Verified locally only — build, doctor 31/0/0, browser at desktop and 375px — never deployed. It names GA4 `G-RYLV9KXDCX` and Microsoft Clarity `wxrublg1ay`, which is what `components/Analytics.tsx` relies on and what Google's and Microsoft's terms require of any site running them: if a tracker is added or removed, update section 2 of that page in the same change. Legal copy is hardcoded, not portal-editable (same as the starter's copy) — North Cove owns the final policy and should have an attorney read it. |
 
 **When finishing a session, add or update an entry here for anything you committed but couldn't verify live.** Saves the next agent the audit-from-scratch round-trip.
 
