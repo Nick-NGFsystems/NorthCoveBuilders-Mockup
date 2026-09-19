@@ -6,6 +6,7 @@ import { PageChrome } from "@/components/layout/PageChrome";
 import Analytics from "@/components/Analytics";
 import NgfEditBridge from "@/components/NgfEditBridge";
 import { getNgfContent } from "@/lib/ngf";
+import { SITE_URL } from "@/lib/site-data";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,7 +20,7 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://northcovebuilders.com"),
+  metadataBase: new URL(SITE_URL),
   other: {
     'ngf-public-api': 'https://app.ngfsystems.com/api/public/content',
   },

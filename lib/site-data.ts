@@ -1,3 +1,7 @@
+// The host this site actually serves on. The apex redirects here, so every
+// canonical URL (sitemap, robots, metadataBase, JSON-LD) must use this one.
+export const SITE_URL = "https://www.northcovebuilders.com";
+
 export const featuredProjects = [
   {
     name: "Wave Crest",

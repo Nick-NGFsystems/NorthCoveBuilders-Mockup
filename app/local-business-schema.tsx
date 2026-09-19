@@ -1,3 +1,5 @@
+import { SITE_URL } from "@/lib/site-data";
+
 export function LocalBusinessSchema() {
   const schema = {
     "@context": "https://schema.org",
@@ -5,7 +7,7 @@ export function LocalBusinessSchema() {
     name: "North Cove Builders",
     description:
       "Personal, boutique custom home builder serving Greater Grand Rapids, the Lakeshore, and surrounding West Michigan communities including Hudsonville, Byron Center, Caledonia, Grand Rapids, Fennville, Saugatuck, Holland, and Grand Haven.",
-    url: "https://northcovebuilders.com",
+    url: SITE_URL,
     telephone: "+16166827422",
     email: "northcovebuilders@gmail.com",
     address: {

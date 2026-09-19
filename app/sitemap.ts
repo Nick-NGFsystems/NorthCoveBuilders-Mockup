@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { floorPlans, toSlug } from "@/lib/site-data";
+import { SITE_URL, floorPlans, toSlug } from "@/lib/site-data";
 
 // Async on purpose: the SEO gate requires any site with dynamic routes to have
 // an async sitemap, the only shape that can await published content. The plan
@@ -7,49 +7,49 @@ import { floorPlans, toSlug } from "@/lib/site-data";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: "https://northcovebuilders.com",
+      url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
-      url: "https://northcovebuilders.com/about",
+      url: SITE_URL + "/about",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://northcovebuilders.com/our-work",
+      url: SITE_URL + "/our-work",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://northcovebuilders.com/process",
+      url: SITE_URL + "/process",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: "https://northcovebuilders.com/contact",
+      url: SITE_URL + "/contact",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: "https://northcovebuilders.com/floor-plans",
+      url: SITE_URL + "/floor-plans",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: "https://northcovebuilders.com/gallery",
+      url: SITE_URL + "/gallery",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: "https://northcovebuilders.com/available",
+      url: SITE_URL + "/available",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
@@ -60,7 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // app/floor-plans/[slug]/page.tsx feeds to generateStaticParams, so the
   // sitemap cannot drift out of sync with the routes that actually exist.
   const floorPlanPages: MetadataRoute.Sitemap = floorPlans.map((plan) => ({
-    url: `https://northcovebuilders.com/floor-plans/${toSlug(plan.name)}`,
+    url: SITE_URL + "/floor-plans/" + toSlug(plan.name),
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.6,
