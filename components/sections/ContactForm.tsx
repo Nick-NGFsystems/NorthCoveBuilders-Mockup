@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Bedrooms and bathrooms are static numbers — not worth portal-editing
 const bedroomOptions = ["", "2", "3", "4", "5", "5+"];
@@ -17,6 +17,7 @@ type FormState = {
   bathrooms: string;
   idealBudget: string;
   message: string;
+  _gotcha: string; // honeypot — real visitors never see or fill this
 };
 
 const initialState: FormState = {
@@ -30,6 +31,7 @@ const initialState: FormState = {
   bathrooms: "",
   idealBudget: "",
   message: "",
+  _gotcha: "",
 };
 
 type Props = {
@@ -40,6 +42,14 @@ export function ContactForm({ content = {} }: Props) {
   const [form, setForm] = useState<FormState>(initialState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+
+  // When the form appeared, sent with the submission so the server can reject
+  // instant (bot) and ancient submissions. Set in an effect, not during render,
+  // so it never causes a hydration mismatch.
+  const startedAt = useRef(0);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   const labels = {
     name:       content['contactForm.labels.name']       || 'Name',
@@ -98,7 +108,7 @@ export function ContactForm({ content = {} }: Props) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, startedAt: startedAt.current }),
       });
 
       const data = (await response.json()) as { message?: string };
@@ -110,6 +120,7 @@ export function ContactForm({ content = {} }: Props) {
       setStatus("success");
       setMessage(successMsg);
       setForm(initialState);
+      startedAt.current = Date.now();
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : "Something went wrong. Please try again.");
@@ -279,6 +290,22 @@ export function ContactForm({ content = {} }: Props) {
           name="message"
         />
       </label>
+
+      {/* Honeypot: parked off-screen (not display:none, which bots detect), skipped by
+          keyboard and screen readers, and flagged so password managers don't fill it. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <input
+          value={form._gotcha}
+          onChange={(event) => setForm((previous) => ({ ...previous, _gotcha: event.target.value }))}
+          type="text"
+          name="_gotcha"
+          tabIndex={-1}
+          autoComplete="off"
+          data-lpignore="true"
+          data-1p-ignore="true"
+          data-bwignore="true"
+        />
+      </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button type="submit" className="btn-brand mx-auto disabled:cursor-not-allowed disabled:opacity-70 sm:mx-0" disabled={status === "submitting"}>
