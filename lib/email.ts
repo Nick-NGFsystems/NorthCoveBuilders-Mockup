@@ -11,6 +11,8 @@ type ContactEmailArgs = {
   bathrooms?: string;
   idealBudget?: string;
   message?: string;
+  /** Set when the spam filter flagged this as "suspect" — prefixes the subject. */
+  spamNotice?: string;
 };
 
 function escapeHtml(str: string): string {
@@ -137,7 +139,7 @@ export async function sendContactNotification(args: ContactEmailArgs) {
   const to = toRaw.split(",").map((e) => e.trim()).filter(Boolean);
   const resend = new Resend(apiKey);
 
-  const { name, email, phone, hasLot, timeline, homeType, bedrooms, bathrooms, idealBudget, message } = args;
+  const { name, email, phone, hasLot, timeline, homeType, bedrooms, bathrooms, idealBudget, message, spamNotice } = args;
 
   const optionalFields = [
     ["Lot Status", hasLot],
@@ -164,7 +166,7 @@ export async function sendContactNotification(args: ContactEmailArgs) {
   const { error } = await resend.emails.send({
     from,
     to,
-    subject: `New North Cove Inquiry: ${name}`,
+    subject: `${spamNotice ? "[possible spam] " : ""}New North Cove Inquiry: ${name}`,
     html: buildHtml(args),
     text: plainText,
   });

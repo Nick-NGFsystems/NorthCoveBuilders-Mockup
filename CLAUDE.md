@@ -202,11 +202,27 @@ The "View Floor Plan" button on each card only renders when `planUrl` is non-emp
 User submits ContactForm
   → POST /api/contact/route.ts
   → Zod validation
+  → Bot checks (lib/spam-filter.ts): honeypot "_gotcha" + fill time < 3s → DROPPED
+  → Content score (lib/spam-filter.ts):
+      'spam'    → DROPPED, logged whole as [spam-blocked]
+      'suspect' → delivered, subject prefixed "[possible spam]"
+      'clean'   → delivered unchanged
   → Insert row into Neon via Drizzle (db/schema.ts → contact_submissions table)
+  → Relay to the NGF portal (system of record)
   → Send email via Resend to EMAIL_TO
 ```
 
 Schema is in `db/schema.ts`. Single Drizzle client exported from `db/client.ts` — always import from there, never instantiate another.
+
+### Spam filtering
+
+`lib/spam-filter.ts` is a pure function so it can be probed against real payloads; `npm run test:spam` runs it over synthetic fixtures (no real PII in the repo).
+
+It is tuned to what this form **actually** receives. Measured over the 45 most recent real submissions (2026-10-29): zero Cyrillic, zero CJK, zero BBCode — no classic bot link-spam at all. 17 of 45 were cold B2B sales outreach, overwhelmingly one virtual-assistant campaign sent under a different human name and company each time. A honeypot and a rate limit catch none of that, which is why the content score carries the weight.
+
+**Never raise the aggressiveness without re-running against real payloads.** The asymmetry is the whole design: a missed pitch costs an annoying email, a false positive costs a custom-home enquiry worth six figures. Only `score >= 7` is dropped; `>= 4` still delivers, just flagged. Beware substring matching in the word lists — "homepage" matching "home" once let a pitch to rebuild the homepage score as a home-building enquiry, so `matches()` is whole-word with an explicit `*` for stems.
+
+A dropped submission exists **only** in the Vercel function logs (`[spam-blocked]`, full payload). If a real enquiry is ever dropped, that is the only way to recover it — worth replacing with a quarantine table if the volume ever justifies it.
 
 ---
 
@@ -317,6 +333,7 @@ Things that are shipped but **not verified end-to-end**, or known rough edges. S
 | `planUrl` for all plans | ⚠️ Some empty | Plans with empty `planUrl` correctly suppress the "View Floor Plan" button — double-check when adding a new plan. |
 | `reviews` / `featuredProjects` / `teamMembers` annotations | ✅ Editable | All three render inside `data-ngf-group` containers; clients can add/remove/reorder from the editor sidebar. |
 | CSP frame-ancestors | ✅ Set | Removing it breaks the portal editor's iframe preview. Do not remove. |
+| Contact-form spam filter | ⚠️ Committed, not live | `lib/spam-filter.ts` added 2026-10-29, wired into `app/api/contact/route.ts`, honeypot + mount timestamp added to `ContactForm.tsx`. Verified locally only: `tsc`, `npm run build`, doctor 31/0/0, `npm run test:spam`, and a real `next start` exercising all five paths (honeypot, fast submit, pitch, genuine enquiry, invalid) confirmed by function logs — plus a real browser submission confirming the client sends `_gotcha` and a client-side `renderedAt`. Scored against 45 real submissions: 15/17 outreach dropped, 2 flagged-but-delivered, **0 genuine leads blocked**. Never deployed, so no production submission has gone through it. |
 | Privacy policy | ⚠️ Committed, not live | `app/privacy/page.tsx` added 2026-09-19, linked from the footer bottom bar and `app/sitemap.ts`. Verified locally only — build, doctor 31/0/0, browser at desktop and 375px — never deployed. It names GA4 `G-RYLV9KXDCX` and Microsoft Clarity `wxrublg1ay`, which is what `components/Analytics.tsx` relies on and what Google's and Microsoft's terms require of any site running them: if a tracker is added or removed, update section 2 of that page in the same change. Legal copy is hardcoded, not portal-editable (same as the starter's copy) — North Cove owns the final policy and should have an attorney read it. |
 
 **When finishing a session, add or update an entry here for anything you committed but couldn't verify live.** Saves the next agent the audit-from-scratch round-trip.

@@ -11,6 +11,7 @@
     "db:migrate": "drizzle-kit migrate",
     "doctor": "node scripts/ngf-doctor.mjs",
     "doctor:strict": "node scripts/ngf-doctor.mjs --strict",
+    "test:spam": "node --experimental-strip-types scripts/verify-spam-filter.mjs",
     "sync-ngf": "node scripts/sync-ngf.mjs",
     "sync-ngf:check": "node scripts/sync-ngf.mjs --check"
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Bedrooms and bathrooms are static numbers — not worth portal-editing
 const bedroomOptions = ["", "2", "3", "4", "5", "5+"];
@@ -40,6 +40,14 @@ export function ContactForm({ content = {} }: Props) {
   const [form, setForm] = useState<FormState>(initialState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  // Anti-spam. `gotcha` must stay empty; `renderedAt` is set on mount
+  // (not at render) because this page is prerendered — a build-time
+  // timestamp would be meaningless by the time anyone sees the form.
+  const [gotcha, setGotcha] = useState("");
+  const renderedAt = useRef<number | null>(null);
+  useEffect(() => {
+    renderedAt.current = Date.now();
+  }, []);
 
   const labels = {
     name:       content['contactForm.labels.name']       || 'Name',
@@ -98,7 +106,11 @@ export function ContactForm({ content = {} }: Props) {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          _gotcha: gotcha,
+          ...(renderedAt.current ? { renderedAt: renderedAt.current } : {}),
+        }),
       });
 
       const data = (await response.json()) as { message?: string };
@@ -279,6 +291,23 @@ export function ContactForm({ content = {} }: Props) {
           name="message"
         />
       </label>
+
+      {/*
+        Honeypot. Must stay EMPTY — bots fill it, humans never see it. The name
+        is deliberately non-semantic: a field called `url`/`company`/`website`
+        would be autofilled by real people and silently drop genuine leads.
+        Hidden off-screen rather than display:none so naive bots still see it.
+      */}
+      <input
+        type="text"
+        name="_gotcha"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={gotcha}
+        onChange={(event) => setGotcha(event.target.value)}
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button type="submit" className="btn-brand mx-auto disabled:cursor-not-allowed disabled:opacity-70 sm:mx-0" disabled={status === "submitting"}>
