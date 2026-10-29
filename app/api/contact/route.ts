@@ -6,17 +6,21 @@ import { sendContactNotification } from "@/lib/email";
 import { relayLeadToNgf } from '@/lib/ngf-lead'
 import { scoreSubmission, failsBotChecks } from '@/lib/spam-filter'
 
+// Length caps are abuse limits, not content rules: nothing here should ever
+// reject a real enquiry. The longest genuine message in 120 days of real
+// submissions was 2,497 characters, so 10,000 leaves 4x headroom while
+// stopping a multi-megabyte body from being parsed, scored and emailed.
 const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email().optional().or(z.literal('')),
-  phone: z.string().optional(),
-  hasLot: z.string().optional(),
-  timeline: z.string().optional(),
-  homeType: z.string().optional(),
-  bedrooms: z.string().optional(),
-  bathrooms: z.string().optional(),
-  idealBudget: z.string().optional(),
-  message: z.string().optional(),
+  name: z.string().min(2).max(200),
+  email: z.string().email().max(320).optional().or(z.literal('')),
+  phone: z.string().max(50).optional(),
+  hasLot: z.string().max(100).optional(),
+  timeline: z.string().max(100).optional(),
+  homeType: z.string().max(100).optional(),
+  bedrooms: z.string().max(20).optional(),
+  bathrooms: z.string().max(20).optional(),
+  idealBudget: z.string().max(100).optional(),
+  message: z.string().max(10000).optional(),
   // Anti-spam signals, not content. Stripped before anything is stored,
   // relayed or emailed.
   _gotcha: z.string().optional(),
