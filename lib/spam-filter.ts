@@ -72,6 +72,10 @@ const OPENER_RES = [
   /\b(?:15|fifteen) minutes\b/i,
   /\bhop on a (?:quick )?call\b/i,
   /\bbook a (?:quick )?(?:call|demo|chat)\b/i,
+  // "I see you build custom homes" — telling US what WE do is an outreach
+  // tell; a customer says what THEY want. Deliberately excludes "saw" and
+  // "your", because a real enquiry opens "I saw your Parade of Homes house".
+  /\bi (?:see|noticed) (?:you|that you)\b/i,
 ]
 
 /** Vocabulary that belongs to someone selling, not someone buying a house. */
