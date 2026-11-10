@@ -2,6 +2,16 @@
 
 This file provides guidance to AI when working on this repository. For universal NGFsystems standards (bridge contract, data-ngf-* attribute rules, postMessage protocol) see the root [NGF-Systems-app/CLAUDE.md](https://github.com/Nick-NGFsystems/NGF-Systems-app/blob/main/CLAUDE.md).
 
+## Now — read first, keep current
+
+@NOW.md
+
+`NOW.md` is this project's current state: status, next step, what it waits on, open PRs. Nick works in short, unplanned sessions, so keep it true at every moment:
+
+- Update `NOW.md` in the same commit as any change it describes, and push, so a session that ends without warning loses nothing.
+- Overwrite it; never append. Git history is the log. Keep it under about 15 lines.
+- When Nick says "wrap up", bring `NOW.md` up to date, commit and push.
+
 ---
 
 ## What This Project Is
