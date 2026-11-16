@@ -1,19 +1,13 @@
 # Now — North Cove Builders (www.northcovebuilders.com)
 
-_Last updated 2026-11-09. Overwrite, don't append; git keeps the history._
+_Last updated 2026-11-16. Overwrite, don't append; git keeps the history._
 
-**Status:** Live. Production serves `main` at `fc30d03` (2026-09-18, deploy-rule fix); Next is pinned to 16.3.5 since PR #2. The contact form has no spam filter on `main`, and email and phone are still optional from the Parade of Homes change in May (`86f0ddc`). HANDOFF.md says to revert that about a week after the parade. Is it still wanted?
+**Status:** Live. Production is `main` at `fc30d03` (2026-09-18, deploy-rule fix). Next is pinned to 16.3.5.
 
-**Only on Nick's PC:** local branch `claude/sitemap-dynamic-routes-csp-baseline`, 8 commits never pushed:
-- Sep 19: privacy policy page, canonical URLs to www, Next 16.3.5 env.
-- Oct 29: contact-form cold-outreach spam filter and field length caps.
+**Check first: the lead-email incident (found 2026-10-29).** From 2026-09-11 the site's own lead email (`lib/email.ts`, Resend) stopped sending, most likely because an email env var was missing in the deployed build; the form kept showing success. As of 2026-11-02 the NGF app's copy of each lead reached the client again, but the site's own email was still silent and needed the Vercel email env vars checked plus a redeploy. **Check whether this was fixed.** Don't assume either way, and don't send a test lead to find out (it emails the client). Leads from the silent period may still need following up.
 
-Not on GitHub as of 2026-11-09. If the PC is lost, so are they.
+**On GitHub, not merged:** `backup/pc-2026-11-09`, 10 commits (2026-09-19 and 2026-10-29): floor-plan pages in the sitemap, CSP baseline, canonical URLs to www, `/privacy`, a contact-form spam filter. It is Nick's local branch `claude/sitemap-dynamic-routes-csp-baseline`, backed up. Needs a PR, and reconciling with PR #4 (a second spam filter). Nick's call.
 
-**Next (Nick, on the PC):** `git push origin claude/sitemap-dynamic-routes-csp-baseline:backup/pc-2026-11-09`. Then reconcile its spam filter with PR #4's honeypot and 3-second minimum-time filter (opened 2026-10-23, draft, **not merged**). Both change the contact form. Also check the Next 16.3.5 commit against `main`, which already pins 16.3.5.
+**Also open (from HANDOFF.md, June):** email and phone were made optional for the Parade of Homes; HANDOFF says revert about a week after the parade. Still wanted? The `/parade` page and first invoice listed there: still open?
 
-**Also open:**
-- PR #1 (Vercel bot, May): Vercel Web Analytics. The site already runs GA4 and Clarity. Merge or close?
-- HANDOFF.md (June 5) lists the first $100 invoice and a `/parade` page as pending. Are they still open?
-
-**Open PRs:** #4 (draft, spam filter), #1 (draft, Vercel Web Analytics).
+**Open PRs:** #5 (first NOW.md; this branch builds on it), #4 (draft, honeypot spam filter), #1 (draft, Vercel bot, May: Web Analytics; the site already runs GA4 + Clarity).

@@ -12,6 +12,32 @@ This file provides guidance to AI when working on this repository. For universal
 - Overwrite it; never append. Git history is the log. Keep it under about 15 lines.
 - When Nick says "wrap up", bring `NOW.md` up to date, commit and push.
 
+## Client facts
+
+- **Client:** North Cove Builders, LLC, a custom home builder in West Michigan. Owner Neal Kelley; Elisha Foster handles day-to-day contact (HANDOFF.md).
+- **Live:** https://www.northcovebuilders.com. The bare `northcovebuilders.com` redirects to www (a 307 as of 2026-09-19).
+- **Don't "fix" the bare domain.** `NEXT_PUBLIC_SITE_URL` and the portal's `site_url` are the bare `northcovebuilders.com` on purpose: content and lead matching strip `www.`. Canonical/SEO URLs are a separate setting.
+- **Every lead goes two ways.** The site emails it itself (`lib/email.ts`, Resend, env `EMAIL_TO`), and `relayLeadToNgf()` sends it to the NGF app, which emails the client's `leads_email` admin setting. If an email env var is missing, `lib/email.ts` skips with only a `console.warn` and the form still shows success, so a broken email looks fine from the browser. See the incident in `NOW.md`.
+- **Env vars only reach a new build.** Changing one in Vercel does nothing until a redeploy.
+- `.env.local.example` is gitignored here, so edits to it never ship.
+- The "Pushing Code" section below (`github-push.py`) is Nick's tool. Teammates use the branch flow below.
+
+## Working here as a teammate
+
+Same rules as the section of this name in `ngf-client-starter`'s CLAUDE.md. In short:
+
+- **Always a branch.** A `claude/<short-name>` branch from a fresh `origin/main`. Never commit or push to `main`: a push to `main` deploys the live site.
+- **PR, then preview.** Push your branch, open a PR, check its Vercel preview. Say what you checked and what you could not.
+- **Nick merges.** Don't merge, promote a preview, or run `vercel --prod`.
+- **No real secrets** (env values, keys, tokens) in code, `NOW.md` or a PR.
+- **No real emails or texts while testing.** The contact form emails the client. Don't submit it to test, live or on a preview; ask Nick.
+- **`NOW.md`:** see "Now — read first" above. "Push" there means your branch. Say "wrap up" at the end.
+- **Work items** are Project steps in the NGF app. Take the step; hand it back with a "where it's at" note.
+
+NGF client id: (Nick to fill in)
+
+Once `client_brief` is available in the `ngf-systems` MCP: at the start of a session, if that MCP is connected, call `client_brief` with this id for the client's people, open steps and requests.
+
 ---
 
 ## What This Project Is
