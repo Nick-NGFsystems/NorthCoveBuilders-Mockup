@@ -84,6 +84,7 @@ export function HomeVideo({ videoUrl, posterImage, posterAlt, title }: HomeVideo
           <img
             src={posterImage}
             alt={posterAlt}
+            loading="lazy"
             data-ngf-field="video.posterImage"
             data-ngf-label="Video Cover Photo"
             data-ngf-type="image"
