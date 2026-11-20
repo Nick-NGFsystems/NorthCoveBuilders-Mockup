@@ -316,6 +316,7 @@ Things that are shipped but **not verified end-to-end**, or known rough edges. S
 | Single-story floor plan images | ⚠️ Placeholder | Still using `/placeholders/image-coming-soon.svg`. Replace per-plan when renderings are available. |
 | `planUrl` for all plans | ⚠️ Some empty | Plans with empty `planUrl` correctly suppress the "View Floor Plan" button — double-check when adding a new plan. |
 | `reviews` / `featuredProjects` / `teamMembers` annotations | ✅ Editable | All three render inside `data-ngf-group` containers; clients can add/remove/reorder from the editor sidebar. |
+| Home page video | ⚠️ Stopgap | `homeVideo` in `lib/site-data.ts` (editable as `video.*`). Plays from a public Google Drive link, which shows Drive's own player and needs a second click. Host the .mp4 (in `/public/videos/` or Vercel Blob) and point `videoUrl` at it for the native player. Cover photo is a placeholder until the client's photo arrives. If a fuller CSP is added later, allow `frame-src` for drive.google.com and youtube-nocookie.com. |
 | CSP frame-ancestors | ✅ Set | Removing it breaks the portal editor's iframe preview. Do not remove. |
 
 **When finishing a session, add or update an entry here for anything you committed but couldn't verify live.** Saves the next agent the audit-from-scratch round-trip.
