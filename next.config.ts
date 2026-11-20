@@ -45,7 +45,22 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+            // One policy only: Next.js keeps the last header of a given name,
+            // so frame-ancestors lives inside this list, never in a second entry.
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.clarity.ms",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' data:",
+              "media-src 'self' blob: https://*.public.blob.vercel-storage.com",
+              "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://app.ngfsystems.com https://*.vercel-storage.com https://*.public.blob.vercel-storage.com",
+              "frame-src 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self' https://app.ngfsystems.com https://*.vercel.app",
+            ].join("; "),
           },
           {
             key: "X-Content-Type-Options",
