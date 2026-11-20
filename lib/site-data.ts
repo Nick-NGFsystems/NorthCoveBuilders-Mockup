@@ -485,16 +485,16 @@ export const availableProperties = [
 
 // Home page video, shown just before Featured Projects.
 // videoUrl accepts a Google Drive share link, a YouTube link, or a direct
-// video file (.mp4/.webm/.mov — e.g. "/videos/about-north-cove.mp4" in
+// video file (.mp4/.webm/.mov — e.g. "/video/about-north-cove.mp4" in
 // /public, or a Vercel Blob URL). A direct file plays in the site's own
 // player and is the most reliable option; Drive is the stopgap until the
 // file is hosted here.
-// posterImage is the cover photo shown before the video plays.
+// posterImage is the cover photo shown before the video plays (supplied by Elisha, Nov 18).
 export const homeVideo = {
   heading: "Meet North Cove Builders",
   videoUrl:
     "https://drive.google.com/file/d/1raMTmF_SXoujTc8_Liy5MoPrUelpbTxZ/view",
-  posterImage: "/projects/bayside.jpg",
-  posterAlt: "A North Cove Builders custom home",
+  posterImage: "/video/about-north-cove-cover.jpg",
+  posterAlt: "Homeowners reviewing plans with North Cove Builders",
   title: "About North Cove Builders",
 };
