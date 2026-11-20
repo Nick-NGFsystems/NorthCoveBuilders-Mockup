@@ -487,13 +487,14 @@ export const availableProperties = [
 // videoUrl accepts a Google Drive share link, a YouTube link, or a direct
 // video file (.mp4/.webm/.mov — e.g. "/video/about-north-cove.mp4" in
 // /public, or a Vercel Blob URL). A direct file plays in the site's own
-// player and is the most reliable option; Drive is the stopgap until the
-// file is hosted here.
+// player and is the most reliable option; Drive and YouTube links show their
+// own players instead. The video is hosted in the North Cove Vercel Blob store
+// (compressed to 1080p, about 40 MB) and only downloads when a visitor presses play.
 // posterImage is the cover photo shown before the video plays (supplied by Elisha, Nov 18).
 export const homeVideo = {
   heading: "Meet North Cove Builders",
   videoUrl:
-    "https://drive.google.com/file/d/1raMTmF_SXoujTc8_Liy5MoPrUelpbTxZ/view",
+    "https://1otcyocefxdlk7jm.public.blob.vercel-storage.com/About%20North%20Cove.mp4",
   posterImage: "/video/about-north-cove-cover.jpg",
   posterAlt: "Homeowners reviewing plans with North Cove Builders",
   title: "About North Cove Builders",

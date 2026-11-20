@@ -24,7 +24,7 @@ export function HomeVideo({ videoUrl, posterImage, posterAlt, title }: HomeVideo
           controls
           autoPlay
           playsInline
-          preload="metadata"
+          preload="none"
           className="absolute inset-0 h-full w-full bg-black object-contain"
         />
       )}
