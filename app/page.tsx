@@ -6,7 +6,8 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { ReviewsCarousel } from "@/components/sections/ReviewsCarousel";
 import { InteriorPhotoReel } from "@/components/sections/InteriorPhotoReel";
-import { featuredProjects } from "@/lib/site-data";
+import { HomeVideo } from "@/components/sections/HomeVideo";
+import { featuredProjects, homeVideo } from "@/lib/site-data";
 import { getNgfContent } from "@/lib/ngf";
 
 export const metadata: Metadata = {
@@ -34,6 +35,12 @@ export default async function Home() {
   const aboutTitle = content['about.title'] || "You'll feel at home long before you move in."
   const aboutBody1 = content['about.body1'] || "We pride ourselves in our dedication to making your home building experience a great one. Good communication is the foundation of our building process, and your involvement and satisfaction is our #1 concern."
   const aboutBody2 = content['about.body2'] || "Working with a builder you trust is key to limiting the stress of building a new home. Our transparent pricing structure, thorough process, and commitment to service are the key elements of our success."
+
+  // ── Video ──────────────────────────────────────────────────────────────────
+  const videoHeading = content['video.heading']     || homeVideo.heading
+  const videoUrl     = content['video.url']         || homeVideo.videoUrl
+  const videoPoster  = content['video.posterImage'] || homeVideo.posterImage
+  const videoPosterAlt = content['video.posterImage_alt'] || homeVideo.posterAlt
 
   // ── Projects ───────────────────────────────────────────────────────────────
   const projectsTitle  = content['projects.title']   || 'Featured Projects'
@@ -146,6 +153,42 @@ export default async function Home() {
             </p>
           </div>
         </Reveal>
+      </section>
+
+      {/* ── Video ── */}
+      <section className="section-shell pt-0!">
+        <Reveal>
+          <h2
+            data-ngf-field="video.heading"
+            data-ngf-label="Section Title"
+            data-ngf-type="text"
+            data-ngf-section="Video"
+            className="mb-8 text-center text-2xl text-brand sm:text-3xl"
+          >
+            {videoHeading}
+          </h2>
+        </Reveal>
+        <Reveal>
+          <div className="mx-auto max-w-4xl">
+            <HomeVideo
+              videoUrl={videoUrl}
+              posterImage={videoPoster}
+              posterAlt={videoPosterAlt}
+              title={homeVideo.title}
+            />
+          </div>
+        </Reveal>
+        {/* Hidden anchor so the video link is editable from the portal */}
+        <span
+          data-ngf-field="video.url"
+          data-ngf-label="Video Link (Google Drive, YouTube, or .mp4)"
+          data-ngf-type="text"
+          data-ngf-section="Video"
+          aria-hidden="true"
+          className="sr-only"
+        >
+          {videoUrl}
+        </span>
       </section>
 
       {/* ── Featured Projects ── */}
