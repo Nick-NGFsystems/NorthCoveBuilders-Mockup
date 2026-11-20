@@ -40,6 +40,7 @@ export default async function Home() {
   const videoHeading = content['video.heading']     || homeVideo.heading
   const videoUrl     = content['video.url']         || homeVideo.videoUrl
   const videoPoster  = content['video.posterImage'] || homeVideo.posterImage
+  const videoPosterAlt = content['video.posterImage_alt'] || homeVideo.posterAlt
 
   // ── Projects ───────────────────────────────────────────────────────────────
   const projectsTitle  = content['projects.title']   || 'Featured Projects'
@@ -172,7 +173,7 @@ export default async function Home() {
             <HomeVideo
               videoUrl={videoUrl}
               posterImage={videoPoster}
-              posterAlt={homeVideo.posterAlt}
+              posterAlt={videoPosterAlt}
               title={homeVideo.title}
             />
           </div>
