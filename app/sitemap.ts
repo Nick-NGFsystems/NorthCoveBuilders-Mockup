@@ -1,48 +1,31 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { floorPlans, toSlug } from "@/lib/site-data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: "https://northcovebuilders.com",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: "https://northcovebuilders.com/about",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: "https://northcovebuilders.com/our-work",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: "https://northcovebuilders.com/contact",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: "https://northcovebuilders.com/floor-plans",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: "https://northcovebuilders.com/gallery",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: "https://northcovebuilders.com/available",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
+const BASE = "https://northcovebuilders.com";
+
+// Async so it can emit the dynamic /floor-plans/[slug] pages from the same
+// source the route renders from. The portal editor's scraper only walks
+// sitemap.xml, so a page missing here is invisible to the editor and to Google.
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
+
+  const pages: MetadataRoute.Sitemap = [
+    { url: BASE, lastModified: now, changeFrequency: "monthly", priority: 1 },
+    { url: `${BASE}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/our-work`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/process`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/floor-plans`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/gallery`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE}/available`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
+
+  const floorPlanPages: MetadataRoute.Sitemap = floorPlans.map((plan) => ({
+    url: `${BASE}/floor-plans/${toSlug(plan.name)}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...pages, ...floorPlanPages];
 }
