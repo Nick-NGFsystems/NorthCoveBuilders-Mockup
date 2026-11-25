@@ -17,6 +17,7 @@ type FormState = {
   bathrooms: string;
   idealBudget: string;
   message: string;
+  _gotcha: string; // honeypot: real visitors never see or fill this
 };
 
 const initialState: FormState = {
@@ -30,6 +31,7 @@ const initialState: FormState = {
   bathrooms: "",
   idealBudget: "",
   message: "",
+  _gotcha: "",
 };
 
 type Props = {
@@ -128,7 +130,7 @@ export function ContactForm({ content = {} }: Props) {
   )
 
   return (
-    <form onSubmit={onSubmit} className="card-soft !p-4 sm:!p-6 grid gap-4 text-center sm:text-left" noValidate>
+    <form onSubmit={onSubmit} className="relative card-soft !p-4 sm:!p-6 grid gap-4 text-center sm:text-left" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="grid gap-2 text-sm font-medium">
           {lbl('name', 'Name Label', labels.name)}
@@ -279,6 +281,22 @@ export function ContactForm({ content = {} }: Props) {
           name="message"
         />
       </label>
+
+      {/* Honeypot: parked off-screen (not display:none, which bots detect), skipped by
+          keyboard and screen readers, and flagged so password managers don't fill it. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <input
+          value={form._gotcha}
+          onChange={(event) => setForm((previous) => ({ ...previous, _gotcha: event.target.value }))}
+          type="text"
+          name="_gotcha"
+          tabIndex={-1}
+          autoComplete="off"
+          data-lpignore="true"
+          data-1p-ignore="true"
+          data-bwignore="true"
+        />
+      </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button type="submit" className="btn-brand mx-auto disabled:cursor-not-allowed disabled:opacity-70 sm:mx-0" disabled={status === "submitting"}>

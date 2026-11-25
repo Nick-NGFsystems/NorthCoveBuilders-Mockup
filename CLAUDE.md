@@ -201,10 +201,15 @@ The "View Floor Plan" button on each card only renders when `planUrl` is non-emp
 ```
 User submits ContactForm
   → POST /api/contact/route.ts
+  → Honeypot `_gotcha` filled? → same success reply, nothing saved or sent
   → Zod validation
-  → Insert row into Neon via Drizzle (db/schema.ts → contact_submissions table)
+  → Insert row into Neon via Drizzle (db/schema.ts → contact_submissions table), best-effort
+  → relayLeadToNgf() → NGF lead store (system of record)
+  → NGF says spam? → success reply, no email (saved as Spam in the portal)
   → Send email via Resend to EMAIL_TO
 ```
+
+Spam screening happens centrally in the NGF app (NGF-STANDARDS "Spam screening: quarantine, never drop"). Do not add keyword or timing rules here that drop a submission before it is relayed.
 
 Schema is in `db/schema.ts`. Single Drizzle client exported from `db/client.ts` — always import from there, never instantiate another.
 
