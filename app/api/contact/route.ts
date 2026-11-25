@@ -5,6 +5,14 @@ import { contactSubmissions } from "@/db/schema";
 import { sendContactNotification } from "@/lib/email";
 import { relayLeadToNgf } from '@/lib/ngf-lead'
 
+// Honeypot (NGF standard: non-semantic `_gotcha`). Real visitors never see the
+// field, so anything in it is a bot. It gets the same success reply a person
+// does, so it can't tell it was caught; nothing is saved or sent.
+const HONEYPOT_FIELD = "_gotcha";
+
+const success = () =>
+  NextResponse.json({ message: "Inquiry submitted successfully." }, { status: 200 });
+
 const contactSchema = z.object({
   name: z.string().min(2),
   email: z.string().email().optional().or(z.literal('')),
@@ -21,6 +29,13 @@ const contactSchema = z.object({
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    const honeypot = (body as Record<string, unknown> | null)?.[HONEYPOT_FIELD];
+    if (typeof honeypot === "string" && honeypot.trim() !== "") {
+      console.warn("Contact submission filtered: honeypot");
+      return success();
+    }
+
     const parsed = contactSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -50,7 +65,15 @@ export async function POST(request: Request) {
 
     // Persist to the central NGF lead store as the system of record — the
     // site's own DB insert above is best-effort (its catch only warns).
-    await relayLeadToNgf("contact", parsed.data);
+    const { spam } = await relayLeadToNgf("contact", parsed.data);
+
+    // The NGF store screened it as a sales pitch or a bot: it's saved there
+    // (Spam in the portal, one click back to New) and NGF sent no email, so
+    // neither do we. A failed relay is never spam, so the email still goes.
+    if (spam) {
+      console.info("Contact submission screened as spam by NGF: saved, not emailed");
+      return success();
+    }
 
     await sendContactNotification({
       ...parsed.data,
@@ -58,7 +81,7 @@ export async function POST(request: Request) {
       phone: parsed.data.phone ?? "",
     });
 
-    return NextResponse.json({ message: "Inquiry submitted successfully." }, { status: 200 });
+    return success();
   } catch (error) {
     console.error("Contact submission error", error);
     return NextResponse.json(
