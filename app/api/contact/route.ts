@@ -4,6 +4,7 @@ import { getDb } from "@/db/client";
 import { contactSubmissions } from "@/db/schema";
 import { sendContactNotification } from "@/lib/email";
 import { relayLeadToNgf } from '@/lib/ngf-lead'
+import { getSpamReason } from '@/lib/spam-filter'
 
 const contactSchema = z.object({
   name: z.string().min(2),
@@ -18,9 +19,21 @@ const contactSchema = z.object({
   message: z.string().optional(),
 });
 
+const success = () =>
+  NextResponse.json({ message: "Inquiry submitted successfully." }, { status: 200 });
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+
+    // Bots get the same success response a real visitor does, so they can't tell
+    // they were filtered. Reason only in the log — never the submitted data.
+    const spamReason = getSpamReason(body);
+    if (spamReason) {
+      console.warn("Contact submission filtered:", spamReason);
+      return success();
+    }
+
     const parsed = contactSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -58,7 +71,7 @@ export async function POST(request: Request) {
       phone: parsed.data.phone ?? "",
     });
 
-    return NextResponse.json({ message: "Inquiry submitted successfully." }, { status: 200 });
+    return success();
   } catch (error) {
     console.error("Contact submission error", error);
     return NextResponse.json(
